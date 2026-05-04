@@ -228,7 +228,7 @@ export function EventsClient({
           const pendingRequest = requestStatusByEvent[selectedEvent.id]
 
           return (
-            <div className="flex flex-col gap-5 max-h-[70vh] overflow-y-auto">
+            <div className="flex flex-col gap-5">
               {selectedEvent.banner_url && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/event-banners/${selectedEvent.banner_url}`} alt={selectedEvent.title} className="w-full h-48 object-cover rounded-xl" />
@@ -241,10 +241,10 @@ export function EventsClient({
                 )}
                 <ParticipationBadge type={selectedEvent.participation_type} />
                 {selectedEvent.participation_type === 'team' && selectedEvent.team_size_max && (
-                  <span className="badge-individual"><Users size={11} />{selectedEvent.team_size_min}–{selectedEvent.team_size_max} members</span>
+                  <span className="badge-individual flex items-center gap-1"><Users size={11} />{selectedEvent.team_size_min}–{selectedEvent.team_size_max} members</span>
                 )}
               </div>
-              {selectedEvent.description && <p className="text-nova-text-dim text-sm leading-relaxed whitespace-pre-wrap">{selectedEvent.description}</p>}
+              {selectedEvent.description && <p className="text-nova-text-dim text-sm leading-relaxed whitespace-pre-wrap break-words">{selectedEvent.description}</p>}
               <div className="grid sm:grid-cols-2 gap-3">
                 {selectedEvent.venue && <div className="flex items-center gap-2 text-sm text-nova-text-dim"><MapPin size={14} className="text-nova-primary shrink-0" />{selectedEvent.venue}</div>}
                 {selectedEvent.event_date && <div className="flex items-center gap-2 text-sm text-nova-text-dim"><Clock size={14} className="text-nova-primary shrink-0" />{selectedEvent.event_date}{selectedEvent.start_time ? ` · ${selectedEvent.start_time}` : ''}</div>}

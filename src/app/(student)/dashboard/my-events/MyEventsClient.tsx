@@ -73,7 +73,7 @@ export function MyEventsClient({ registrations, userId }: MyEventsClientProps) {
     return (
       <div className="p-6 lg:p-8">
         <h1 className="font-display font-bold text-3xl text-nova-text mb-8">My Events</h1>
-        <div className="text-center py-20 glass rounded-2xl border border-nova-primary/20">
+        <div className="text-center py-20 px-4 sm:px-6 glass rounded-2xl border border-nova-primary/20">
           <p className="text-5xl mb-4">🎭</p>
           <p className="text-nova-text-dim text-lg mb-3">You haven&apos;t registered for any events yet</p>
           <a href="/dashboard/events" className="text-nova-primary hover:underline">Browse events →</a>

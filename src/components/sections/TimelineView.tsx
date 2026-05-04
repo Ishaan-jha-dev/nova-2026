@@ -133,7 +133,7 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
                 {/* Events table-like card */}
                 <div className="nova-card overflow-hidden" style={{ borderColor: `${day.color}25` }}>
                   {/* Header row */}
-                  <div className="grid grid-cols-[160px_1fr] gap-0 border-b text-xs font-bold uppercase tracking-widest text-nova-text-dim"
+                  <div className="hidden sm:grid grid-cols-[160px_1fr] gap-0 border-b text-xs font-bold uppercase tracking-widest text-nova-text-dim"
                     style={{ borderColor: `${day.color}20`, background: `${day.color}10` }}
                   >
                     <div className="px-5 py-3">Time Slot</div>
@@ -146,19 +146,19 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
                     return (
                       <div
                         key={j}
-                        className="grid grid-cols-[160px_1fr] gap-0 border-b last:border-b-0 transition-colors duration-200 hover:bg-white/[0.02]"
+                        className="flex flex-col sm:grid sm:grid-cols-[160px_1fr] gap-0 border-b last:border-b-0 transition-colors duration-200 hover:bg-white/[0.02]"
                         style={{ borderColor: `${day.color}15` }}
                       >
-                        <div className="px-5 py-3.5 text-xs font-semibold text-nova-muted uppercase tracking-wider flex items-center">
+                        <div className="px-4 py-3 sm:px-5 sm:py-3.5 text-xs font-semibold text-nova-muted uppercase tracking-wider flex items-center sm:items-start sm:pt-4">
                           {ev.time}
                         </div>
                         <div
-                          className="px-5 py-3.5 border-l flex items-center"
+                          className="px-4 pb-4 sm:px-5 sm:py-3.5 sm:border-l flex flex-col justify-center sm:items-start"
                           style={{ borderColor: `${day.color}15` }}
                         >
                           {hl ? (
                             <span
-                              className="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-semibold"
+                              className="inline-block w-fit px-3 py-1 sm:py-0.5 rounded-xl sm:rounded-full text-xs sm:text-sm font-semibold leading-relaxed"
                               style={{ background: hl.bg, color: hl.text, border: `1px solid ${hl.border}` }}
                             >
                               {ev.label}

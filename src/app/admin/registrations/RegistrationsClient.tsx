@@ -99,7 +99,7 @@ export function RegistrationsClient({
       </div>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div className="glass rounded-2xl p-5 border border-nova-primary/20 flex items-center gap-4">
           <div className="w-12 h-12 rounded-xl bg-nova-primary/10 flex items-center justify-center shrink-0">
             <Users size={22} className="text-nova-primary" />
@@ -217,8 +217,8 @@ export function RegistrationsClient({
                 const joinCode = (teamRegs[0]?.teams as any)?.join_code || ''
                 return (
                   <div key={teamId} className="border-t border-white/10">
-                    <div className="flex items-center justify-between px-5 py-3 bg-nova-primary/5">
-                      <div className="flex items-center gap-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-5 py-3 bg-nova-primary/5">
+                      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
                         <span className="text-sm font-medium text-nova-primary">{teamName}</span>
                         <span className="text-[10px] font-mono bg-nova-primary/10 text-nova-primary px-1.5 py-0.5 rounded border border-nova-primary/20">{joinCode}</span>
                         <span className="text-xs text-nova-muted">{teamRegs.length} members</span>
@@ -238,16 +238,18 @@ export function RegistrationsClient({
                       <tbody className="divide-y divide-white/5">
                         {teamRegs.map(reg => (
                           <tr key={reg.id} className="hover:bg-white/3 transition-colors">
-                            <td className="px-5 py-3 pl-8 text-nova-text flex items-center gap-2">
-                              {(reg.users as any)?.full_name}
-                              {reg.user_id === (teamRegs[0]?.teams as any)?.leader_id && (
-                                <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-nova-warning/20 text-nova-warning border border-nova-warning/30 uppercase tracking-tighter">
-                                  Leader
-                                </span>
-                              )}
+                            <td className="px-4 sm:px-5 py-3 pl-4 sm:pl-8 text-nova-text">
+                              <div className="flex flex-wrap items-center gap-2">
+                                {(reg.users as any)?.full_name}
+                                {reg.user_id === (teamRegs[0]?.teams as any)?.leader_id && (
+                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-nova-warning/20 text-nova-warning border border-nova-warning/30 uppercase tracking-tighter">
+                                    Leader
+                                  </span>
+                                )}
+                              </div>
                             </td>
-                            <td className="px-5 py-3 text-nova-muted text-xs hidden sm:table-cell">{(reg.users as any)?.email}</td>
-                            <td className="px-5 py-3 text-nova-muted text-xs hidden md:table-cell">{formatIST(reg.created_at, 'MMM d, h:mm a')}</td>
+                            <td className="px-4 sm:px-5 py-3 text-nova-muted text-xs hidden sm:table-cell">{(reg.users as any)?.email}</td>
+                            <td className="px-4 sm:px-5 py-3 text-nova-muted text-xs hidden md:table-cell">{formatIST(reg.created_at, 'MMM d, h:mm a')}</td>
                             {adminRoleLevel >= 4 && (
                               <td className="px-5 py-3 text-right">
                                 <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg)}>Kick</Button>

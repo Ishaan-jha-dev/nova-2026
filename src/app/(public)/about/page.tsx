@@ -177,7 +177,7 @@ export default function AboutPage() {
       {/* Contact */}
       <section className="py-24 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="nova-card rounded-3xl p-12 text-center relative overflow-hidden glow-border-pink entrance-3 group">
+          <div className="nova-card rounded-3xl p-6 sm:p-12 text-center relative overflow-hidden glow-border-pink entrance-3 group">
             <div className="absolute inset-0 bg-nova-primary/10 blur-[100px] opacity-40 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none" />
             <div className="relative z-10">
               <h2 className="font-display font-black text-4xl sm:text-5xl gradient-text mb-6">
@@ -188,9 +188,9 @@ export default function AboutPage() {
               </p>
               <a
                 href="mailto:novaunplugged@iimb.ac.in"
-                className="nova-btn-primary inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-white text-lg shadow-[0_0_30px_rgba(255,51,102,0.3)] hover:shadow-[0_0_50px_rgba(255,51,102,0.5)] transition-all hover:-translate-y-1"
+                className="nova-btn-primary flex items-center justify-center px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-white text-sm sm:text-lg shadow-[0_0_30px_rgba(255,51,102,0.3)] hover:shadow-[0_0_50px_rgba(255,51,102,0.5)] transition-all hover:-translate-y-1 w-full sm:w-auto"
               >
-                📧 <span className="tracking-tight">novaunplugged@iimb.ac.in</span>
+                <span className="tracking-tight break-all">novaunplugged@iimb.ac.in</span>
               </a>
             </div>
           </div>
