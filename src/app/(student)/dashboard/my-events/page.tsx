@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { MyEventsClient } from './MyEventsClient'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'My Events | Nova Unplugged 2025' }
+export const metadata: Metadata = { title: 'My Events | Nova Unplugged 2026' }
 
 export default async function MyEventsPage() {
   const supabase = await createClient()

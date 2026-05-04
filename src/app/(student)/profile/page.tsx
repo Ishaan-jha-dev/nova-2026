@@ -5,7 +5,7 @@ import { PaymentBadge, EntryBadge } from '@/components/ui/Badge'
 import { User, Mail, Phone, MapPin, Zap } from 'lucide-react'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Profile | Nova Unplugged 2025' }
+export const metadata: Metadata = { title: 'Profile | Nova Unplugged 2026' }
 
 export default async function ProfilePage() {
   const supabase = await createClient()
@@ -89,7 +89,7 @@ export default async function ProfilePage() {
               <QRDisplay
                 value={userData.entry_code}
                 size={200}
-                label={`Nova Unplugged 2025 · ${userData.full_name}`}
+                label={`Nova Unplugged 2026 · ${userData.full_name}`}
                 downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`}
               />
               <div className="mt-4 p-3 rounded-lg bg-nova-success/10 border border-nova-success/30 text-center">

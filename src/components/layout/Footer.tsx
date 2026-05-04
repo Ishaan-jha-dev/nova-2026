@@ -53,7 +53,7 @@ export function Footer() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-nova-muted text-xs">© 2025 Nova Unplugged · IIM Bangalore. All rights reserved.</p>
+          <p className="text-nova-muted text-xs">© 2026 Nova Unplugged · IIM Bangalore. All rights reserved.</p>
           <p className="text-nova-muted text-xs">Built with ⚡ by the OC Tech Team</p>
         </div>
       </div>

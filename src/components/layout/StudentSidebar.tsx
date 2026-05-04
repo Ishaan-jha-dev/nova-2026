@@ -59,9 +59,9 @@ export function StudentSidebar({ userName, userEmail, initials }: StudentSidebar
               href={href}
               onClick={() => setOpen(false)}
               className={cn(
-                'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group',
+                'flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all group overflow-hidden',
                 active
-                  ? 'bg-nova-primary/15 text-nova-primary border border-nova-primary/30 shadow-glow-sm'
+                  ? 'nav-link-active'
                   : 'text-nova-text-dim hover:text-nova-text hover:bg-white/5'
               )}
             >

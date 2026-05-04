@@ -4,8 +4,8 @@ import { PaymentForm } from './PaymentForm'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Payment | Nova Unplugged 2025',
-  description: 'Submit your payment to confirm your registration for Nova Unplugged 2025.',
+  title: 'Payment | Nova Unplugged 2026',
+  description: 'Submit your payment to confirm your registration for Nova Unplugged 2026.',
 }
 
 export default async function PaymentPage() {

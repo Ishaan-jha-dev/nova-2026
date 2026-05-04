@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { EventsClient } from './EventsClient'
 import type { Metadata } from 'next'
 
-export const metadata: Metadata = { title: 'Events | Nova Unplugged 2025' }
+export const metadata: Metadata = { title: 'Events | Nova Unplugged 2026' }
 
 export default async function EventsPage() {
   const supabase = await createClient()

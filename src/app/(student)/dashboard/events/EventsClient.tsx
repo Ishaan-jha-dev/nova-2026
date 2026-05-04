@@ -2,8 +2,10 @@
 
 import { useState, useTransition, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import { formatIST } from '@/lib/utils/dateUtils'
+import { formatIST, getDaysRemaining } from '@/lib/utils/dateUtils'
+import { toZonedTime } from 'date-fns-tz'
 import { Search, MapPin, Clock, Users, Phone, ExternalLink, BookOpen, Check, Plus, LogIn, X, Bell, AlertCircle, LogOut, ChevronDown, ChevronUp } from 'lucide-react'
+
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
@@ -22,9 +24,13 @@ interface EventsClientProps {
   userId: string
 }
 
+const TZ = 'Asia/Kolkata'
+
 function isDeadlinePassed(deadline: string | null): boolean {
   if (!deadline) return false
-  return new Date(deadline) < new Date()
+  const now = toZonedTime(new Date(), TZ)
+  const target = toZonedTime(new Date(deadline), TZ)
+  return target < now
 }
 
 export function EventsClient({
@@ -143,7 +149,7 @@ export function EventsClient({
     <div className="p-6 lg:p-8">
       <div className="mb-8">
         <h1 className="font-display font-bold text-3xl text-nova-text mb-1">Events</h1>
-        <p className="text-nova-text-dim text-sm">Browse and register for Nova Unplugged 2025 events</p>
+        <p className="text-nova-text-dim text-sm">Browse and register for Nova Unplugged 2026 events</p>
       </div>
 
       {/* Filters */}

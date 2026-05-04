@@ -15,13 +15,13 @@ const orbitron = Orbitron({
 });
 
 export const metadata: Metadata = {
-  title: "Nova Unplugged 2025 | IIM Bangalore Annual Fest",
+  title: "Nova Unplugged 2026 | IIM Bangalore Annual Fest",
   description:
-    "Nova Unplugged is the annual college fest of IIM Bangalore — June 2025. Register now for cultural, technical, and sports events. Gamified entry, QR-based access, and 1000+ participants.",
-  keywords: ["IIM Bangalore", "college fest", "Nova Unplugged", "IIMB", "events 2025"],
+    "Nova Unplugged is the annual college fest of IIM Bangalore — June 2026. Register now for cultural, technical, and sports events. Gamified entry, QR-based access, and 1000+ participants.",
+  keywords: ["IIM Bangalore", "college fest", "Nova Unplugged", "IIMB", "events 2026"],
   openGraph: {
-    title: "Nova Unplugged 2025 | IIM Bangalore",
-    description: "The annual fest of IIM Bangalore. June 2025.",
+    title: "Nova Unplugged 2026 | IIM Bangalore",
+    description: "The annual fest of IIM Bangalore. June 2026.",
     type: "website",
   },
 };

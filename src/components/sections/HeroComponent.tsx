@@ -201,14 +201,15 @@ export default function HeroComponent() {
                 </Link>
                 <Link
                   href="/login"
+                  className="text-nova-text-dim hover:text-nova-primary transition-colors duration-300"
                   style={{
-                    color: 'rgba(253,164,175,0.4)',
-                    fontSize: '0.65rem',
-                    letterSpacing: '0.4em',
+                    fontSize: '0.75rem',
+                    letterSpacing: '0.35em',
                     textTransform: 'uppercase',
-                    fontWeight: 500,
-                    transition: 'color 0.3s',
-                    marginTop: '0.5rem',
+                    fontWeight: 700,
+                    marginTop: '1rem',
+                    opacity: 0,
+                    animation: 'fadeSlideUp 0.7s 1.3s ease forwards',
                   }}
                 >
                   LOG IN

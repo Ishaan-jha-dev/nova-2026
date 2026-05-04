@@ -5,7 +5,7 @@ import { Bell, Filter } from 'lucide-react'
 import type { Metadata } from 'next'
 import { AnnouncementsClient } from './AnnouncementsClient'
 
-export const metadata: Metadata = { title: 'Announcements | Nova Unplugged 2025' }
+export const metadata: Metadata = { title: 'Announcements | Nova Unplugged 2026' }
 
 export default async function AnnouncementsPage(props: { searchParams: Promise<{ filter?: string, page?: string }> }) {
   const searchParams = await props.searchParams;

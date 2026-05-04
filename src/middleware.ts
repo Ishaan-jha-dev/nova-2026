@@ -118,7 +118,6 @@ export async function middleware(request: NextRequest) {
 
   // ─── Level 3: OC Team — admin access except senior routes ────────────────
   if (roleLevel === 3) {
-    if (pathname === '/') return redirect('/dashboard')
     const blocked = ADMIN_SENIOR_ROUTES.some(r => pathname.startsWith(r))
     if (blocked) return redirect('/admin')
     return response
@@ -126,7 +125,6 @@ export async function middleware(request: NextRequest) {
 
   // ─── Level 2: Volunteer — scanner only ───────────────────────────────────
   if (roleLevel === 2) {
-    if (pathname === '/') return redirect('/dashboard')
     if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/scanner')) {
       return redirect('/admin/scanner')
     }
@@ -134,10 +132,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // ─── Level 1: Student — payment gate ─────────────────────────────────────
-  // Redirect base URL to dashboard for regular users
-  if (pathname === '/') {
-    return redirect('/dashboard')
-  }
+  // Allow hero page for all logged-in users
 
   if (paymentStatus !== 'approved') {
     if (!pathname.startsWith('/payment')) return redirect('/payment')
