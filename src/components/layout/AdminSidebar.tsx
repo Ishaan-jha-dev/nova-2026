@@ -20,14 +20,14 @@ interface SidebarItem {
 
 const navItems: SidebarItem[] = [
   { href: '/admin',               label: 'Dashboard',     icon: LayoutDashboard, minLevel: 2 },
-  { href: '/admin/scanner',       label: 'QR Scanner',    icon: QrCode,          minLevel: 2 },
-  { href: '/admin/scanner/logs',  label: 'Scan Logs',     icon: History,         minLevel: 4 },
-  { href: '/admin/events',        label: 'Events',        icon: Calendar,        minLevel: 3 },
-  { href: '/admin/categories',    label: 'Categories',    icon: Tag,             minLevel: 4 },
-  { href: '/admin/registrations', label: 'Registrations', icon: List,            minLevel: 3 },
-  { href: '/admin/announcements', label: 'Announcements', icon: Bell,            minLevel: 3 },
   { href: '/admin/payments',      label: 'Payments',      icon: CreditCard,      minLevel: 4 },
   { href: '/admin/users',         label: 'Users',         icon: Users,           minLevel: 4 },
+  { href: '/admin/categories',    label: 'Categories',    icon: Tag,             minLevel: 4 },
+  { href: '/admin/events',        label: 'Events',        icon: Calendar,        minLevel: 3 },
+  { href: '/admin/registrations', label: 'Registrations', icon: List,            minLevel: 3 },
+  { href: '/admin/announcements', label: 'Announcements', icon: Bell,            minLevel: 3 },
+  { href: '/admin/scanner',       label: 'QR Scanner',    icon: QrCode,          minLevel: 2 },
+  { href: '/admin/scanner/logs',  label: 'Scan Logs',     icon: History,         minLevel: 4 },
   { href: '/admin/export',        label: 'Export',        icon: Download,        minLevel: 4 },
 ]
 
@@ -153,7 +153,7 @@ export function AdminSidebar({ roleLevel, userName, userEmail }: AdminSidebarPro
       {open && (
         <div className="md:hidden fixed inset-0 z-30">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
-          <aside className="absolute top-14 left-0 bottom-0 w-64 glass-dark border-r border-nova-primary/20 animate-slide-up">
+          <aside className="absolute top-14 left-0 bottom-0 w-64 glass-dark border-r border-nova-primary/20 animate-slide-right">
             <SidebarContent />
           </aside>
         </div>

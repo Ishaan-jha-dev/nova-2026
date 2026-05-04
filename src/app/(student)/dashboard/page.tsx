@@ -25,8 +25,6 @@ export default async function DashboardPage() {
   const announcements = _announcements as any[] | null
 
   const firstName = userData?.full_name?.split(' ')[0] || 'there'
-  const xpLevel = Math.min(registrations?.length || 0, 10)
-  const xpPct = (xpLevel / 10) * 100
   const FEST_DATE = process.env.NEXT_PUBLIC_FEST_DATE || '2025-06-20T09:00:00+05:30'
   const daysToFest = Math.max(0, Math.ceil((new Date(FEST_DATE).getTime() - Date.now()) / (1000 * 60 * 60 * 24)))
 
@@ -42,27 +40,6 @@ export default async function DashboardPage() {
             </h1>
           </div>
           <PaymentBadge status={(userData?.payment_status || 'pending') as 'pending' | 'approved' | 'rejected'} />
-        </div>
-
-        {/* XP Bar */}
-        <div className="mt-6 glass rounded-xl p-4 border border-nova-primary/20">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center gap-2">
-              <Star size={16} className="text-nova-warning" />
-              <span className="text-sm font-medium text-nova-text">Event XP Level {xpLevel}</span>
-            </div>
-            <span className="text-xs text-nova-muted">{registrations?.length || 0}/10 events joined</span>
-          </div>
-          <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full transition-all duration-1000"
-              style={{
-                width: `${xpPct}%`,
-                background: 'linear-gradient(90deg, #6C3DE8, #E83D8A)',
-                boxShadow: '0 0 8px rgba(108,61,232,0.6)',
-              }}
-            />
-          </div>
         </div>
       </div>
 
