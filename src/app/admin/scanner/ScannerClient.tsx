@@ -28,39 +28,6 @@ export function ScannerClient({ scannerId, roleLevel }: { scannerId: string; rol
   const [activeCameraId, setActiveCameraId] = useState<string | null>(null)
   const scannerRef = useRef<Html5Qrcode | null>(null)
 
-  useEffect(() => {
-    scannerRef.current = new Html5Qrcode("qr-reader")
-    return () => {
-      if (scannerRef.current?.isScanning) {
-        scannerRef.current.stop().catch(console.error)
-      }
-      scannerRef.current?.clear()
-    }
-  }, [])
-
-  const startScanning = async (target: any) => {
-    if (!scannerRef.current) return
-    try {
-      if (scannerRef.current.isScanning) {
-        await scannerRef.current.stop()
-      }
-      await scannerRef.current.start(
-        target,
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        (decodedText) => {
-          if (scannerRef.current?.isScanning) {
-            scannerRef.current.pause()
-            processCode(decodedText)
-          }
-        },
-        () => {} // ignore frame errors
-      )
-    } catch (err) {
-      console.error('Failed to start scanner', err)
-      alert('Failed to start scanner. Please try again.')
-    }
-  }
-
   const requestPermission = async () => {
     try {
       const devices = await Html5Qrcode.getCameras()
@@ -78,6 +45,54 @@ export function ScannerClient({ scannerId, roleLevel }: { scannerId: string; rol
       setHasPermission(false)
     }
   }
+
+  useEffect(() => {
+    scannerRef.current = new Html5Qrcode("qr-reader")
+    
+    // Check if permission is already granted
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: 'camera' as PermissionName })
+        .then((permStatus) => {
+          if (permStatus.state === 'granted') {
+            requestPermission()
+          }
+        })
+        .catch(() => {})
+    }
+
+    return () => {
+      if (scannerRef.current?.isScanning) {
+        scannerRef.current.stop().catch(console.error)
+      }
+      scannerRef.current?.clear()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const startScanning = async (target: any) => {
+    if (!scannerRef.current) return
+    try {
+      if (scannerRef.current.isScanning) {
+        await scannerRef.current.stop()
+      }
+      await scannerRef.current.start(
+        target,
+        { fps: 10, qrbox: { width: 250, height: 250 }, aspectRatio: 1.0 },
+        (decodedText) => {
+          if (scannerRef.current?.isScanning) {
+            scannerRef.current.pause()
+            processCode(decodedText)
+          }
+        },
+        () => {} // ignore frame errors
+      )
+    } catch (err) {
+      console.error('Failed to start scanner', err)
+      alert('Failed to start scanner. Please try again.')
+    }
+  }
+
+
 
   const toggleCamera = () => {
     if (cameras.length <= 1) return
