@@ -154,12 +154,14 @@ export function PaymentForm({ userData, submission, userId }: PaymentFormProps) 
                 <p className="text-nova-muted text-xs mb-1 font-display tracking-wider">AMOUNT TO PAY</p>
                 <p className="font-display font-black text-5xl gradient-text">₹{AMOUNT}</p>
               </div>
-              <div className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
-                <div>
-                  <p className="text-nova-muted text-xs">UPI ID</p>
-                  <p className="text-nova-text font-mono font-semibold">{UPI_ID}</p>
+              <div className="flex items-center justify-between gap-4 p-3 rounded-lg bg-white/5 border border-white/10">
+                <div className="min-w-0">
+                  <p className="text-nova-muted text-[10px] uppercase tracking-wider">UPI ID</p>
+                  <p className="text-nova-text font-mono font-semibold break-all text-sm">
+                    {UPI_ID}
+                  </p>
                 </div>
-                <Button variant="outline" size="sm" icon={<Copy size={14} />} onClick={copyUPI}>
+                <Button variant="outline" size="sm" icon={<Copy size={14} />} onClick={copyUPI} className="shrink-0">
                   {copied ? 'Copied!' : 'Copy'}
                 </Button>
               </div>
