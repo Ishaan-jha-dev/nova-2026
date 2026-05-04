@@ -61,10 +61,16 @@ export function ScannerClient({ scannerId, roleLevel }: { scannerId: string; rol
     }
 
     return () => {
-      if (scannerRef.current?.isScanning) {
-        scannerRef.current.stop().catch(console.error)
+      if (scannerRef.current) {
+        const scanner = scannerRef.current
+        if (scanner.isScanning) {
+          scanner.stop().then(() => {
+            scanner.clear()
+          }).catch(console.error)
+        } else {
+          scanner.clear()
+        }
       }
-      scannerRef.current?.clear()
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
