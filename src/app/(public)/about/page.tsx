@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Zap, Target, Heart, Code2, Palette, Crown } from 'lucide-react'
+import { Zap, Target, Heart, Code2, Palette, Crown, Linkedin } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'About | Nova Unplugged 2026',
@@ -13,6 +13,7 @@ const team = [
     title: 'Core Logic & Backend',
     emoji: '⚡',
     color: 'from-nova-primary to-rose-600',
+    linkedin: 'https://www.linkedin.com/in/madhwendra-shukla-77a13920b/',
     brag: [
       'Architected the entire platform from scratch',
       'Built real-time auth, RLS policies & Supabase backend',
@@ -27,6 +28,7 @@ const team = [
     title: 'UI/UX & Frontend',
     emoji: '🎨',
     color: 'from-violet-600 to-fuchsia-600',
+    linkedin: 'https://www.linkedin.com/in/ishaan-jha-2b6977340/',
     brag: [
       'Crafted the premium neon-glassmorphism design language',
       'Built every pixel of the student & admin dashboards',
@@ -41,6 +43,7 @@ const team = [
     title: 'OC Lead · ZR North Zone 2',
     emoji: '🏆',
     color: 'from-amber-500 to-orange-600',
+    linkedin: 'https://www.linkedin.com/in/ashutosh-agrawal-0a4a7a379/',
     brag: [
       'Heads the Organising Committee for North Zone 2',
       'Coordinates logistics, events & participant experience',
@@ -148,10 +151,23 @@ export default function AboutPage() {
                         {member.name}
                       </p>
                       <p className="text-nova-text-dim text-sm">{member.title}</p>
-                      <span className="inline-flex items-center gap-1.5 mt-2 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-nova-primary/10 border border-nova-primary/25 text-nova-primary">
-                        <RoleIcon size={10} />
-                        {member.badge}
-                      </span>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-nova-primary/10 border border-nova-primary/25 text-nova-primary">
+                          <RoleIcon size={10} />
+                          {member.badge}
+                        </span>
+                        {member.linkedin && (
+                          <a 
+                            href={member.linkedin} 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center p-1.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all"
+                            title={`Connect with ${member.name} on LinkedIn`}
+                          >
+                            <Linkedin size={14} />
+                          </a>
+                        )}
+                      </div>
                     </div>
                   </div>
 
