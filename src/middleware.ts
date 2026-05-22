@@ -64,6 +64,17 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
+  // --- COMING SOON OVERRIDE ---
+  if (pathname !== '/' && pathname !== '/coming-soon' && !pathname.startsWith('/api')) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/coming-soon'
+    return NextResponse.rewrite(url)
+  }
+  if (pathname === '/coming-soon') {
+    return response
+  }
+  // --- END COMING SOON OVERRIDE ---
+
   // Regular anon client for cookie management & auth check
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
