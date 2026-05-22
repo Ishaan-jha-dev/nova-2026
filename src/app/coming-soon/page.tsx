@@ -15,7 +15,7 @@ export default function ComingSoon() {
             rel="noopener noreferrer"
             className="inline-block px-8 py-4 bg-green-500 text-white rounded-full font-semibold hover:bg-green-400 transition-colors shadow-lg"
           >
-            💬 Join WhatsApp Group for Queries
+            💬 Join WhatsApp Group to stay tuned for latest updates
           </a>
           <a 
             href="/" 
