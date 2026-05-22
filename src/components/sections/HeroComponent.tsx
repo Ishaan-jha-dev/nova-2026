@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import ParticleCrowd from '@/components/ui/ParticleCrowd'
 import { createClient } from '@/lib/supabase/client'
+import WhatsAppButton from '@/components/ui/WhatsAppButton'
 
 /* ─── Spinning Pinwheel O ─────────────────────── */
 function PinwheelO() {
@@ -219,6 +220,9 @@ export default function HeroComponent() {
           )}
         </div>
       </div>
+      
+      {/* Floating WhatsApp Button for queries */}
+      <WhatsAppButton />
     </div>
   )
 }
