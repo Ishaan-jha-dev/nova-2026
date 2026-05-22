@@ -65,7 +65,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // --- COMING SOON OVERRIDE ---
-  if (pathname !== '/' && pathname !== '/coming-soon' && !pathname.startsWith('/api')) {
+  if (pathname !== '/' && pathname !== '/about' && pathname !== '/coming-soon' && !pathname.startsWith('/api')) {
     const url = request.nextUrl.clone()
     url.pathname = '/coming-soon'
     return NextResponse.rewrite(url)
