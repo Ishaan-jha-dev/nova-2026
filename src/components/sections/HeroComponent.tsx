@@ -62,7 +62,7 @@ export default function HeroComponent() {
 
   return (
     <div
-      className="relative w-full min-h-[calc(100vh-4rem)] overflow-hidden flex flex-col items-center justify-center"
+      className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center"
       style={{ background: 'radial-gradient(ellipse at 50% 55%, #2d0a1a 0%, #1c0505 45%, #0A0105 100%)' }}
     >
       {/* Particles */}
