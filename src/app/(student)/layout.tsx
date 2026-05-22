@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { StudentSidebar } from '@/components/layout/StudentSidebar'
+import WhatsAppButton from '@/components/ui/WhatsAppButton'
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -31,6 +32,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
       <main className="flex-1 md:ml-64 pt-14 md:pt-0 overflow-y-auto">
         {children}
       </main>
+      <WhatsAppButton />
     </div>
   )
 }
