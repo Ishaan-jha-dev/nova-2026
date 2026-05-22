@@ -12,6 +12,7 @@ const team = [
     role: 'Developer',
     title: 'Core Logic & Backend',
     emoji: '⚡',
+    imageUrl: 'https://github.com/madhwendrashukla.png',
     color: 'from-nova-primary to-rose-600',
     linkedin: 'https://www.linkedin.com/in/madhwendra-shukla-77a13920b/',
     brag: [
@@ -27,6 +28,7 @@ const team = [
     role: 'Developer',
     title: 'UI/UX & Frontend',
     emoji: '🎨',
+    imageUrl: 'https://github.com/ishaanjha.png',
     color: 'from-violet-600 to-fuchsia-600',
     linkedin: 'https://www.linkedin.com/in/ishaan-jha-2b6977340/',
     brag: [
@@ -42,6 +44,7 @@ const team = [
     role: 'Coordinator',
     title: 'OC Lead · ZR North Zone 2',
     emoji: '🏆',
+    imageUrl: 'https://github.com/ashutosh-agrawal.png',
     color: 'from-amber-500 to-orange-600',
     linkedin: 'https://www.linkedin.com/in/ashutosh-agrawal-0a4a7a379/',
     brag: [
@@ -160,9 +163,15 @@ export default function AboutPage() {
                   {/* Avatar + badge */}
                   <div className="flex items-start gap-4 mb-6">
                     <div className="relative shrink-0">
-                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(255,51,102,0.3)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-                        {member.emoji}
-                      </div>
+                      {member.imageUrl ? (
+                        <div className={`w-16 h-16 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(255,51,102,0.3)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                          <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(255,51,102,0.3)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                          {member.emoji}
+                        </div>
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-bold text-nova-text text-lg leading-tight group-hover:text-nova-primary transition-colors truncate">
