@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Zap, Target, Heart, Code2, Palette, Crown, Linkedin } from 'lucide-react'
+import { Zap, Target, Heart, Code2, Palette, Crown } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'About | Nova Unplugged 2026',
@@ -64,6 +64,24 @@ const roleIcon: Record<string, any> = {
   Developer: Code2,
   Coordinator: Crown,
 }
+
+const LinkedinIcon = ({ size = 14 }: { size?: number }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+    <rect width="4" height="12" x="2" y="9" />
+    <circle cx="4" cy="4" r="2" />
+  </svg>
+)
 
 export default function AboutPage() {
   return (
@@ -164,7 +182,7 @@ export default function AboutPage() {
                             className="inline-flex items-center justify-center p-1.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all"
                             title={`Connect with ${member.name} on LinkedIn`}
                           >
-                            <Linkedin size={14} />
+                            <LinkedinIcon size={14} />
                           </a>
                         )}
                       </div>
