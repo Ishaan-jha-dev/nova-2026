@@ -12,7 +12,7 @@ const team = [
     role: 'Developer',
     title: 'Core Logic & Backend',
     emoji: '⚡',
-    imageUrl: 'https://github.com/madhwendrashukla.png',
+    imageUrl: '/team/madhwendra.jpg',
     color: 'from-nova-primary to-rose-600',
     linkedin: 'https://www.linkedin.com/in/madhwendra-shukla-77a13920b/',
     brag: [
@@ -28,7 +28,7 @@ const team = [
     role: 'Developer',
     title: 'UI/UX & Frontend',
     emoji: '🎨',
-    imageUrl: 'https://github.com/ishaanjha.png',
+    imageUrl: '/team/ishaan.jpg',
     color: 'from-violet-600 to-fuchsia-600',
     linkedin: 'https://www.linkedin.com/in/ishaan-jha-2b6977340/',
     brag: [
@@ -44,7 +44,7 @@ const team = [
     role: 'Coordinator',
     title: 'OC Lead · ZR North Zone 2',
     emoji: '🏆',
-    imageUrl: 'https://github.com/ashutosh-agrawal.png',
+    imageUrl: '/team/ashutosh.jpg',
     color: 'from-amber-500 to-orange-600',
     linkedin: 'https://www.linkedin.com/in/ashutosh-agrawal-0a4a7a379/',
     brag: [
