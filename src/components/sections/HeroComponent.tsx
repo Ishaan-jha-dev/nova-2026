@@ -5,7 +5,6 @@ import Link from 'next/link'
 import ParticleCrowd from '@/components/ui/ParticleCrowd'
 import { createClient } from '@/lib/supabase/client'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
-import { Modal } from '@/components/ui/Modal'
 
 /* ─── Spinning Pinwheel O ─────────────────────── */
 function PinwheelO() {
@@ -51,7 +50,6 @@ function PinwheelO() {
 export default function HeroComponent() {
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
-  const [showUpdateModal, setShowUpdateModal] = useState(true)
   const supabase = createClient()
 
   useEffect(() => {
@@ -225,47 +223,6 @@ export default function HeroComponent() {
       
       {/* Floating WhatsApp Button for queries */}
       <WhatsAppButton />
-
-      {/* Stay Tuned WhatsApp Modal */}
-      <Modal 
-        open={showUpdateModal} 
-        onClose={() => setShowUpdateModal(false)}
-        title="Stay Tuned!"
-        size="md"
-      >
-        <div className="flex flex-col items-center text-center space-y-6 py-2">
-          {/* WhatsApp Icon with green pulse */}
-          <div className="relative flex items-center justify-center w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/35 text-emerald-400 animate-pulse animate-duration-2000">
-            <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current">
-              <path d="M12.031 2c-5.517 0-9.997 4.48-9.997 9.997 0 1.763.459 3.483 1.33 5.002L2 22l5.163-1.355a9.96 9.96 0 0 0 4.868 1.252h.004c5.517 0 9.996-4.48 9.996-9.997 0-2.67-1.037-5.178-2.923-7.068C17.22 3.037 14.71 2 12.031 2zm6.39 14.22c-.279.79-1.397 1.448-1.921 1.549-.475.093-1.096.166-3.13-.675-2.6-1.074-4.246-3.738-4.376-3.91-.129-.172-1.05-1.398-1.05-2.667 0-1.27.665-1.894.901-2.147.236-.253.515-.316.687-.316.171 0 .343.001.492.008.156.007.367-.06.574.453.21.52.72 1.758.783 1.89.063.13.104.283.018.455-.086.171-.129.278-.258.428-.129.15-.27.336-.386.452-.129.129-.264.27-.113.528.15.258.666 1.098 1.428 1.776.982.873 1.808 1.144 2.066 1.273.258.129.408.107.558-.069.15-.176.644-.75.815-1.008.172-.258.343-.215.58-.129.236.086 1.499.708 1.757.837.258.129.43.193.494.3.064.108.064.624-.215 1.414z" />
-            </svg>
-          </div>
-          
-          <div className="space-y-2">
-            <p className="text-nova-text text-sm md:text-base leading-relaxed font-body">
-              Nova Unplugged &apos;26 registrations and events are starting soon! Join the WhatsApp updates group to stay tuned for the latest announcements, registration deadlines, and schedule updates.
-            </p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full pt-4">
-            <a
-              href="https://chat.whatsapp.com/Kc5eCJjVk5gCGDbP7xDaWM?mode=gi_t"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-bold text-sm tracking-wider uppercase transition-all duration-200 shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] font-body"
-              onClick={() => setShowUpdateModal(false)}
-            >
-              Join WhatsApp Group
-            </a>
-            <button
-              onClick={() => setShowUpdateModal(false)}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl border border-white/10 hover:border-white/20 text-nova-text-dim hover:text-nova-text text-sm font-semibold tracking-wider uppercase transition-colors font-body"
-            >
-              Maybe Later
-            </button>
-          </div>
-        </div>
-      </Modal>
     </div>
   )
 }
