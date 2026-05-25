@@ -66,14 +66,14 @@ export async function middleware(request: NextRequest) {
 
   // --- COMING SOON OVERRIDE ---
   // Only the root landing page is accessible; everything else shows coming-soon
-  if (pathname !== '/' && pathname !== '/coming-soon' && !pathname.startsWith('/api')) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/coming-soon'
-    return NextResponse.rewrite(url)
-  }
-  if (pathname === '/coming-soon') {
-    return response
-  }
+  // if (pathname !== '/' && pathname !== '/coming-soon' && !pathname.startsWith('/api')) {
+  //   const url = request.nextUrl.clone()
+  //   url.pathname = '/coming-soon'
+  //   return NextResponse.rewrite(url)
+  // }
+  // if (pathname === '/coming-soon') {
+  //   return response
+  // }
   // --- END COMING SOON OVERRIDE ---
 
   // Regular anon client for cookie management & auth check
@@ -143,13 +143,8 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // ─── Level 1: Student — payment gate ─────────────────────────────────────
-  // Allow hero page for all logged-in users
-
-  if (paymentStatus !== 'approved') {
-    if (!pathname.startsWith('/payment')) return redirect('/payment')
-    return response
-  }
+  // ─── Level 1: Student ─────────────────────────────────────
+  // All allowed users are pre-approved now, no payment lock needed.
   
   if (pathname.startsWith('/admin')) return redirect('/dashboard')
   

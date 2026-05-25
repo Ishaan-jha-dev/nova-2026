@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { ArrowRight, Mic2, BriefcaseBusiness, Globe, Music, Palette, Search, Star, QrCode } from 'lucide-react'
 import HeroComponent from '@/components/sections/HeroComponent'
+import MaintenanceAlert from '@/components/ui/MaintenanceAlert'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -140,6 +141,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <MaintenanceAlert />
     </div>
   )
 }

@@ -7,6 +7,7 @@ import { Input, Select } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Mail, User, Phone, MapPin, Hash, ShieldCheck, ArrowRight, ArrowLeft, Check, Users, School } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { checkAllowedEmail, approveUserPaymentStatus } from './actions'
 
 type UserType = 'iimb_student' | 'iimb_faculty'
 
@@ -104,6 +105,13 @@ export default function RegisterPage() {
     startTransition(async () => {
       try {
         console.log('Starting signup for:', form.email)
+
+        const isAllowed = await checkAllowedEmail(form.email)
+        if (!isAllowed) {
+          setError('Your payment is not yet confirmed, please wait if you have paid, and pay if you have not paid for the events.')
+          return
+        }
+
         const supabase = createClient()
         const { data, error: supaErr } = await supabase.auth.signUp({
           email: form.email,
@@ -151,7 +159,7 @@ export default function RegisterPage() {
     startTransition(async () => {
       try {
         const supabase = createClient()
-        const { error: supaErr } = await supabase.auth.verifyOtp({
+        const { data, error: supaErr } = await supabase.auth.verifyOtp({
           email: form.email,
           token: otp,
           type: 'signup',
@@ -160,6 +168,9 @@ export default function RegisterPage() {
         if (supaErr) {
           setError(supaErr.message)
         } else {
+          if (data?.user?.id) {
+            await approveUserPaymentStatus(data.user.id)
+          }
           // Verification successful, redirect to dashboard or payment
           router.push('/dashboard')
           router.refresh()

@@ -1,0 +1,224 @@
+'use client'
+
+import { useState, useTransition } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
+import { Trash2, Plus, Users, Mail } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { formatIST } from '@/lib/utils/dateUtils'
+
+export default function AllowedEmailsClient({ initialEmails }: { initialEmails: any[] }) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+  const [emails, setEmails] = useState(initialEmails)
+  const [singleEmail, setSingleEmail] = useState('')
+  const [bulkEmails, setBulkEmails] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+
+  const supabase = createClient()
+
+  const handleAddSingle = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!singleEmail.trim()) return
+    
+    setError(null)
+    setSuccess(null)
+    startTransition(async () => {
+      try {
+        const { data: userData } = await supabase.auth.getUser()
+        if (!userData.user) throw new Error('Not authenticated')
+
+        const { data, error: insertError } = await supabase
+          .from('allowed_emails')
+          .insert({ email: singleEmail.trim().toLowerCase(), added_by: userData.user.id })
+          .select('id, email, created_at, users!added_by(full_name)')
+          .single()
+
+        if (insertError) {
+          if (insertError.code === '23505') throw new Error('Email is already in the allowed list')
+          throw insertError
+        }
+
+        setEmails(prev => [data, ...prev])
+        setSingleEmail('')
+        setSuccess('Email added successfully!')
+        router.refresh()
+      } catch (err: any) {
+        setError(err.message)
+      }
+    })
+  }
+
+  const handleBulkAdd = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!bulkEmails.trim()) return
+
+    setError(null)
+    setSuccess(null)
+    
+    const emailList = bulkEmails
+      .split(/[\n,]+/)
+      .map(e => e.trim().toLowerCase())
+      .filter(e => e.length > 0)
+
+    if (emailList.length === 0) return
+
+    startTransition(async () => {
+      try {
+        const { data: userData } = await supabase.auth.getUser()
+        if (!userData.user) throw new Error('Not authenticated')
+
+        const inserts = emailList.map(email => ({
+          email,
+          added_by: userData.user.id
+        }))
+
+        // We use ON CONFLICT DO NOTHING (requires rpc or handling duplicates if not supported)
+        // Since we can't easily do ON CONFLICT without rpc in supabase-js standard insert,
+        // we'll fetch existing and filter out.
+        const { data: existing } = await supabase.from('allowed_emails').select('email').in('email', emailList)
+        const existingSet = new Set((existing || []).map(e => e.email))
+        const newInserts = inserts.filter(item => !existingSet.has(item.email))
+
+        if (newInserts.length === 0) {
+          setError('All provided emails are already in the allowed list.')
+          return
+        }
+
+        const { data, error: insertError } = await supabase
+          .from('allowed_emails')
+          .insert(newInserts)
+          .select('id, email, created_at, users!added_by(full_name)')
+
+        if (insertError) throw insertError
+
+        setEmails(prev => [...(data || []), ...prev].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()))
+        setBulkEmails('')
+        setSuccess(`Successfully added ${newInserts.length} email(s)!`)
+        router.refresh()
+      } catch (err: any) {
+        setError(err.message)
+      }
+    })
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to remove this email?')) return
+
+    setError(null)
+    setSuccess(null)
+    startTransition(async () => {
+      try {
+        const { error: deleteError } = await supabase
+          .from('allowed_emails')
+          .delete()
+          .eq('id', id)
+
+        if (deleteError) throw deleteError
+
+        setEmails(prev => prev.filter(e => e.id !== id))
+        setSuccess('Email removed from the allowed list.')
+        router.refresh()
+      } catch (err: any) {
+        setError(err.message)
+      }
+    })
+  }
+
+  return (
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      {/* Forms column */}
+      <div className="lg:col-span-1 space-y-6">
+        <div className="glass rounded-2xl p-6 border border-white/10">
+          <h2 className="text-xl font-display font-semibold text-nova-text mb-4 flex items-center gap-2">
+            <Mail size={18} className="text-nova-primary" /> Add Single Email
+          </h2>
+          <form onSubmit={handleAddSingle} className="space-y-4">
+            <Input
+              type="email"
+              placeholder="student@example.com"
+              value={singleEmail}
+              onChange={e => setSingleEmail(e.target.value)}
+              required
+            />
+            <Button type="submit" loading={isPending} fullWidth icon={<Plus size={16} />}>
+              Add Email
+            </Button>
+          </form>
+        </div>
+
+        <div className="glass rounded-2xl p-6 border border-white/10">
+          <h2 className="text-xl font-display font-semibold text-nova-text mb-4 flex items-center gap-2">
+            <Users size={18} className="text-nova-accent" /> Bulk Add Emails
+          </h2>
+          <form onSubmit={handleBulkAdd} className="space-y-4">
+            <textarea
+              className="w-full h-32 rounded-xl border border-white/10 bg-black/20 p-3 text-sm text-nova-text placeholder:text-nova-muted outline-none focus:border-nova-primary/50 transition-colors"
+              placeholder="Paste emails separated by commas or newlines..."
+              value={bulkEmails}
+              onChange={e => setBulkEmails(e.target.value)}
+              required
+            />
+            <Button type="submit" variant="secondary" loading={isPending} fullWidth icon={<Plus size={16} />}>
+              Bulk Add
+            </Button>
+          </form>
+        </div>
+
+        {error && (
+          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-sm">
+            {error}
+          </div>
+        )}
+        {success && (
+          <div className="p-4 rounded-xl bg-green-500/10 border border-green-500/20 text-green-500 text-sm">
+            {success}
+          </div>
+        )}
+      </div>
+
+      {/* List column */}
+      <div className="lg:col-span-2 glass rounded-2xl border border-white/10 overflow-hidden flex flex-col min-h-[500px]">
+        <div className="p-6 border-b border-white/10 flex items-center justify-between">
+          <h2 className="text-xl font-display font-semibold text-nova-text">Allowed Emails ({emails.length})</h2>
+        </div>
+        
+        <div className="flex-1 overflow-auto p-4 space-y-2">
+          {emails.length === 0 ? (
+            <div className="h-full flex flex-col items-center justify-center text-nova-muted space-y-2">
+              <Mail size={32} className="opacity-20" />
+              <p>No emails in the allowed list yet.</p>
+            </div>
+          ) : (
+            emails.map(item => (
+              <div key={item.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-nova-text truncate text-sm md:text-base">{item.email}</p>
+                  <div className="flex items-center gap-3 mt-1">
+                    <p className="text-xs text-nova-muted truncate">
+                      Added by: {(item.users as any)?.full_name || 'Admin'}
+                    </p>
+                    <span className="text-[10px] text-nova-muted/50">•</span>
+                    <p className="text-xs text-nova-muted">
+                      {formatIST(item.created_at, 'MMM d, yyyy h:mm a')}
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleDelete(item.id)}
+                  disabled={isPending}
+                  className="ml-4 p-2 text-nova-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50"
+                  title="Remove"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}

@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
   LayoutDashboard, CreditCard, Users, Calendar,
-  List, QrCode, Download, LogOut, Menu, X, ChevronLeft, Bell, History, Tag
+  List, QrCode, Download, LogOut, Menu, X, ChevronLeft, Bell, History, Tag, Mail
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -23,6 +23,7 @@ const navItems: SidebarItem[] = [
   { href: '/admin',               label: 'Dashboard',     icon: LayoutDashboard, minLevel: 2 },
   { href: '/admin/payments',      label: 'Payments',      icon: CreditCard,      minLevel: 4 },
   { href: '/admin/users',         label: 'Users',         icon: Users,           minLevel: 4 },
+  { href: '/admin/allowed-emails',label: 'Allowed Emails',icon: Mail,            minLevel: 4 },
   { href: '/admin/categories',    label: 'Categories',    icon: Tag,             minLevel: 4 },
   { href: '/admin/events',        label: 'Events',        icon: Calendar,        minLevel: 3 },
   { href: '/admin/registrations', label: 'Registrations', icon: List,            minLevel: 3 },

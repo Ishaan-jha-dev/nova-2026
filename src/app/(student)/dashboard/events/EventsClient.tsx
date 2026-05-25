@@ -561,7 +561,13 @@ export function EventsClient({
         <>
           {view === 'categories' && (
             <div className="w-full py-12 flex flex-col items-center justify-center min-h-[300px]">
-              {/* Keep blank - backend data will be shown here */}
+              <CategoryGrid 
+                categories={categories} 
+                onSelect={(id) => {
+                  setActiveCategoryId(id)
+                  setView('category')
+                }} 
+              />
             </div>
           )}
 
