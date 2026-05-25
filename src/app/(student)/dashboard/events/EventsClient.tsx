@@ -18,7 +18,7 @@ import { ParticipationBadge, CategoryBadge } from '@/components/ui/Badge'
 import { PinnedCard } from '@/components/ui/PinnedCard'
 import { createClient } from '@/lib/supabase/client'
 import { 
-  createJoinRequest, withdrawFromEvent, checkWithdrawalWouldDissolve, respondToJoinRequest 
+  createJoinRequest, withdrawFromEvent, checkWithdrawalWouldDissolve, respondToJoinRequest, cancelTeamJoinRequest
 } from '@/actions/teamRequests'
 import type { EventRow, CategoryRow } from '@/lib/supabase/types'
 
@@ -485,6 +485,16 @@ export function EventsClient({
     setLoadingTeams(false)
   }
 
+  const handleCancelRequest = (eventId: string) => {
+    setActionError(null)
+    startTransition(async () => {
+      try {
+        await cancelTeamJoinRequest(eventId)
+        router.refresh()
+      } catch (err: any) { setActionError(err.message) }
+    })
+  }
+
   const handleWithdrawClick = async (eventId: string) => {
     startTransition(async () => {
       const wouldDissolve = await checkWithdrawalWouldDissolve(eventId, userId)
@@ -919,26 +929,39 @@ export function EventsClient({
                     Withdraw from Event
                   </Button>
                 </div>
-              ) : deadlinePassed ? (
-                <div className="flex items-center justify-center gap-2 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 font-semibold">
-                  <AlertCircle size={18} /> Registration Closed
-                </div>
-              ) : pendingRequest && pendingRequest.status === 'pending' ? (
-                <div className="flex items-center justify-center gap-2 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 font-semibold">
-                  <Bell size={18} /> Join Request Pending
-                </div>
               ) : selectedEvent.participation_type === 'individual' ? (
                 <Button variant="primary" size="lg" fullWidth loading={isPending} onClick={() => handleRegisterIndividual(selectedEvent.id)}>
                   Register for this Event
                 </Button>
               ) : (
                 <div className="flex flex-col gap-3">
-                  <p className="text-white/40 text-sm text-center">Team event — choose an option:</p>
+                  {pendingRequest && pendingRequest.status === 'pending' && (
+                    <div className="flex flex-col gap-3 mb-2">
+                      <div className="flex items-center justify-center gap-2 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 font-semibold">
+                        <Bell size={18} /> Join Request Pending
+                      </div>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        fullWidth 
+                        className="text-red-400 hover:bg-red-500/10" 
+                        icon={<X size={14} />} 
+                        loading={isPending} 
+                        onClick={() => handleCancelRequest(selectedEvent.id)}
+                      >
+                        Cancel Request
+                      </Button>
+                    </div>
+                  )}
+
+                  {!pendingRequest && (
+                    <p className="text-white/40 text-sm text-center">Team event — choose an option:</p>
+                  )}
                   <div className="grid grid-cols-2 gap-3">
-                    <Button variant="primary" icon={<Plus size={16} />} onClick={() => setTeamModal('create')}>Create Team</Button>
-                    <Button variant="outline" icon={<LogIn size={16} />} onClick={() => { setTeamModal('browse'); loadBrowseTeams(selectedEvent.id) }}>Join a Team</Button>
+                    <Button variant="primary" icon={<Plus size={16} />} disabled={!!pendingRequest} onClick={() => setTeamModal('create')}>Create Team</Button>
+                    <Button variant="outline" icon={<LogIn size={16} />} onClick={() => { setTeamModal('browse'); loadBrowseTeams(selectedEvent.id) }}>{pendingRequest ? 'View Teams' : 'Join a Team'}</Button>
                   </div>
-                  {teamModal === 'create' && (
+                  {teamModal === 'create' && !pendingRequest && (
                     <div className="glass rounded-xl p-4 border border-nova-primary/30 flex flex-col gap-3 animate-slide-up">
                       <Input label="Team Name" placeholder="Enter team name" value={teamName} onChange={e => setTeamName(e.target.value)} />
                       <Button variant="accent" loading={isPending} onClick={() => handleCreateTeam(selectedEvent.id)}>Create & Register</Button>
@@ -946,13 +969,18 @@ export function EventsClient({
                   )}
                   {teamModal === 'browse' && (
                     <div className="glass rounded-xl p-4 border border-nova-primary/30 flex flex-col gap-3 animate-slide-up">
-                      <Input label="Have a join code?" placeholder="6-char code e.g. A1B2C3" value={joinCode} onChange={e => setJoinCode(e.target.value.toUpperCase())} maxLength={6} />
-                      <Button variant="outline" loading={isPending} onClick={() => handleJoinByCode(selectedEvent.id)}>Join by Code</Button>
-                      <div className="border-t border-white/10 pt-3">
-                        <p className="text-white/30 text-xs mb-3">Or request to join an open team:</p>
+                      {!pendingRequest && (
+                        <>
+                          <Input label="Have a join code?" placeholder="6-char code e.g. A1B2C3" value={joinCode} onChange={e => setJoinCode(e.target.value.toUpperCase())} maxLength={6} />
+                          <Button variant="outline" loading={isPending} onClick={() => handleJoinByCode(selectedEvent.id)}>Join by Code</Button>
+                          <div className="border-t border-white/10 pt-3 mt-1"></div>
+                        </>
+                      )}
+                      <div>
+                        <p className="text-white/30 text-xs mb-3">{pendingRequest ? 'Teams in this event:' : 'Or request to join an open team:'}</p>
                         {loadingTeams ? <p className="text-white/30 text-sm text-center">Loading…</p> :
                           browseTeams.length === 0 ? <p className="text-white/30 text-sm text-center">No open teams yet.</p> :
-                          <div className="flex flex-col gap-2 max-h-40 overflow-y-auto">
+                          <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1 custom-scrollbar">
                             {browseTeams.map(team => {
                               const reqStatus = requestStatusByTeam[team.id]
                               const count = (team.team_members as any)?.[0]?.count || 0
@@ -966,7 +994,7 @@ export function EventsClient({
                                   {isFull ? <span className="text-xs text-white/30">Full</span> :
                                     reqStatus === 'pending' ? <span className="text-xs text-yellow-400 font-medium">Pending</span> :
                                     reqStatus === 'rejected' ? <span className="text-xs text-red-400 font-medium">Rejected</span> :
-                                    <Button variant="outline" size="sm" loading={isPending} onClick={() => handleRequestJoin(team.id)}>Request</Button>
+                                    <Button variant="outline" size="sm" disabled={!!pendingRequest} loading={isPending} onClick={() => handleRequestJoin(team.id)}>Request</Button>
                                   }
                                 </div>
                               )

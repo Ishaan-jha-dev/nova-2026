@@ -104,6 +104,34 @@ export async function respondToJoinRequest(requestId: string, action: 'accepted'
 }
 
 /**
+ * Student cancels their own pending join request
+ */
+export async function cancelTeamJoinRequest(eventId: string) {
+  const { userId } = await getAuthUser()
+  const admin = await getAdminClient()
+
+  // Find the pending request for this event
+  const { data: request } = await admin
+    .from('team_join_requests')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('status', 'pending')
+    .in('team_id', (
+      await admin.from('teams').select('id').eq('event_id', eventId)
+    ).data?.map(t => t.id) || [])
+    .maybeSingle()
+
+  if (!request) {
+    throw new Error('No pending request found for this event')
+  }
+
+  // Delete it
+  await admin.from('team_join_requests').delete().eq('id', request.id)
+
+  revalidatePath('/dashboard/events')
+}
+
+/**
  * Student withdraws from an event (individual or team)
  * If team withdrawal drops below min size → dissolve the team
  */
