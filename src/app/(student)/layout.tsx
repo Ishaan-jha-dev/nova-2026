@@ -10,7 +10,9 @@ export default async function StudentLayout({ children }: { children: React.Reac
   if (!user) redirect('/login')
 
   // Kick out users whose email is no longer in the allowed_emails list
-  const { data: allowedUser, error } = await supabase
+  // We MUST use admin client because RLS blocks students from reading this table
+  const supabaseAdmin = await createAdminClient()
+  const { data: allowedUser, error } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email?.toLowerCase().trim() || '')
