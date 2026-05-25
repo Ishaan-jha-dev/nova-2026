@@ -24,8 +24,9 @@ export default function LoginPage() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
     const errParam = searchParams.get('error')
+    const details = searchParams.get('details')
     if (errParam === 'not_allowed') {
-      setError('You are not authorized. Your account is not in the allowed list.')
+      setError(`You are not authorized. Your account is not in the allowed list. (Debug: ${details || 'none'})`)
       // Sign them out so they aren't stuck in a loop
       createClient().auth.signOut()
     }

@@ -19,14 +19,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const supabaseAdmin = await createAdminClient()
 
   // 3. Optional: also check if they are in allowed_emails so they get kicked out if removed
-  const { data: allowedUser } = await supabaseAdmin
+  const { data: allowedUser, error } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email?.toLowerCase().trim() || '')
     .maybeSingle()
 
   if (!allowedUser) {
-    redirect('/login?error=not_allowed')
+    redirect(`/login?error=not_allowed&details=${error?.message || 'not_found'}`)
   }
 
   return (

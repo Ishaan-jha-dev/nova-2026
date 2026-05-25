@@ -9,7 +9,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const supabaseAdmin = await createAdminClient()
 
   // Kick out users whose email is no longer in the allowed_emails list
-  const { data: allowedUser } = await supabaseAdmin
+  const { data: allowedUser, error } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email?.toLowerCase().trim() || '')
@@ -17,7 +17,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
 
   if (!allowedUser) {
     // If not allowed, redirect to login page (we can pass a query param if desired, or just redirect)
-    redirect('/login?error=not_allowed')
+    redirect(`/login?error=not_allowed&details=${error?.message || 'not_found'}`)
   }
 
   return (
