@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { AdminSidebar } from '@/components/layout/AdminSidebar'
 
@@ -16,8 +16,10 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const roleLevel = (userData?.user_roles as any)?.permissions_level ?? 1
   if (roleLevel < 2) redirect('/')
 
+  const supabaseAdmin = await createAdminClient()
+
   // 3. Optional: also check if they are in allowed_emails so they get kicked out if removed
-  const { data: allowedUser } = await supabase
+  const { data: allowedUser } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email!)

@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
@@ -6,8 +6,10 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  const supabaseAdmin = await createAdminClient()
+
   // Kick out users whose email is no longer in the allowed_emails list
-  const { data: allowedUser } = await supabase
+  const { data: allowedUser } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email!)
