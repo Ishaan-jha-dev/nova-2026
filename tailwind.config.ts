@@ -10,20 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         nova: {
-          bg: "#1c0505",
-          navy: "#2e0808",
+          bg: "#0A0A0A",
+          navy: "#111111",
           surface: "rgba(255,255,255,0.05)",
-          border: "rgba(255, 100, 100, 0.35)",
-          primary: "#FF3366",
-          "primary-light": "#FF6688",
-          accent: "#FF9933",
-          "accent-light": "#FFBB66",
+          border: "rgba(200, 144, 16, 0.35)",
+          primary: "#E8A020",
+          "primary-light": "#F0A500",
+          accent: "#C8960C",
+          "accent-light": "#D4A017",
           success: "#00FF88",
           warning: "#FFB800",
           danger: "#FF4444",
-          muted: "#FBBF24",
-          text: "#FFE4E6",
-          "text-dim": "#FDA4AF",
+          muted: "#888888",
+          text: "#FFFFFF",
+          "text-dim": "#CCCCCC",
         },
       },
       fontFamily: {
@@ -31,16 +31,16 @@ const config: Config = {
         body: ["var(--font-body)", "'Helvetica Neue'", "sans-serif"],
       },
       backgroundImage: {
-        "nova-gradient": "linear-gradient(135deg, #1c0505 0%, #3e0c15 50%, #1c0505 100%)",
-        "nova-hero": "radial-gradient(ellipse at bottom, #8a1c1c 0%, #1c0505 60%)",
+        "nova-gradient": "linear-gradient(135deg, #0A0A0A 0%, #1a1505 50%, #0A0A0A 100%)",
+        "nova-hero": "radial-gradient(ellipse at bottom, #2b1f02 0%, #0A0A0A 60%)",
         "glass-gradient": "linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%)",
         "card-gradient": "linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
       },
       boxShadow: {
         glass: "0 8px 32px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.4), inset 0 -2px 2px rgba(0,0,0,0.2)",
         "bento-glow": "0 0 20px rgba(255,255,255,0.2)",
-        "glow-red": "0 0 40px rgba(255,51,102,0.6)",
-        "glow-sm": "0 0 10px rgba(255,51,102,0.4)",
+        "glow-red": "0 0 40px rgba(232,160,32,0.6)",
+        "glow-sm": "0 0 10px rgba(232,160,32,0.4)",
       },
       animation: {
         "pulse-glow": "pulseGlow 2s ease-in-out infinite",
@@ -54,8 +54,8 @@ const config: Config = {
       },
       keyframes: {
         pulseGlow: {
-          "0%, 100%": { boxShadow: "0 0 20px rgba(255,51,102,0.4)" },
-          "50%": { boxShadow: "0 0 40px rgba(255,51,102,0.8), 0 0 80px rgba(255,51,102,0.3)" },
+          "0%, 100%": { boxShadow: "0 0 20px rgba(232,160,32,0.4)" },
+          "50%": { boxShadow: "0 0 40px rgba(232,160,32,0.8), 0 0 80px rgba(232,160,32,0.3)" },
         },
         float: {
           "0%, 100%": { transform: "translateY(0)" },

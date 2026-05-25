@@ -54,9 +54,9 @@ const CATEGORY_IMAGES: Record<string, string> = {
 
 // Map category → gradient accent for border + glow
 const CATEGORY_COLORS: Record<string, { border: string; glow: string; text: string; bg: string }> = {
-  sports:     { border: '#FF3366', glow: 'rgba(255,51,102,0.5)',   text: '#FF3366', bg: 'rgba(255,51,102,0.1)' },
-  cultural:   { border: '#FF9933', glow: 'rgba(255,153,51,0.5)',   text: '#FF9933', bg: 'rgba(255,153,51,0.1)' },
-  culturals:  { border: '#FF9933', glow: 'rgba(255,153,51,0.5)',   text: '#FF9933', bg: 'rgba(255,153,51,0.1)' },
+  sports:     { border: '#E8A020', glow: 'rgba(232, 160, 32,0.5)',   text: '#E8A020', bg: 'rgba(232, 160, 32,0.1)' },
+  cultural:   { border: '#F0A500', glow: 'rgba(255,153,51,0.5)',   text: '#F0A500', bg: 'rgba(255,153,51,0.1)' },
+  culturals:  { border: '#F0A500', glow: 'rgba(255,153,51,0.5)',   text: '#F0A500', bg: 'rgba(255,153,51,0.1)' },
   technical:  { border: '#FBBF24', glow: 'rgba(251,191,36,0.5)',   text: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
   technicals: { border: '#FBBF24', glow: 'rgba(251,191,36,0.5)',   text: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
   fun:        { border: '#00FF88', glow: 'rgba(0,255,136,0.4)',    text: '#00FF88', bg: 'rgba(0,255,136,0.1)' },
@@ -64,7 +64,7 @@ const CATEGORY_COLORS: Record<string, { border: string; glow: string; text: stri
 
 function getCategoryColors(title?: string | null) {
   const key = (title || '').toLowerCase()
-  return CATEGORY_COLORS[key] || { border: '#FF3366', glow: 'rgba(255,51,102,0.4)', text: '#FF3366', bg: 'rgba(255,51,102,0.1)' }
+  return CATEGORY_COLORS[key] || { border: '#E8A020', glow: 'rgba(232, 160, 32,0.4)', text: '#E8A020', bg: 'rgba(232, 160, 32,0.1)' }
 }
 
 function getCategoryImage(title?: string | null) {
@@ -527,7 +527,7 @@ export function EventsClient({
               }}
               className={`px-8 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all duration-300 ${
                 activeTab === 'all'
-                  ? 'bg-gradient-to-r from-[#FF3366] to-[#FF9933] text-white shadow-lg shadow-[#FF3366]/20'
+                  ? 'bg-gradient-to-r from-[#E8A020] to-[#F0A500] text-white shadow-lg shadow-[#E8A020]/20'
                   : 'text-white/65 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -542,7 +542,7 @@ export function EventsClient({
               }}
               className={`px-8 py-2.5 rounded-xl text-sm font-black uppercase tracking-wider transition-all duration-300 flex items-center gap-2 ${
                 activeTab === 'my'
-                  ? 'bg-gradient-to-r from-[#FF3366] to-[#FF9933] text-white shadow-lg shadow-[#FF3366]/20'
+                  ? 'bg-gradient-to-r from-[#E8A020] to-[#F0A500] text-white shadow-lg shadow-[#E8A020]/20'
                   : 'text-white/65 hover:text-white hover:bg-white/5'
               }`}
             >
@@ -596,7 +596,7 @@ export function EventsClient({
             <div className="text-center py-20 px-4 sm:px-6 glass rounded-2xl border border-white/10">
               <p className="text-5xl mb-4">🎭</p>
               <p className="text-white/50 text-lg mb-3">You haven&apos;t registered for any events yet</p>
-              <button onClick={() => setActiveTab('all')} className="text-[#FF3366] hover:underline font-semibold">Browse events →</button>
+              <button onClick={() => setActiveTab('all')} className="text-[#E8A020] hover:underline font-semibold">Browse events →</button>
             </div>
           ) : (
             <div className="flex flex-col gap-6">
@@ -623,13 +623,13 @@ export function EventsClient({
                         <div className="flex flex-col items-end gap-1.5 text-xs text-slate-700 font-bold uppercase tracking-wider">
                           {event?.venue && (
                             <span className="flex items-center gap-1.5">
-                              <MapPin size={12} className="text-[#FF3366] shrink-0" />
+                              <MapPin size={12} className="text-[#E8A020] shrink-0" />
                               <span className="truncate">{event.venue}</span>
                             </span>
                           )}
                           {event?.event_date && (
                             <span className="flex items-center gap-1.5">
-                              <Clock size={12} className="text-[#FF9933] shrink-0" />
+                              <Clock size={12} className="text-[#F0A500] shrink-0" />
                               <span>{event.event_date}{event.start_time ? ` · ${event.start_time}` : ''}</span>
                             </span>
                           )}
@@ -642,7 +642,7 @@ export function EventsClient({
                           href={event.group_join_link}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-2 text-xs font-extrabold text-[#FF3366] hover:text-[#ff1a53] transition-colors mb-2"
+                          className="inline-flex items-center gap-2 text-xs font-extrabold text-[#E8A020] hover:text-[#ff1a53] transition-colors mb-2"
                         >
                           <ExternalLink size={12} /> Join WhatsApp / Telegram Group
                         </a>

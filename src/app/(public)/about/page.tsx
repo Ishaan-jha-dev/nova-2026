@@ -111,7 +111,7 @@ export default function AboutPage() {
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-white mb-2 uppercase tracking-wide">
             What We Stand For
           </h2>
-          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#FF3366] to-transparent mx-auto mt-4" />
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#E8A020] to-transparent mx-auto mt-4" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
@@ -122,7 +122,7 @@ export default function AboutPage() {
 
             // Soft colors matching cream card background
             const themeColors = {
-              pink: { text: 'text-[#FF3366]', bg: 'bg-[#FF3366]/10', border: 'border-[#FF3366]/20' },
+              pink: { text: 'text-[#E8A020]', bg: 'bg-[#E8A020]/10', border: 'border-[#E8A020]/20' },
               orange: { text: 'text-[#f37335]', bg: 'bg-[#f37335]/10', border: 'border-[#f37335]/20' },
               purple: { text: 'text-[#8e44ad]', bg: 'bg-[#8e44ad]/10', border: 'border-[#8e44ad]/20' },
               blue: { text: 'text-[#2980B9]', bg: 'bg-[#2980B9]/10', border: 'border-[#2980B9]/20' },
@@ -146,11 +146,11 @@ export default function AboutPage() {
       {/* Team Section */}
       <section className="py-20">
         <div className="text-center mb-16">
-          <p className="text-[#FF3366] text-xs font-bold uppercase tracking-[0.3em] mb-3">The People Behind It</p>
+          <p className="text-[#E8A020] text-xs font-bold uppercase tracking-[0.3em] mb-3">The People Behind It</p>
           <h2 className="font-display font-bold text-3xl sm:text-4xl text-white uppercase tracking-wide">
             Built by DBE Students
           </h2>
-          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#FF9933] to-transparent mx-auto mt-4" />
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#F0A500] to-transparent mx-auto mt-4" />
           <p className="text-white/50 max-w-xl mx-auto text-sm mt-4 uppercase tracking-widest font-bold">
             Built by students, for students. Proudly made at IIM Bangalore.
           </p>
@@ -215,7 +215,7 @@ export default function AboutPage() {
                   <ul className="flex flex-col gap-2.5 flex-1">
                     {member.brag.map((line, j) => (
                       <li key={j} className="flex items-start gap-2 text-xs text-slate-600 leading-snug font-bold">
-                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#FF3366] shrink-0 opacity-70" />
+                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#E8A020] shrink-0 opacity-70" />
                         <span>{line}</span>
                       </li>
                     ))}
@@ -239,7 +239,7 @@ export default function AboutPage() {
             </p>
             <a
               href="mailto:novaunplugged@iimb.ac.in"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#FF3366] to-[#FF9933] shadow-[0_0_30px_rgba(255,51,102,0.3)] hover:shadow-[0_0_50px_rgba(255,51,102,0.6)] transition-all hover:-translate-y-1 w-full sm:w-auto"
+              className="inline-flex items-center justify-center px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#E8A020] to-[#F0A500] shadow-[0_0_30px_rgba(232, 160, 32,0.3)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] transition-all hover:-translate-y-1 w-full sm:w-auto"
             >
               novaunplugged@iimb.ac.in
             </a>

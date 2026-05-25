@@ -84,10 +84,10 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
       {/* Location and Date details */}
       <div className="flex flex-wrap items-center justify-center gap-4 -mt-8 mb-12 text-xs font-bold uppercase tracking-wider relative z-10">
         <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white">
-          <MapPin size={14} className="text-[#FF3366]" /> IIM Bangalore
+          <MapPin size={14} className="text-[#E8A020]" /> IIM Bangalore
         </span>
         <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white">
-          <Calendar size={14} className="text-[#FF9933]" /> June 15–18, 2026
+          <Calendar size={14} className="text-[#F0A500]" /> June 15–18, 2026
         </span>
       </div>
 
@@ -104,17 +104,17 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
                 subtitle={day.date}
               >
                 {/* Dress Code Badge */}
-                <div className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 border border-slate-200/60 text-slate-700 w-fit mx-auto mb-6">
-                  <Shirt size={12} className="text-slate-500" />
+                <div className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 border border-white/20 text-white/80 w-fit mx-auto mb-6">
+                  <Shirt size={12} className="text-white/60" />
                   Dress Code: {day.dress}
                 </div>
 
                 {/* Events list inside PinnedCard */}
-                <div className="w-full flex flex-col rounded-2xl overflow-hidden border border-slate-200 bg-slate-50/50">
+                <div className="w-full flex flex-col rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                   {/* Table Header */}
-                  <div className="hidden sm:grid grid-cols-[160px_1fr] gap-0 border-b border-slate-200 bg-slate-100/80 text-[10px] font-black uppercase tracking-widest text-slate-500">
+                  <div className="hidden sm:grid grid-cols-[160px_1fr] gap-0 border-b border-white/10 bg-white/10 text-[10px] font-black uppercase tracking-widest text-white/60">
                     <div className="px-5 py-3.5">Time Slot</div>
-                    <div className="px-5 py-3.5 border-l border-slate-200">Event</div>
+                    <div className="px-5 py-3.5 border-l border-white/10">Event</div>
                   </div>
 
                   {/* Rows */}
@@ -123,14 +123,14 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
                     return (
                       <div
                         key={j}
-                        className="flex flex-col sm:grid sm:grid-cols-[160px_1fr] gap-0 border-b last:border-b-0 border-slate-200 transition-colors duration-200 hover:bg-slate-100/30"
+                        className="flex flex-col sm:grid sm:grid-cols-[160px_1fr] gap-0 border-b last:border-b-0 border-white/10 transition-colors duration-200 hover:bg-white/10"
                       >
                         {/* Time slot column */}
-                        <div className="px-4 py-3 sm:px-5 sm:py-4 text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center sm:items-start">
+                        <div className="px-4 py-3 sm:px-5 sm:py-4 text-xs font-bold text-white/60 uppercase tracking-wider flex items-center sm:items-start">
                           {ev.time}
                         </div>
                         {/* Event label column */}
-                        <div className="px-4 pb-4 sm:px-5 sm:py-4 sm:border-l border-slate-200 flex flex-col justify-center sm:items-start">
+                        <div className="px-4 pb-4 sm:px-5 sm:py-4 sm:border-l border-white/10 flex flex-col justify-center sm:items-start">
                           {hl ? (
                             <span
                               className="inline-block w-fit px-3 py-1 rounded-xl text-xs font-bold leading-relaxed border shadow-sm"
@@ -139,7 +139,7 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
                               {ev.label}
                             </span>
                           ) : (
-                            <span className="text-sm font-bold text-slate-700 leading-relaxed">
+                            <span className="text-sm font-bold text-white/90 leading-relaxed">
                               {ev.label}
                             </span>
                           )}
@@ -158,11 +158,11 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
       {showRegisterButton && (
         <div className="mt-24 text-center">
           <div className="bg-white/5 border border-white/10 rounded-[24px] p-10 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-[#FF3366]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div className="absolute inset-0 bg-[#E8A020]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
             <p className="text-white text-xl mb-8 font-semibold">Ready to claim your spot in the spotlight?</p>
             <Link
               href="/register"
-              className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#FF3366] to-[#FF9933] shadow-[0_0_30px_rgba(255,51,102,0.3)] hover:shadow-[0_0_50px_rgba(255,51,102,0.6)] transition-all hover:-translate-y-1"
+              className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#E8A020] to-[#F0A500] shadow-[0_0_30px_rgba(232, 160, 32,0.3)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] transition-all hover:-translate-y-1"
             >
               Join the Revolution <ExternalLink size={20} />
             </Link>

@@ -103,7 +103,7 @@ export default function HomePage() {
                   key={f.title}
                   className={`bento-item shimmer-card group ${delayClass} flex flex-col items-center text-center`}
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(255,51,102,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(255,51,102,0.4)]`}>
+                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(232, 160, 32,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(232, 160, 32,0.4)]`}>
                     <Icon size={22} className="text-white" />
                   </div>
                   <h3 className="font-display font-bold text-base text-nova-text mb-1">{f.title}</h3>
@@ -133,7 +133,7 @@ export default function HomePage() {
               </p>
               <Link
                 href="/dashboard"
-                className="nova-btn-primary rounded-full px-8 py-4 text-sm tracking-wider uppercase shadow-[0_0_30px_rgba(255,51,102,0.4)] hover:shadow-[0_0_50px_rgba(255,51,102,0.6)] group-hover:-translate-y-1"
+                className="nova-btn-primary rounded-full px-8 py-4 text-sm tracking-wider uppercase shadow-[0_0_30px_rgba(232, 160, 32,0.4)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] group-hover:-translate-y-1"
               >
                 <span className="relative z-10 font-bold flex items-center gap-2">Enter Nova <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" /></span>
               </Link>

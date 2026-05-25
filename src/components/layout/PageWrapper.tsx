@@ -56,7 +56,7 @@ export function PageWrapper({
             <h1 className="font-display font-black text-5xl md:text-6xl uppercase tracking-wider text-white drop-shadow-md">
               {title}{' '}
               {titleHighlight && (
-                <span className="text-[#FF3366]">{titleHighlight}</span>
+                <span className="text-[#E8A020]">{titleHighlight}</span>
               )}
             </h1>
             {subtitle && (

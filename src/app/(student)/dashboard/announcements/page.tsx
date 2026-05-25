@@ -65,7 +65,7 @@ export default async function AnnouncementsPage(props: { searchParams: Promise<{
               href={`/dashboard/announcements?filter=${f.value}&page=1`}
               className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all ${
                 filter === f.value 
-                  ? 'bg-gradient-to-r from-[#FF3366] to-[#FF9933] text-white shadow-sm' 
+                  ? 'bg-gradient-to-r from-[#E8A020] to-[#F0A500] text-white shadow-sm' 
                   : 'text-white/60 hover:text-white hover:bg-white/5'
               }`}
             >

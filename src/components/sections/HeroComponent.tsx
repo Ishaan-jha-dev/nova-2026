@@ -63,7 +63,7 @@ export default function HeroComponent() {
   return (
     <div
       className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center"
-      style={{ background: 'radial-gradient(ellipse at 50% 55%, #2d0a1a 0%, #1c0505 45%, #0A0105 100%)' }}
+      style={{ background: 'radial-gradient(ellipse at 50% 55%, #2d0a1a 0%, #0A0A0A 45%, #0A0105 100%)' }}
     >
       {/* Particles */}
       <ParticleCrowd />
@@ -136,7 +136,7 @@ export default function HeroComponent() {
               fontFamily: "'Playfair Display', serif",
               fontWeight: 900,
               fontSize: 'clamp(1.8rem, 4.2vw, 3.5rem)',
-              color: '#FF3366',
+              color: '#E8A020',
               marginLeft: '0.15em',
               background: 'none',
               WebkitBackgroundClip: 'unset',

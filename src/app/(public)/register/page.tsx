@@ -229,7 +229,7 @@ export default function RegisterPage() {
             </div>
 
             <form onSubmit={handleSubmit} className="nova-card p-8 border border-nova-primary/30 shadow-2xl relative group entrance-3">
-              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-nova-primary/40 shadow-[0_0_40px_rgba(255,51,102,0.1)]" />
+              <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-nova-primary/40 shadow-[0_0_40px_rgba(232, 160, 32,0.1)]" />
               {error && (
                 <div className="mb-6 p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-2">
                   ⚠ {error}

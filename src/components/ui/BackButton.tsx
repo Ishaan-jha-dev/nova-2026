@@ -26,8 +26,8 @@ export default function BackButton() {
       style={{
         background: 'rgba(28,5,5,0.92)',
         backdropFilter: 'blur(20px)',
-        border: '2px solid #FF3366',
-        boxShadow: '0 0 25px rgba(255,51,102,0.35), 0 6px 30px rgba(0,0,0,0.6)',
+        border: '2px solid #E8A020',
+        boxShadow: '0 0 25px rgba(232, 160, 32,0.35), 0 6px 30px rgba(0,0,0,0.6)',
       }}
     >
       <ArrowLeft size={18} className="text-nova-primary stroke-[3]" />

@@ -179,10 +179,10 @@ export function PaymentForm({ userData, submission, userId }: PaymentFormProps) 
               />
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-semibold text-slate-600">
-                  Payment Screenshot <span className="text-[#FF3366]">*</span>
+                  Payment Screenshot <span className="text-[#E8A020]">*</span>
                 </label>
                 <label className={`flex flex-col items-center justify-center gap-2 p-6 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
-                  preview ? 'border-emerald-300 bg-emerald-50/50' : 'border-slate-300 hover:border-[#FF3366] hover:bg-[#FF3366]/5'
+                  preview ? 'border-emerald-300 bg-emerald-50/50' : 'border-slate-300 hover:border-[#E8A020] hover:bg-[#E8A020]/5'
                 }`}>
                   <input type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
                   {preview ? (
@@ -190,7 +190,7 @@ export function PaymentForm({ userData, submission, userId }: PaymentFormProps) 
                     <img src={preview} alt="Preview" className="max-h-32 rounded-lg object-contain shadow" />
                   ) : (
                     <>
-                      <Upload size={24} className="text-[#FF3366]" />
+                      <Upload size={24} className="text-[#E8A020]" />
                       <p className="text-slate-500 text-xs text-center leading-relaxed">
                         Click to upload screenshot<br />
                         <span className="text-slate-400 text-[10px]">JPG, PNG, WebP — max 5MB</span>

@@ -117,7 +117,7 @@ export default function LoginPage() {
 
         <div className="nova-card p-8 border border-nova-primary/30 shadow-2xl relative group">
           {/* Subtle animated border on card */}
-          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-nova-primary/50 shadow-[0_0_30px_rgba(255,51,102,0.15)]" />
+          <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-nova-primary/50 shadow-[0_0_30px_rgba(232, 160, 32,0.15)]" />
           {error && (
             <div className={`mb-5 p-3 rounded-lg border text-sm flex items-center gap-2 ${
               error.includes('successfully') ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-red-500/10 border-red-500/30 text-red-400'
