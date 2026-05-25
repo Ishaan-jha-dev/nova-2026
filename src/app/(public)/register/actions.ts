@@ -34,3 +34,20 @@ export async function approveUserPaymentStatus(userId: string): Promise<boolean>
 
   return true
 }
+
+export async function checkIfUserExists(email: string): Promise<boolean> {
+  const supabaseAdmin = await createAdminClient()
+  
+  const { data, error } = await supabaseAdmin
+    .from('users')
+    .select('id')
+    .eq('email', email.toLowerCase().trim())
+    .maybeSingle()
+
+  if (error) {
+    console.error('Error checking if user exists:', error)
+    return false
+  }
+
+  return !!data
+}

@@ -7,7 +7,7 @@ import { Input, Select } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Mail, User, Phone, MapPin, Hash, ShieldCheck, ArrowRight, ArrowLeft, Check, Users, School } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { checkAllowedEmail, approveUserPaymentStatus } from './actions'
+import { checkAllowedEmail, approveUserPaymentStatus, checkIfUserExists } from './actions'
 
 type UserType = 'iimb_student' | 'iimb_faculty'
 
@@ -105,6 +105,12 @@ export default function RegisterPage() {
     startTransition(async () => {
       try {
         console.log('Starting signup for:', form.email)
+
+        const userExists = await checkIfUserExists(form.email)
+        if (userExists) {
+          setError('Already registered! Please login instead.')
+          return
+        }
 
         const isAllowed = await checkAllowedEmail(form.email)
         if (!isAllowed) {

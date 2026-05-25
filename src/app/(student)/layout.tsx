@@ -6,6 +6,18 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  // Kick out users whose email is no longer in the allowed_emails list
+  const { data: allowedUser } = await supabase
+    .from('allowed_emails')
+    .select('id')
+    .eq('email', user.email!)
+    .maybeSingle()
+
+  if (!allowedUser) {
+    // If not allowed, redirect to login page (we can pass a query param if desired, or just redirect)
+    redirect('/login?error=not_allowed')
+  }
+
   return (
     <div className="min-h-screen flex bg-nova-bg">
       <main className="flex-1 pt-0 overflow-y-auto min-h-screen">

@@ -16,6 +16,17 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const roleLevel = (userData?.user_roles as any)?.permissions_level ?? 1
   if (roleLevel < 2) redirect('/')
 
+  // 3. Optional: also check if they are in allowed_emails so they get kicked out if removed
+  const { data: allowedUser } = await supabaseAdmin
+    .from('allowed_emails')
+    .select('id')
+    .eq('email', user.email!)
+    .maybeSingle()
+
+  if (!allowedUser) {
+    redirect('/login?error=not_allowed')
+  }
+
   return (
     <div className="min-h-screen flex bg-nova-bg">
       <AdminSidebar
