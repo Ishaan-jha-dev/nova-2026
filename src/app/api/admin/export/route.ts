@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type')
 
-    if (!type || !['users', 'registrations', 'payments', 'scanner'].includes(type)) {
+    if (!type || !['users', 'registrations', 'allowed_users', 'scanner'].includes(type)) {
       return NextResponse.json({ error: 'Invalid export type.' }, { status: 400 })
     }
 
@@ -99,38 +99,19 @@ export async function GET(request: NextRequest) {
         registered_at: r.created_at,
       }))
     } 
-    else if (type === 'payments') {
-      const { data: payments, error } = await supabaseAdmin
-        .from('payment_submissions')
-        .select('utr_number, status, admin_note, created_at, user_id')
+    else if (type === 'allowed_users') {
+      const { data: allowedUsers, error } = await supabaseAdmin
+        .from('allowed_emails')
+        .select('email, created_at, users!added_by(full_name)')
         .order('created_at')
       if (error) throw error
 
-      const userIds = new Set<string>()
-      payments?.forEach(p => { if (p.user_id) userIds.add(p.user_id) })
-      
-      const userNames: Record<string, any> = {}
-      if (userIds.size > 0) {
-        const { data: usersData } = await supabaseAdmin
-          .from('users')
-          .select('id, full_name, email')
-          .in('id', Array.from(userIds))
-        if (usersData) {
-          usersData.forEach(u => {
-            userNames[u.id] = u
-          })
-        }
-      }
-
-      exportData = (payments || []).map((p: any) => ({
-        user_name: userNames[p.user_id]?.full_name || '',
-        user_email: userNames[p.user_id]?.email || '',
-        utr_number: p.utr_number || '',
-        status: p.status || '',
-        admin_note: p.admin_note || '',
-        created_at: p.created_at,
+      exportData = (allowedUsers || []).map((u: any) => ({
+        email: u.email || '',
+        added_by_name: (u.users as any)?.full_name || 'Admin',
+        created_at: u.created_at,
       }))
-    } 
+    }
     else if (type === 'scanner') {
       // First fetch all logs
       const { data: logs, error: logsError } = await supabaseAdmin

@@ -105,7 +105,7 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 className="h-full"
               >
                 {/* Category image poster */}
-                <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-4 border border-slate-200/60 shadow-inner">
+                <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
                   {img ? (
                     <Image
                       src={img}
@@ -116,19 +116,19 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                       priority
                     />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-slate-100">
+                    <div className="w-full h-full flex items-center justify-center bg-white/5">
                       <span className="text-5xl opacity-40">⚡</span>
                     </div>
                   )}
                 </div>
 
                 <div className="flex flex-col flex-1 justify-between">
-                  <h3 className="font-display font-black text-xl uppercase tracking-wider text-slate-800 text-center leading-tight">
+                  <h3 className="font-display font-black text-xl uppercase tracking-wider text-white text-center leading-tight">
                     {cat.title}
                   </h3>
                   
                   <div className="text-center pt-2">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 group-hover:text-nova-primary transition-colors uppercase tracking-widest">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/50 group-hover:text-nova-primary transition-colors uppercase tracking-widest">
                       Explore <ChevronRight size={12} />
                     </span>
                   </div>
@@ -169,7 +169,7 @@ function EventStampCard({
         className="!p-4 h-full flex flex-col justify-between min-h-[300px]"
       >
         {/* Main image area */}
-        <div className="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-slate-200 bg-slate-100 flex-shrink-0">
+        <div className="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-white/10 bg-white/5 flex-shrink-0 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
           {event.banner_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -178,7 +178,7 @@ function EventStampCard({
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-slate-100">
+            <div className="w-full h-full flex items-center justify-center bg-white/5">
               <span className="text-4xl opacity-40">
                 {catTitle === 'Cultural' || catTitle === 'Culturals' ? '🎭' : catTitle === 'Technical' || catTitle === 'Technicals' ? '💻' : catTitle === 'Sports' ? '🏆' : '⚡'}
               </span>
@@ -187,18 +187,18 @@ function EventStampCard({
 
           {/* Status badge */}
           {isRegistered && (
-            <div className="absolute top-2 right-2 z-10 bg-green-500/90 text-white text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full flex items-center gap-1">
+            <div className="absolute top-2 right-2 z-10 bg-[#00FF88]/90 text-black text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full flex items-center gap-1 shadow-[0_0_10px_#00FF88]">
               <Check size={9} /> Joined
             </div>
           )}
           {!isRegistered && hasPending && (
-            <div className="absolute top-2 right-2 z-10 bg-amber-500/90 text-slate-900 text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">
+            <div className="absolute top-2 right-2 z-10 bg-amber-500/90 text-black text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full shadow-[0_0_10px_rgba(245,158,11,0.8)]">
               Pending
             </div>
           )}
           {deadlinePassed && !isRegistered && (
-            <div className="absolute inset-0 bg-slate-950/60 flex items-center justify-center z-10">
-              <span className="text-[9px] font-black uppercase tracking-widest text-white bg-red-500/90 px-2 py-1 rounded">Closed</span>
+            <div className="absolute inset-0 bg-[#0c0d10]/80 flex items-center justify-center z-10">
+              <span className="text-[9px] font-black uppercase tracking-widest text-white bg-red-500/90 px-2 py-1 rounded shadow-md">Closed</span>
             </div>
           )}
         </div>
@@ -206,26 +206,26 @@ function EventStampCard({
         {/* Info area */}
         <div className="flex flex-col flex-1 justify-between gap-2">
           <div>
-            <h3 className="font-display font-black uppercase leading-tight line-clamp-2 text-slate-800 text-sm tracking-wide">
+            <h3 className="font-display font-black uppercase leading-tight line-clamp-2 text-white text-sm tracking-wide">
               {event.title}
             </h3>
             {event.description && (
-              <p className="text-[10px] text-slate-500 leading-tight line-clamp-2 font-medium uppercase tracking-wide mt-1">
+              <p className="text-[10px] text-white/50 leading-tight line-clamp-2 font-medium uppercase tracking-wide mt-1">
                 {event.description}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col gap-1 mt-auto pt-2 border-t border-slate-100">
+          <div className="flex flex-col gap-1 mt-auto pt-2 border-t border-white/10">
             {event.venue && (
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <MapPin size={10} className="shrink-0 text-slate-400" />
+              <p className="text-[10px] text-white/40 uppercase tracking-wider flex items-center gap-1">
+                <MapPin size={10} className="shrink-0 text-white/30" />
                 <span className="truncate">{event.venue}</span>
               </p>
             )}
             {event.event_date && (
-              <p className="text-[10px] text-slate-500 uppercase tracking-wider flex items-center gap-1">
-                <Clock size={10} className="shrink-0 text-slate-400" />
+              <p className="text-[10px] text-white/40 uppercase tracking-wider flex items-center gap-1">
+                <Clock size={10} className="shrink-0 text-white/30" />
                 <span>{event.event_date}</span>
               </p>
             )}
@@ -620,9 +620,9 @@ export function EventsClient({
                   <div key={reg.id} className="w-full">
                     <PinnedCard pinColor={pinColor} className="!p-6 flex flex-col gap-4">
                       {/* Event header area */}
-                      <div className="flex items-start justify-between flex-wrap gap-4 pb-4 border-b border-slate-200/60">
+                      <div className="flex items-start justify-between flex-wrap gap-4 pb-4 border-b border-white/10">
                         <div>
-                          <h3 className="font-display font-black text-2xl text-slate-800 leading-tight mb-2">
+                          <h3 className="font-display font-black text-2xl text-white leading-tight mb-2">
                             {event?.title}
                           </h3>
                           <div className="flex gap-2 flex-wrap">
@@ -630,7 +630,7 @@ export function EventsClient({
                             <ParticipationBadge type={event?.participation_type} />
                           </div>
                         </div>
-                        <div className="flex flex-col items-end gap-1.5 text-xs text-slate-700 font-bold uppercase tracking-wider">
+                        <div className="flex flex-col items-end gap-1.5 text-xs text-white/70 font-bold uppercase tracking-wider">
                           {event?.venue && (
                             <span className="flex items-center gap-1.5">
                               <MapPin size={12} className="text-[#E8A020] shrink-0" />
@@ -660,15 +660,15 @@ export function EventsClient({
 
                       {/* Team info inside PinnedCard */}
                       {team && (
-                        <div className="mt-2 p-5 rounded-2xl bg-slate-50 border border-slate-200">
+                        <div className="mt-2 p-5 rounded-2xl bg-white/5 border border-white/10">
                           <div className="flex items-center justify-between flex-wrap gap-3 mb-4">
                             <div className="flex items-center gap-3">
-                              <div className="w-10 h-10 rounded-xl bg-slate-200/60 flex items-center justify-center">
-                                <Users size={18} className="text-slate-700" />
+                              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center">
+                                <Users size={18} className="text-white/70" />
                               </div>
                               <div>
-                                <p className="font-black text-slate-800 text-lg uppercase tracking-wide">{team.name}</p>
-                                <p className="text-slate-600 text-xs font-bold mt-0.5">
+                                <p className="font-black text-white text-lg uppercase tracking-wide">{team.name}</p>
+                                <p className="text-white/60 text-xs font-bold mt-0.5">
                                   {isLeader ? '👑 You are the team leader' : `Led by ${team.users?.full_name}`}
                                 </p>
                               </div>
@@ -676,15 +676,15 @@ export function EventsClient({
 
                             {/* Join code in light board theme */}
                             <div className="flex items-center gap-2">
-                              <div className="bg-slate-100 rounded-lg px-3 py-1.5 border border-slate-200 flex items-center gap-2">
-                                <span className="text-slate-600 text-xs font-bold">Code:</span>
-                                <span className="font-display font-black text-slate-800 tracking-widest">{team.join_code}</span>
+                              <div className="bg-white/5 rounded-lg px-3 py-1.5 border border-white/10 flex items-center gap-2">
+                                <span className="text-white/60 text-xs font-bold">Code:</span>
+                                <span className="font-display font-black text-white tracking-widest">{team.join_code}</span>
                                 <button 
                                   onClick={() => copyCode(team.join_code)} 
-                                  className="text-slate-400 hover:text-slate-600 transition-colors ml-1"
+                                  className="text-white/40 hover:text-white transition-colors ml-1"
                                 >
                                   {copiedCode === team.join_code ? (
-                                    <Check size={13} className="text-green-600" />
+                                    <Check size={13} className="text-[#00FF88]" />
                                   ) : (
                                     <Copy size={13} />
                                   )}
@@ -694,7 +694,7 @@ export function EventsClient({
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  className="border-slate-200 hover:bg-slate-100 text-slate-700 font-bold"
+                                  className="border-white/20 hover:bg-white/10 text-white font-bold"
                                   icon={team.is_open ? <Lock size={14} /> : <Unlock size={14} />}
                                   loading={isPending}
                                   onClick={() => toggleTeamOpen(team.id, team.is_open)}
@@ -711,17 +711,17 @@ export function EventsClient({
                             {team.team_members?.map((member: any) => (
                               <div 
                                 key={member.user_id} 
-                                className="flex items-center gap-2 bg-white rounded-lg px-3 py-1.5 border border-slate-200 shadow-sm"
+                                className="flex items-center gap-2 bg-white/5 rounded-lg px-3 py-1.5 border border-white/10 shadow-sm"
                               >
-                                <div className="w-6 h-6 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-700 font-display">
+                                <div className="w-6 h-6 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold text-white font-display">
                                   {member.users?.full_name?.[0]}
                                 </div>
-                                <span className="text-slate-700 text-xs font-medium">{member.users?.full_name}</span>
+                                <span className="text-white/90 text-xs font-medium">{member.users?.full_name}</span>
                                 {member.user_id === team.leader_id && <Crown size={11} className="text-amber-500 fill-amber-500" />}
                                 {isLeader && member.user_id !== userId && (
                                   <button
                                     onClick={() => removeMember(team.id, member.user_id, event.id)}
-                                    className="text-slate-400 hover:text-red-500 transition-colors ml-1"
+                                    className="text-white/40 hover:text-red-500 transition-colors ml-1"
                                     title="Remove member"
                                   >
                                     <UserMinus size={12} />
@@ -732,18 +732,18 @@ export function EventsClient({
                           </div>
 
                           {!team.is_open && (
-                            <p className="text-xs text-slate-500 mt-3 flex items-center gap-1.5 font-medium">
-                              <Lock size={11} className="text-slate-400" /> Team is closed — not accepting new members
+                            <p className="text-xs text-white/50 mt-3 flex items-center gap-1.5 font-medium">
+                              <Lock size={11} className="text-white/40" /> Team is closed — not accepting new members
                             </p>
                           )}
 
                           {isLeader && (
-                            <div className="mt-4 border-t border-slate-200 pt-4">
+                            <div className="mt-4 border-t border-white/10 pt-4">
                               <Button 
                                 variant="outline" 
                                 size="sm" 
                                 fullWidth 
-                                className="border-slate-200 hover:bg-slate-100 text-slate-700 font-bold"
+                                className="border-white/20 hover:bg-white/10 text-white font-bold"
                                 icon={showLeaderPanel === team.id ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                                 onClick={() => {
                                   if (showLeaderPanel === team.id) { setShowLeaderPanel(null) }

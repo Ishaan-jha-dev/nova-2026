@@ -20,6 +20,7 @@ const studentNav = [
   { href: '/dashboard/events',         label: 'Events' },
   { href: '/dashboard/announcements', label: 'Announcements' },
   { href: '/timeline',                 label: 'Timeline' },
+  { href: '/profile',                  label: 'Profile' },
   { href: '/about',                    label: 'About' },
 ]
 

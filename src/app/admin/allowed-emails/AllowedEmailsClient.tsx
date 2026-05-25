@@ -132,7 +132,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
       {/* Forms column */}
       <div className="lg:col-span-1 space-y-6">
         <div className="glass rounded-2xl p-6 border border-white/10">
-          <h2 className="text-xl font-display font-semibold text-nova-text mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-nova-text mb-4 flex items-center gap-2">
             <Mail size={18} className="text-nova-primary" /> Add Single Email
           </h2>
           <form onSubmit={handleAddSingle} className="space-y-4">
@@ -150,7 +150,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         </div>
 
         <div className="glass rounded-2xl p-6 border border-white/10">
-          <h2 className="text-xl font-display font-semibold text-nova-text mb-4 flex items-center gap-2">
+          <h2 className="text-xl font-bold text-nova-text mb-4 flex items-center gap-2">
             <Users size={18} className="text-nova-accent" /> Bulk Add Emails
           </h2>
           <form onSubmit={handleBulkAdd} className="space-y-4">
@@ -182,7 +182,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
       {/* List column */}
       <div className="lg:col-span-2 glass rounded-2xl border border-white/10 overflow-hidden flex flex-col min-h-[500px]">
         <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <h2 className="text-xl font-display font-semibold text-nova-text">Allowed Emails ({emails.length})</h2>
+          <h2 className="text-xl font-bold text-nova-text">Allowed Emails ({emails.length})</h2>
         </div>
         
         <div className="flex-1 overflow-auto p-4 space-y-2">

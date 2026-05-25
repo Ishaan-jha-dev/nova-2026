@@ -41,12 +41,12 @@ export default async function ProfilePage() {
       <div className="grid md:grid-cols-2 gap-10 items-stretch">
         {/* Profile info */}
         <PinnedCard pinColor="blue" title="Profile Details">
-          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
+          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
             <div className="w-16 h-16 rounded-2xl bg-[#2980B9]/15 border border-[#2980B9]/30 flex items-center justify-center text-2xl font-bold font-display text-[#2980B9]">
               {userData?.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)}
             </div>
             <div>
-              <h3 className="font-display font-black text-xl text-slate-800 leading-tight">{userData?.full_name}</h3>
+              <h3 className="font-display font-black text-xl text-white leading-tight">{userData?.full_name}</h3>
               <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <PaymentBadge status={userData?.payment_status || 'pending'} />
                 <EntryBadge status={userData?.entry_status || 'not_approved'} />
@@ -57,18 +57,18 @@ export default async function ProfilePage() {
           <div className="flex flex-col gap-4">
             {fields.map(({ label, value, icon: Icon }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-[#2980B9]/10 flex items-center justify-center shrink-0">
+                <div className="w-8 h-8 rounded-lg bg-[#2980B9]/10 flex items-center justify-center shrink-0 border border-[#2980B9]/20">
                   <Icon size={14} className="text-[#2980B9]" />
                 </div>
                 <div>
-                  <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{label}</p>
-                  <p className="text-slate-800 text-sm font-bold mt-0.5">{value}</p>
+                  <p className="text-white/50 text-xs font-semibold uppercase tracking-wider">{label}</p>
+                  <p className="text-white/90 text-sm font-bold mt-0.5">{value}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-8 pt-4 border-t border-slate-200">
+          <div className="mt-8 pt-4 border-t border-white/10">
             <div className="flex gap-2">
               {(userData?.user_types as any)?.name && (
                 <span className="badge-individual capitalize">{(userData?.user_types as any).name.replace('_', ' ')}</span>
@@ -84,10 +84,10 @@ export default async function ProfilePage() {
         <PinnedCard pinColor="pink" title="Gate Pass QR">
           {userData?.payment_status === 'approved' && userData?.entry_code ? (
             <div className="flex flex-col items-center justify-center h-full">
-              <p className="text-slate-500 text-xs mb-6 text-center max-w-[240px]">
+              <p className="text-white/50 text-xs mb-6 text-center max-w-[240px]">
                 Show this at the gate for entry. Your code is unique and single-use.
               </p>
-              <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-inner flex justify-center mb-6">
+              <div className="p-4 bg-white rounded-2xl border border-white/10 shadow-[0_0_20px_rgba(255,255,255,0.1)] flex justify-center mb-6">
                 <QRDisplay
                   value={userData.entry_code}
                   size={200}
@@ -95,17 +95,17 @@ export default async function ProfilePage() {
                   downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`}
                 />
               </div>
-              <div className="w-full p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
-                <p className="text-emerald-700 text-xs font-bold uppercase tracking-wider">✓ Entry Approved · Keep safe</p>
+              <div className="w-full p-3 rounded-xl bg-[#00FF88]/10 border border-[#00FF88]/30 text-center shadow-[0_0_15px_rgba(0,255,136,0.1)]">
+                <p className="text-[#00FF88] text-xs font-bold uppercase tracking-wider">✓ Entry Approved · Keep safe</p>
               </div>
             </div>
           ) : (
             <div className="text-center flex flex-col items-center justify-center h-full py-8">
-              <div className="w-20 h-20 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center mx-auto mb-4">
-                <span className="text-3xl">🔒</span>
+              <div className="w-20 h-20 rounded-2xl bg-white/5 border-2 border-dashed border-white/10 flex items-center justify-center mx-auto mb-4">
+                <span className="text-3xl opacity-50">🔒</span>
               </div>
-              <h3 className="font-display font-black text-lg uppercase tracking-wider text-slate-700 mb-2">QR Not Available Yet</h3>
-              <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
+              <h3 className="font-display font-black text-lg uppercase tracking-wider text-white mb-2">QR Not Available Yet</h3>
+              <p className="text-white/50 text-xs max-w-[200px] leading-relaxed">
                 {userData?.payment_status === 'pending'
                   ? 'Your payment is under review. QR will be generated once approved.'
                   : userData?.payment_status === 'rejected'

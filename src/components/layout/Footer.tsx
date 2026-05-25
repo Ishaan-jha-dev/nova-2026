@@ -10,10 +10,7 @@ export function Footer() {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
-              <NovaLogo size="icon" />
-              <span className="font-display font-bold text-lg text-white">
-                VA&apos;26 <span className="text-white/40 text-xs font-medium uppercase tracking-[0.15em] ml-1">unplugged</span>
-              </span>
+              <NovaLogo size="lg" />
             </div>
             <p className="text-nova-text-dim text-sm leading-relaxed">
               The annual college fest of IIM Bangalore. Cultural, technical, sports — all under one electric roof.
