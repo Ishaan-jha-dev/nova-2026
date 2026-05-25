@@ -19,10 +19,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const roleLevel = (userData?.user_roles as any)?.permissions_level ?? 1
   if (roleLevel < 2) redirect('/')
 
-  const supabaseAdmin = await createAdminClient()
-
   // 3. Optional: also check if they are in allowed_emails so they get kicked out if removed
-  const { data: allowedUser, error } = await supabaseAdmin
+  const { data: allowedUser, error } = await supabase
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email?.toLowerCase().trim() || '')

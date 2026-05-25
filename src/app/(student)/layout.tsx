@@ -9,10 +9,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const supabaseAdmin = await createAdminClient()
-
   // Kick out users whose email is no longer in the allowed_emails list
-  const { data: allowedUser, error } = await supabaseAdmin
+  const { data: allowedUser, error } = await supabase
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email?.toLowerCase().trim() || '')
