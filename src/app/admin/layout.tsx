@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (roleLevel < 2) redirect('/')
 
   // 3. Optional: also check if they are in allowed_emails so they get kicked out if removed
-  const { data: allowedUser } = await supabaseAdmin
+  const { data: allowedUser } = await supabase
     .from('allowed_emails')
     .select('id')
     .eq('email', user.email!)
