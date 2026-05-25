@@ -56,6 +56,11 @@ export function GlobalNavigation() {
 
   const navLinks = user ? studentNav : publicNav
 
+  // Hide the global navigation completely on admin routes, as it has its own sidebar
+  if (pathname.startsWith('/admin')) {
+    return null
+  }
+
   return (
     <>
       {/* ── Floating Back Button ── */}
