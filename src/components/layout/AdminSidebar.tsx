@@ -21,7 +21,7 @@ interface SidebarItem {
 
 const navItems: SidebarItem[] = [
   { href: '/admin',               label: 'Dashboard',     icon: LayoutDashboard, minLevel: 2 },
-  { href: '/admin/payments',      label: 'Payments',      icon: CreditCard,      minLevel: 4 },
+  // { href: '/admin/payments',      label: 'Payments',      icon: CreditCard,      minLevel: 4 },
   { href: '/admin/users',         label: 'Users',         icon: Users,           minLevel: 4 },
   { href: '/admin/allowed-emails',label: 'Allowed Emails',icon: Mail,            minLevel: 4 },
   { href: '/admin/categories',    label: 'Categories',    icon: Tag,             minLevel: 4 },
