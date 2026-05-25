@@ -1,6 +1,9 @@
 import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -17,7 +20,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
 
   if (!allowedUser) {
     // If not allowed, redirect to login page (we can pass a query param if desired, or just redirect)
-    redirect(`/login?error=not_allowed&details=${error?.message || 'not_found'}`)
+    const debugInfo = error ? error.message : `not_found_${user.email}`
+    redirect(`/login?error=not_allowed&details=${encodeURIComponent(debugInfo)}`)
   }
 
   return (
