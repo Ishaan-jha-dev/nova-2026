@@ -12,7 +12,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   const { data: allowedUser } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
-    .eq('email', user.email!)
+    .eq('email', user.email?.toLowerCase().trim() || '')
     .maybeSingle()
 
   if (!allowedUser) {

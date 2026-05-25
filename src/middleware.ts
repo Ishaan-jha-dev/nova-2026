@@ -119,6 +119,9 @@ export async function middleware(request: NextRequest) {
 
   // Login/Register Lockout for authenticated users
   if (pathname === '/login' || pathname === '/register') {
+    if (request.nextUrl.searchParams.has('error')) {
+      return response
+    }
     return roleLevel >= 4 ? redirect('/admin') : redirect('/dashboard')
   }
 

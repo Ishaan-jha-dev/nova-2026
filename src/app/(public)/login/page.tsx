@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Input } from '@/components/ui/Input'
@@ -20,6 +20,16 @@ export default function LoginPage() {
   const [resetStep, setResetStep] = useState<'email' | 'otp' | 'new-password'>('email')
   const [otp, setOtp] = useState('')
   const [newPassword, setNewPassword] = useState('')
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search)
+    const errParam = searchParams.get('error')
+    if (errParam === 'not_allowed') {
+      setError('You are not authorized. Your account is not in the allowed list.')
+      // Sign them out so they aren't stuck in a loop
+      createClient().auth.signOut()
+    }
+  }, [])
 
   const handleLogin = (e?: React.FormEvent) => {
     e?.preventDefault()
