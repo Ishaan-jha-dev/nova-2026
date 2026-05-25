@@ -48,8 +48,10 @@ export default function LoginPage() {
       if (supaErr) {
         setError(supaErr.message)
       } else {
-        router.push('/dashboard')
-        router.refresh()
+        // Use window.location.href instead of router.push to force a hard reload
+        // This prevents Next.js client-side routing glitches (like the URL getting stuck on /login)
+        // and guarantees the middleware sees the newly set session cookie immediately.
+        window.location.href = '/dashboard'
       }
     })
   }

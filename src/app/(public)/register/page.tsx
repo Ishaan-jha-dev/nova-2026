@@ -177,9 +177,10 @@ export default function RegisterPage() {
           if (data?.user?.id) {
             await approveUserPaymentStatus(data.user.id)
           }
-          // Verification successful, redirect to dashboard or payment
-          router.push('/dashboard')
-          router.refresh()
+          // Use window.location.href instead of router.push to force a hard reload
+          // This prevents Next.js client-side routing glitches (like the URL getting stuck on /login)
+          // and guarantees the middleware sees the newly set session cookie immediately.
+          window.location.href = '/dashboard'
         }
       } catch (err: any) {
         setError(err.message || 'An error occurred during verification.')
