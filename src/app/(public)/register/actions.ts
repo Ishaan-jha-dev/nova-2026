@@ -22,24 +22,9 @@ export async function checkAllowedEmail(email: string): Promise<boolean> {
 export async function approveUserPaymentStatus(userId: string): Promise<boolean> {
   const supabaseAdmin = await createAdminClient()
   
-  // Wait a brief moment to ensure the database trigger `trg_new_user` has fully committed
-  // the row into public.users before we attempt to update it.
-  await new Promise(resolve => setTimeout(resolve, 1500));
-
-  // Generate an 8-character alphanumeric entry code as a bulletproof fallback
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-  let entryCode = ''
-  for (let i = 0; i < 8; i++) {
-    entryCode += chars.charAt(Math.floor(Math.random() * chars.length))
-  }
-  
   const { error } = await supabaseAdmin
     .from('users')
-    .update({ 
-      payment_status: 'approved',
-      entry_status: 'approved',
-      entry_code: entryCode
-    })
+    .update({ payment_status: 'approved' })
     .eq('id', userId)
 
   if (error) {
