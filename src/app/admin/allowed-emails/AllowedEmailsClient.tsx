@@ -161,7 +161,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
               onChange={e => setBulkEmails(e.target.value)}
               required
             />
-            <Button type="submit" variant="secondary" loading={isPending} fullWidth icon={<Plus size={16} />}>
+            <Button type="submit" variant="outline" loading={isPending} fullWidth icon={<Plus size={16} />}>
               Bulk Add
             </Button>
           </form>
