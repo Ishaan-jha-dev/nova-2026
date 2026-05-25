@@ -1,7 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { dissolveTeamInternal } from './teamRequests'
 
@@ -17,11 +16,8 @@ async function getAdminUser() {
   return user
 }
 
-function getAdminClient() {
-  return createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+async function getAdminClient() {
+  return createAdminClient()
 }
 
 /**
@@ -35,7 +31,7 @@ export async function kickUserFromEvent(
   forceDissolve: boolean = false
 ): Promise<{ dissolved: boolean }> {
   await getAdminUser()
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   const { data: reg } = await admin.from('registrations').select('*').eq('user_id', userId).eq('event_id', eventId).maybeSingle()
   if (!reg) throw new Error('User is not registered for this event')
@@ -88,7 +84,7 @@ export async function kickUserFromEvent(
  */
 export async function checkKickWouldDissolve(userId: string, eventId: string): Promise<{ wouldDissolve: boolean; teamId: string | null }> {
   await getAdminUser()
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   const { data: reg } = await admin.from('registrations').select('team_id').eq('user_id', userId).eq('event_id', eventId).maybeSingle()
   if (!reg?.team_id) return { wouldDissolve: false, teamId: null }
@@ -106,7 +102,7 @@ export async function checkKickWouldDissolve(userId: string, eventId: string): P
  */
 export async function adminDissolveTeam(teamId: string): Promise<void> {
   await getAdminUser()
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   const { data: team } = await admin.from('teams').select('id').eq('id', teamId).single()
   if (!team) throw new Error('Team not found')

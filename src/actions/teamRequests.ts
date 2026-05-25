@@ -1,7 +1,6 @@
 'use server'
 
-import { createClient } from '@/lib/supabase/server'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 
 async function getAuthUser() {
@@ -11,11 +10,8 @@ async function getAuthUser() {
   return { supabase, userId: user.id }
 }
 
-function getAdminClient() {
-  return createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+async function getAdminClient() {
+  return createAdminClient()
 }
 
 /**
@@ -23,7 +19,7 @@ function getAdminClient() {
  */
 export async function createJoinRequest(teamId: string) {
   const { userId } = await getAuthUser()
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   // Check team exists and is active
   const { data: team } = await admin.from('teams').select('id, event_id, status, is_open').eq('id', teamId).single()
@@ -64,7 +60,7 @@ export async function createJoinRequest(teamId: string) {
  */
 export async function respondToJoinRequest(requestId: string, action: 'accepted' | 'rejected') {
   const { supabase, userId } = await getAuthUser()
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   // Get the request with team and event details
   const { data: req, error: fetchErr } = await admin
@@ -113,7 +109,7 @@ export async function respondToJoinRequest(requestId: string, action: 'accepted'
  */
 export async function withdrawFromEvent(eventId: string) {
   const { userId } = await getAuthUser()
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   // Get registration
   const { data: reg } = await admin.from('registrations').select('*').eq('user_id', userId).eq('event_id', eventId).maybeSingle()
@@ -187,7 +183,7 @@ export async function dissolveTeamInternal(teamId: string, adminClient: any) {
  * Check if withdrawal would dissolve the team (call this before withdrawFromEvent to show prompt)
  */
 export async function checkWithdrawalWouldDissolve(eventId: string, userId: string): Promise<boolean> {
-  const admin = getAdminClient()
+  const admin = await getAdminClient()
 
   const { data: reg } = await admin.from('registrations').select('team_id').eq('user_id', userId).eq('event_id', eventId).maybeSingle()
   if (!reg?.team_id) return false

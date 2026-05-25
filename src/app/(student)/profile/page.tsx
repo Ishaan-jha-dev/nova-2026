@@ -2,8 +2,10 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { QRDisplay } from '@/components/ui/QRDisplay'
 import { PaymentBadge, EntryBadge } from '@/components/ui/Badge'
-import { User, Mail, Phone, MapPin, Zap } from 'lucide-react'
+import { User, Mail, Phone, MapPin, GraduationCap, Globe } from 'lucide-react'
 import type { Metadata } from 'next'
+import { PageWrapper } from '@/components/layout/PageWrapper'
+import { PinnedCard } from '@/components/ui/PinnedCard'
 
 export const metadata: Metadata = { title: 'Profile | Nova Unplugged 2026' }
 
@@ -25,48 +27,48 @@ export default async function ProfilePage() {
     { label: 'Pincode',     value: userData?.pincode,     icon: MapPin },
     { label: 'City',        value: userData?.city,        icon: MapPin },
     { label: 'State',       value: userData?.state,       icon: MapPin },
-    { label: 'Batch',       value: userData?.batch,       icon: Zap },
-    { label: 'Zone',        value: userData?.zone,        icon: Zap },
+    { label: 'Batch',       value: userData?.batch,       icon: GraduationCap },
+    { label: 'Zone',        value: userData?.zone,        icon: Globe },
   ].filter(f => f.value)
 
   return (
-    <div className="p-6 lg:p-8">
-      <div className="mb-8">
-        <h1 className="font-display font-bold text-3xl gradient-text mb-1">Your Profile</h1>
-        <p className="text-nova-text-dim text-sm">Your registration details and gate pass QR code</p>
-      </div>
-
-      <div className="grid lg:grid-cols-2 gap-6 max-w-4xl">
+    <PageWrapper 
+      title="Your" 
+      titleHighlight="Profile" 
+      subtitle="Your registration details and gate pass QR code"
+      maxWidth="md"
+    >
+      <div className="grid md:grid-cols-2 gap-10 items-stretch">
         {/* Profile info */}
-        <div className="glass rounded-2xl p-6 border border-nova-primary/20">
-          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/10">
-            <div className="w-16 h-16 rounded-2xl bg-nova-primary/20 border border-nova-primary/30 flex items-center justify-center text-2xl font-bold font-display text-nova-primary">
+        <PinnedCard pinColor="blue" title="Profile Details">
+          <div className="flex items-center gap-4 mb-6 pb-6 border-b border-slate-200">
+            <div className="w-16 h-16 rounded-2xl bg-[#2980B9]/15 border border-[#2980B9]/30 flex items-center justify-center text-2xl font-bold font-display text-[#2980B9]">
               {userData?.full_name?.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2)}
             </div>
             <div>
-              <h2 className="font-display font-bold text-xl text-nova-text">{userData?.full_name}</h2>
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <h3 className="font-display font-black text-xl text-slate-800 leading-tight">{userData?.full_name}</h3>
+              <div className="flex items-center gap-2 mt-1.5 flex-wrap">
                 <PaymentBadge status={userData?.payment_status || 'pending'} />
                 <EntryBadge status={userData?.entry_status || 'not_approved'} />
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-4">
             {fields.map(({ label, value, icon: Icon }) => (
               <div key={label} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-nova-primary/10 flex items-center justify-center shrink-0">
-                  <Icon size={14} className="text-nova-primary" />
+                <div className="w-8 h-8 rounded-lg bg-[#2980B9]/10 flex items-center justify-center shrink-0">
+                  <Icon size={14} className="text-[#2980B9]" />
                 </div>
                 <div>
-                  <p className="text-nova-muted text-xs">{label}</p>
-                  <p className="text-nova-text text-sm font-medium">{value}</p>
+                  <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{label}</p>
+                  <p className="text-slate-800 text-sm font-bold mt-0.5">{value}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-6 pt-4 border-t border-white/10">
+          <div className="mt-8 pt-4 border-t border-slate-200">
             <div className="flex gap-2">
               {(userData?.user_types as any)?.name && (
                 <span className="badge-individual capitalize">{(userData?.user_types as any).name.replace('_', ' ')}</span>
@@ -76,33 +78,34 @@ export default async function ProfilePage() {
               )}
             </div>
           </div>
-        </div>
+        </PinnedCard>
 
         {/* QR Code */}
-        <div className="glass rounded-2xl p-6 border border-nova-primary/20 flex flex-col items-center justify-center">
+        <PinnedCard pinColor="pink" title="Gate Pass QR">
           {userData?.payment_status === 'approved' && userData?.entry_code ? (
-            <>
-              <h3 className="font-display font-semibold text-nova-text mb-2">Your Gate Pass QR</h3>
-              <p className="text-nova-text-dim text-xs mb-6 text-center">
+            <div className="flex flex-col items-center justify-center h-full">
+              <p className="text-slate-500 text-xs mb-6 text-center max-w-[240px]">
                 Show this at the gate for entry. Your code is unique and single-use.
               </p>
-              <QRDisplay
-                value={userData.entry_code}
-                size={200}
-                label={`Nova Unplugged 2026 · ${userData.full_name}`}
-                downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`}
-              />
-              <div className="mt-4 p-3 rounded-lg bg-nova-success/10 border border-nova-success/30 text-center">
-                <p className="text-nova-success text-xs font-medium">✓ Entry Approved — Keep this QR safe</p>
+              <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-inner flex justify-center mb-6">
+                <QRDisplay
+                  value={userData.entry_code}
+                  size={200}
+                  label={`Nova Unplugged 2026 · ${userData.full_name}`}
+                  downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`}
+                />
               </div>
-            </>
+              <div className="w-full p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-center">
+                <p className="text-emerald-700 text-xs font-bold uppercase tracking-wider">✓ Entry Approved · Keep safe</p>
+              </div>
+            </div>
           ) : (
-            <div className="text-center">
-              <div className="w-20 h-20 rounded-2xl bg-white/5 border-2 border-dashed border-nova-primary/30 flex items-center justify-center mx-auto mb-4">
+            <div className="text-center flex flex-col items-center justify-center h-full py-8">
+              <div className="w-20 h-20 rounded-2xl bg-slate-50 border-2 border-dashed border-slate-200 flex items-center justify-center mx-auto mb-4">
                 <span className="text-3xl">🔒</span>
               </div>
-              <h3 className="font-display font-semibold text-nova-text mb-2">QR Not Available Yet</h3>
-              <p className="text-nova-text-dim text-sm">
+              <h3 className="font-display font-black text-lg uppercase tracking-wider text-slate-700 mb-2">QR Not Available Yet</h3>
+              <p className="text-slate-500 text-xs max-w-[200px] leading-relaxed">
                 {userData?.payment_status === 'pending'
                   ? 'Your payment is under review. QR will be generated once approved.'
                   : userData?.payment_status === 'rejected'
@@ -111,8 +114,8 @@ export default async function ProfilePage() {
               </p>
             </div>
           )}
-        </div>
+        </PinnedCard>
       </div>
-    </div>
+    </PageWrapper>
   )
 }

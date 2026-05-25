@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { Zap, Share2, MessageCircle, Link2, Mail } from 'lucide-react'
+import { Share2, MessageCircle, Link2, Mail } from 'lucide-react'
+import { NovaLogo } from '@/components/ui/NovaLogo'
 
 export function Footer() {
   return (
@@ -9,10 +10,10 @@ export function Footer() {
           {/* Brand */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-nova-primary/20 border border-nova-primary/40 flex items-center justify-center">
-                <Zap size={18} className="text-nova-primary" />
-              </div>
-              <span className="font-display font-bold text-lg gradient-text">NOVA UNPLUGGED</span>
+              <NovaLogo size="icon" />
+              <span className="font-display font-bold text-lg text-white">
+                VA&apos;26 <span className="text-white/40 text-xs font-medium uppercase tracking-[0.15em] ml-1">unplugged</span>
+              </span>
             </div>
             <p className="text-nova-text-dim text-sm leading-relaxed">
               The annual college fest of IIM Bangalore. Cultural, technical, sports — all under one electric roof.

@@ -1,5 +1,4 @@
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createAdminClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import type { Metadata } from 'next'
 import { RegistrationsClient } from './RegistrationsClient'
@@ -18,10 +17,7 @@ export default async function RegistrationsPage(props: { searchParams: Promise<{
   const roleLevel = (userData?.user_roles as any)?.permissions_level ?? 1
   if (roleLevel < 3) redirect('/admin')
 
-  const admin = createSupabaseClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  )
+  const admin = await createAdminClient()
 
   const selectedCategory = searchParams.category || 'all'
   const page = parseInt(searchParams.page || '1', 10)

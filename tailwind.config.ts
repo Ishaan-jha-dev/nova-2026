@@ -27,8 +27,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        display: ["var(--font-orbitron)", "monospace"],
-        body: ["var(--font-inter)", "sans-serif"],
+        display: ["var(--font-display)", "'Arial Black'", "sans-serif"],
+        body: ["var(--font-body)", "'Helvetica Neue'", "sans-serif"],
       },
       backgroundImage: {
         "nova-gradient": "linear-gradient(135deg, #1c0505 0%, #3e0c15 50%, #1c0505 100%)",

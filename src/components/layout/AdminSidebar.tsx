@@ -4,12 +4,13 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import {
-  Zap, LayoutDashboard, CreditCard, Users, Calendar,
+  LayoutDashboard, CreditCard, Users, Calendar,
   List, QrCode, Download, LogOut, Menu, X, ChevronLeft, Bell, History, Tag
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { cn } from '@/components/ui/Button'
+import { NovaLogo } from '@/components/ui/NovaLogo'
 
 interface SidebarItem {
   href: string
@@ -57,14 +58,9 @@ export function AdminSidebar({ roleLevel, userName, userEmail }: AdminSidebarPro
     <div className="flex flex-col h-full">
       {/* Logo */}
       <div className="p-6 border-b border-white/10">
-        <Link href="/admin" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-nova-primary/20 border border-nova-primary/40 flex items-center justify-center">
-            <Zap size={18} className="text-nova-primary" />
-          </div>
-          <div>
-            <span className="font-display font-bold gradient-text tracking-wider block leading-none">NOVA</span>
-            <span className="text-nova-muted text-[10px] font-display tracking-widest uppercase">Admin Panel</span>
-          </div>
+        <Link href="/admin">
+          <NovaLogo size="md" />
+          <span className="text-nova-muted text-[9px] font-display tracking-[0.25em] uppercase block mt-2">Admin Panel</span>
         </Link>
       </div>
 
@@ -140,9 +136,8 @@ export function AdminSidebar({ roleLevel, userName, userEmail }: AdminSidebarPro
 
       {/* Mobile top bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 z-40 glass-dark border-b border-nova-primary/20 flex items-center justify-between px-4 h-14">
-        <Link href="/admin" className="flex items-center gap-2">
-          <Zap size={16} className="text-nova-primary" />
-          <span className="font-display font-bold gradient-text text-sm">NOVA ADMIN</span>
+        <Link href="/admin">
+          <NovaLogo size="sm" />
         </Link>
         <button onClick={() => setOpen(!open)} className="text-nova-text-dim hover:text-nova-text p-2 rounded-lg">
           {open ? <X size={20} /> : <Menu size={20} />}

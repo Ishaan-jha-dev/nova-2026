@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { EventsClient } from './EventsClient'
 import type { Metadata } from 'next'
+import { PageWrapper } from '@/components/layout/PageWrapper'
 
 export const metadata: Metadata = { title: 'Events | Nova Unplugged 2026' }
 
@@ -24,11 +25,20 @@ export default async function EventsPage() {
       .select('*, categories(id, title, status)')
       .eq('is_active', true)
       .order('created_at', { ascending: false }),
-    // User's existing registrations
+    // User's existing registrations (with full event and team details)
     supabase
       .from('registrations')
-      .select('event_id, team_id')
-      .eq('user_id', user.id),
+      .select(`
+        *,
+        events(*, categories(title)),
+        teams(
+          *,
+          users!leader_id(id, full_name),
+          team_members(*, users(id, full_name))
+        )
+      `)
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false }),
     // User's pending/rejected join requests (so they know status)
     supabase
       .from('team_join_requests')
@@ -61,14 +71,22 @@ export default async function EventsPage() {
   }, {})
 
   return (
-    <EventsClient
-      events={visibleEvents}
-      categories={categories || []}
-      registeredEventIds={registeredEventIds}
-      registeredTeamIds={registeredTeamIds}
-      requestStatusByTeam={requestStatusByTeam}
-      requestStatusByEvent={requestStatusByEvent}
-      userId={user.id}
-    />
+    <PageWrapper
+      title="Explore"
+      titleHighlight="Events"
+      subtitle="Choose a category and browse events to register and join teams"
+      maxWidth="xl"
+    >
+      <EventsClient
+        events={visibleEvents}
+        categories={categories || []}
+        registeredEventIds={registeredEventIds}
+        registeredTeamIds={registeredTeamIds}
+        requestStatusByTeam={requestStatusByTeam}
+        requestStatusByEvent={requestStatusByEvent}
+        registrations={registrations || []}
+        userId={user.id}
+      />
+    </PageWrapper>
   )
 }

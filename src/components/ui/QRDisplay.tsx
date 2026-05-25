@@ -3,7 +3,6 @@
 import { useEffect, useRef } from 'react'
 import QRCode from 'qrcode'
 import { Download } from 'lucide-react'
-import { Button } from './Button'
 
 interface QRDisplayProps {
   value: string
@@ -21,8 +20,8 @@ export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr' }
       width: size,
       margin: 2,
       color: {
-        dark: '#6C3DE8',
-        light: '#0D0D2B',
+        dark: '#FF3366', // Nova Primary Pink
+        light: '#ffffff', // White background
       },
       errorCorrectionLevel: 'H',
     })
@@ -39,19 +38,21 @@ export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr' }
   }
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="p-4 rounded-2xl" style={{ background: '#0D0D2B', border: '2px solid rgba(108,61,232,0.5)', boxShadow: '0 0 30px rgba(108,61,232,0.3)' }}>
-        <canvas ref={canvasRef} style={{ display: 'block', borderRadius: '8px' }} />
+    <div className="flex flex-col items-center gap-3 w-full">
+      <div className="rounded-2xl overflow-hidden bg-white shadow-[0_8px_25px_rgba(255,51,102,0.15)] border border-[#FF3366]/10 p-2">
+        <canvas ref={canvasRef} style={{ display: 'block' }} className="rounded-xl" />
       </div>
-      {label && <p className="text-nova-text-dim text-sm text-center">{label}</p>}
-      <Button
-        variant="outline"
-        size="md"
-        icon={<Download size={16} />}
+      {label && <p className="text-[#FF3366] font-display font-bold text-sm uppercase tracking-wider text-center mt-2">{label}</p>}
+      
+      <button
         onClick={handleDownload}
+        className="flex items-center justify-center gap-2 bg-[#FF3366]/5 border border-[#FF3366]/20 rounded-xl px-5 py-2.5 mt-1 w-full hover:bg-[#FF3366] hover:text-white text-[#FF3366] transition-all duration-300 group"
       >
-        Download QR as PNG
-      </Button>
+        <Download size={16} />
+        <span className="font-bold uppercase tracking-wider text-xs">Download QR</span>
+      </button>
     </div>
   )
 }
+
+

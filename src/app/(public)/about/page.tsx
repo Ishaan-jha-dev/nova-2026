@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
-import { Zap, Target, Heart, Code2, Palette, Crown } from 'lucide-react'
+import { Zap, Target, Heart, Code2, Crown } from 'lucide-react'
+import { PageWrapper } from '@/components/layout/PageWrapper'
+import { PinnedCard } from '@/components/ui/PinnedCard'
 
 export const metadata: Metadata = {
   title: 'About | Nova Unplugged 2026',
@@ -88,98 +90,106 @@ const LinkedinIcon = ({ size = 14 }: { size?: number }) => (
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-nova-bg">
-      {/* Ambient glowing orbs */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 -left-1/4 w-[60vw] h-[60vw] bg-nova-primary/10 rounded-full blur-[140px] mix-blend-screen" />
-        <div className="absolute bottom-0 -right-1/4 w-[50vw] h-[50vw] bg-nova-accent/10 rounded-full blur-[120px] mix-blend-screen animate-pulse" />
+    <PageWrapper
+      title="The Nova"
+      titleHighlight="Story"
+      subtitle="Four days of culture, intellect, and connection at IIM Bangalore"
+      maxWidth="lg"
+    >
+      {/* Intro section */}
+      <div className="text-center mb-20 relative z-10 max-w-3xl mx-auto">
+        <p className="text-white/70 text-lg sm:text-xl leading-relaxed">
+          Nova Unplugged is the annual college fest of IIM Bangalore — four days of culture,
+          intellect, and connection. Born from the belief that the best business leaders are also
+          the most well-rounded individuals, Nova 2026 celebrates every dimension of human potential.
+        </p>
       </div>
-      <div className="absolute inset-0 mesh-bg opacity-30" />
 
-      {/* Hero */}
-      <section className="relative py-24 px-4 text-center entrance-1">
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="font-display font-black text-5xl sm:text-7xl gradient-text mb-8">
-            The Nova Story
-          </h1>
-          <p className="text-nova-text-dim text-lg sm:text-xl leading-relaxed max-w-3xl mx-auto">
-            Nova Unplugged is the annual college fest of IIM Bangalore — four days of culture,
-            intellect, and connection. Born from the belief that the best business leaders are also
-            the most well-rounded individuals, Nova 2026 celebrates every dimension of human potential.
+      {/* Values Section */}
+      <section className="pb-20 relative">
+        <div className="text-center mb-12">
+          <h2 className="font-display font-bold text-3xl sm:text-4xl text-white mb-2 uppercase tracking-wide">
+            What We Stand For
+          </h2>
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#FF3366] to-transparent mx-auto mt-4" />
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {values.map((v, i) => {
+            const Icon = v.icon
+            const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['pink', 'orange', 'purple']
+            const pinColor = pinColors[i % 3]
+
+            // Soft colors matching cream card background
+            const themeColors = {
+              pink: { text: 'text-[#FF3366]', bg: 'bg-[#FF3366]/10', border: 'border-[#FF3366]/20' },
+              orange: { text: 'text-[#f37335]', bg: 'bg-[#f37335]/10', border: 'border-[#f37335]/20' },
+              purple: { text: 'text-[#8e44ad]', bg: 'bg-[#8e44ad]/10', border: 'border-[#8e44ad]/20' },
+              blue: { text: 'text-[#2980B9]', bg: 'bg-[#2980B9]/10', border: 'border-[#2980B9]/20' },
+            }
+            const colors = themeColors[pinColor]
+
+            return (
+              <div key={v.title} className="w-full">
+                <PinnedCard pinColor={pinColor} title={v.title} className="!p-8">
+                  <div className={`w-16 h-16 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center mx-auto mb-6`}>
+                    <Icon size={30} className={colors.text} />
+                  </div>
+                  <p className="text-slate-600 text-sm font-medium text-center leading-relaxed">{v.desc}</p>
+                </PinnedCard>
+              </div>
+            )
+          })}
+        </div>
+      </section>
+
+      {/* Team Section */}
+      <section className="py-20">
+        <div className="text-center mb-16">
+          <p className="text-[#FF3366] text-xs font-bold uppercase tracking-[0.3em] mb-3">The People Behind It</p>
+          <h2 className="font-display font-bold text-3xl sm:text-4xl text-white uppercase tracking-wide">
+            Built by DBE Students
+          </h2>
+          <div className="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#FF9933] to-transparent mx-auto mt-4" />
+          <p className="text-white/50 max-w-xl mx-auto text-sm mt-4 uppercase tracking-widest font-bold">
+            Built by students, for students. Proudly made at IIM Bangalore.
           </p>
         </div>
-      </section>
 
-      {/* Values */}
-      <section className="py-20 px-4 relative">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 entrance-2">
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-nova-text mb-4 relative inline-block">
-              What We Stand For
-              <div className="absolute -bottom-2 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-nova-primary to-transparent opacity-50" />
-            </h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {values.map((v, i) => {
-              const Icon = v.icon
-              const delayClass = `entrance-${(i % 3) + 2}`
-              return (
-                <div key={v.title} className={`nova-card shimmer-card p-10 text-center ${delayClass} group`}>
-                  <div className="w-16 h-16 rounded-2xl bg-nova-primary/10 border border-nova-primary/30 flex items-center justify-center mx-auto mb-6 relative overflow-hidden group-hover:border-nova-primary transition-colors">
-                    <div className="absolute inset-0 bg-nova-primary/10 blur-sm opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <Icon size={30} className="text-nova-primary relative z-10" />
-                  </div>
-                  <h3 className="font-display font-bold text-2xl text-nova-text mb-4">{v.title}</h3>
-                  <p className="text-nova-text-dim text-base leading-relaxed">{v.desc}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      </section>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {team.map((member, i) => {
+            const RoleIcon = roleIcon[member.role] || Zap
+            const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['blue', 'pink', 'orange']
+            const pinColor = pinColors[i % 3]
 
-      {/* Team */}
-      <section className="py-24 px-4 bg-white/[0.02]">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16 entrance-1">
-            <p className="text-nova-primary text-xs font-bold uppercase tracking-[0.3em] mb-3">The People Behind It</p>
-            <h2 className="font-display font-bold text-3xl sm:text-4xl text-nova-text mb-4">
-              Built by DBE Students
-            </h2>
-            <div className="w-24 h-1 bg-nova-primary mx-auto rounded-full mb-6 opacity-30" />
-            <p className="text-nova-text-dim max-w-xl mx-auto text-lg">
-              Built by students, for students. Proudly made at IIM Bangalore.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {team.map((member, i) => {
-              const RoleIcon = roleIcon[member.role] || Zap
-              return (
-                <div
-                  key={member.name}
-                  className={`nova-card shimmer-card p-8 group entrance-${(i % 3) + 1} flex flex-col`}
+            return (
+              <div key={member.name} className="w-full">
+                <PinnedCard
+                  pinColor={pinColor}
+                  className="!p-6 flex flex-col h-full"
                 >
-                  {/* Avatar + badge */}
+                  {/* Avatar + Info block */}
                   <div className="flex items-start gap-4 mb-6">
                     <div className="relative shrink-0">
                       {member.imageUrl ? (
-                        <div className={`w-16 h-16 rounded-2xl overflow-hidden shadow-[0_0_20px_rgba(255,51,102,0.3)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                        <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-inner border border-slate-200">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover" />
                         </div>
                       ) : (
-                        <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${member.color} flex items-center justify-center text-3xl shadow-[0_0_20px_rgba(255,51,102,0.3)] group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl border border-slate-200">
                           {member.emoji}
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-bold text-nova-text text-lg leading-tight group-hover:text-nova-primary transition-colors truncate">
+                      <p className="font-black text-slate-800 text-lg leading-tight truncate">
                         {member.name}
                       </p>
-                      <p className="text-nova-text-dim text-sm">{member.title}</p>
-                      <div className="flex items-center gap-2 mt-2">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-nova-primary/10 border border-nova-primary/25 text-nova-primary">
+                      <p className="text-slate-500 text-xs font-bold mt-1 uppercase tracking-wider">{member.title}</p>
+                      
+                      <div className="flex items-center gap-2 mt-3">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-600">
                           <RoleIcon size={10} />
                           {member.badge}
                         </span>
@@ -188,57 +198,54 @@ export default function AboutPage() {
                             href={member.linkedin} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center p-1.5 rounded-full bg-white/5 border border-white/10 text-gray-400 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all"
+                            className="inline-flex items-center justify-center p-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all shrink-0"
                             title={`Connect with ${member.name} on LinkedIn`}
                           >
-                            <LinkedinIcon size={14} />
+                            <LinkedinIcon size={12} />
                           </a>
                         )}
                       </div>
                     </div>
                   </div>
 
-                  {/* Divider */}
-                  <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-5" />
+                  {/* Divider line */}
+                  <div className="h-px bg-slate-200 mb-5" />
 
-                  {/* Brag list */}
+                  {/* Achievements/Brags list */}
                   <ul className="flex flex-col gap-2.5 flex-1">
                     {member.brag.map((line, j) => (
-                      <li key={j} className="flex items-start gap-2.5 text-sm text-nova-text-dim leading-snug">
-                        <span className="mt-0.5 w-1.5 h-1.5 rounded-full bg-nova-primary shrink-0 opacity-70" />
-                        {line}
+                      <li key={j} className="flex items-start gap-2 text-xs text-slate-600 leading-snug font-bold">
+                        <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#FF3366] shrink-0 opacity-70" />
+                        <span>{line}</span>
                       </li>
                     ))}
                   </ul>
-                </div>
-              )
-            })}
-          </div>
+                </PinnedCard>
+              </div>
+            )
+          })}
         </div>
       </section>
 
-      {/* Contact */}
-      <section className="py-24 px-4">
-        <div className="max-w-4xl mx-auto">
-          <div className="nova-card rounded-3xl p-6 sm:p-12 text-center relative overflow-hidden glow-border-pink entrance-3 group">
-            <div className="absolute inset-0 bg-nova-primary/10 blur-[100px] opacity-40 group-hover:opacity-70 transition-opacity duration-700 pointer-events-none" />
-            <div className="relative z-10">
-              <h2 className="font-display font-black text-4xl sm:text-5xl gradient-text mb-6">
-                Get in Touch
-              </h2>
-              <p className="text-nova-text-dim text-xl mb-10 max-w-lg mx-auto leading-relaxed">
-                Questions? Sponsorships? Partnerships? We&apos;d love to hear from you.
-              </p>
-              <a
-                href="mailto:novaunplugged@iimb.ac.in"
-                className="nova-btn-primary flex items-center justify-center px-6 sm:px-10 py-3 sm:py-4 rounded-full font-bold text-white text-sm sm:text-lg shadow-[0_0_30px_rgba(255,51,102,0.3)] hover:shadow-[0_0_50px_rgba(255,51,102,0.5)] transition-all hover:-translate-y-1 w-full sm:w-auto"
-              >
-                <span className="tracking-tight break-all">novaunplugged@iimb.ac.in</span>
-              </a>
-            </div>
-          </div>
+      {/* Contact Section */}
+      <section className="py-20 max-w-4xl mx-auto">
+        <div className="w-full">
+          <PinnedCard pinColor="purple" className="!p-10 text-center">
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-800 mb-4 uppercase tracking-wider">
+              Get in Touch
+            </h2>
+            <p className="text-slate-600 text-base mb-8 max-w-lg mx-auto leading-relaxed font-bold">
+              Questions? Sponsorships? Partnerships? We&apos;d love to hear from you.
+            </p>
+            <a
+              href="mailto:novaunplugged@iimb.ac.in"
+              className="inline-flex items-center justify-center px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#FF3366] to-[#FF9933] shadow-[0_0_30px_rgba(255,51,102,0.3)] hover:shadow-[0_0_50px_rgba(255,51,102,0.6)] transition-all hover:-translate-y-1 w-full sm:w-auto"
+            >
+              novaunplugged@iimb.ac.in
+            </a>
+          </PinnedCard>
         </div>
       </section>
-    </div>
+    </PageWrapper>
   )
 }
