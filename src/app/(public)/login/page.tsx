@@ -132,9 +132,9 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="flex flex-col gap-5 relative z-10">
               <div className="entrance-2">
                 <Input
-                  label="Email Address"
+                  label="Registered Gmail Address"
                   type="email"
-                  placeholder="yourname@example.com"
+                  placeholder="yourname@gmail.com"
                   icon={<Mail size={16} />}
                   value={email}
                   onChange={e => setEmail(e.target.value)}

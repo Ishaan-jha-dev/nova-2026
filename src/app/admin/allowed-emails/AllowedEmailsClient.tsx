@@ -13,6 +13,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
   const [isPending, startTransition] = useTransition()
   const [emails, setEmails] = useState(initialEmails)
   const [singleEmail, setSingleEmail] = useState('')
+  const [singleGmail, setSingleGmail] = useState('')
   const [bulkEmails, setBulkEmails] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
@@ -32,8 +33,8 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
 
         const { data, error: insertError } = await supabase
           .from('allowed_emails')
-          .insert({ email: singleEmail.trim().toLowerCase(), added_by: userData.user.id })
-          .select('id, email, created_at, users!added_by(full_name)')
+          .insert({ email: singleEmail.trim().toLowerCase(), gmail: singleGmail.trim().toLowerCase(), added_by: userData.user.id })
+          .select('id, email, gmail, created_at, users!added_by(full_name)')
           .single()
 
         if (insertError) {
@@ -43,6 +44,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
 
         setEmails(prev => [data, ...prev])
         setSingleEmail('')
+        setSingleGmail('')
         setSuccess('Email added successfully!')
         router.refresh()
       } catch (err: any) {
@@ -58,27 +60,34 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
     setError(null)
     setSuccess(null)
     
-    const emailList = bulkEmails
-      .split(/[\n,]+/)
-      .map(e => e.trim().toLowerCase())
-      .filter(e => e.length > 0)
-
-    if (emailList.length === 0) return
-
     startTransition(async () => {
       try {
         const { data: userData } = await supabase.auth.getUser()
         if (!userData.user) throw new Error('Not authenticated')
 
-        const inserts = emailList.map(email => ({
-          email,
+        let emailList: { email: string; gmail: string }[] = []
+        try {
+          const parsed = JSON.parse(bulkEmails)
+          if (Array.isArray(parsed)) {
+            emailList = parsed.map(p => ({
+              email: p.email?.trim().toLowerCase(),
+              gmail: p.gmail?.trim().toLowerCase()
+            })).filter(p => p.email && p.gmail)
+          }
+        } catch {
+          throw new Error('Invalid JSON format. Please provide an array of objects with "email" and "gmail".')
+        }
+
+        if (emailList.length === 0) return
+
+        const inserts = emailList.map(item => ({
+          email: item.email,
+          gmail: item.gmail,
           added_by: userData.user.id
         }))
 
-        // We use ON CONFLICT DO NOTHING (requires rpc or handling duplicates if not supported)
-        // Since we can't easily do ON CONFLICT without rpc in supabase-js standard insert,
-        // we'll fetch existing and filter out.
-        const { data: existing } = await supabase.from('allowed_emails').select('email').in('email', emailList)
+        const emailsToExtract = emailList.map(e => e.email)
+        const { data: existing } = await supabase.from('allowed_emails').select('email').in('email', emailsToExtract)
         const existingSet = new Set((existing || []).map(e => e.email))
         const newInserts = inserts.filter(item => !existingSet.has(item.email))
 
@@ -90,7 +99,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         const { data, error: insertError } = await supabase
           .from('allowed_emails')
           .insert(newInserts)
-          .select('id, email, created_at, users!added_by(full_name)')
+          .select('id, email, gmail, created_at, users!added_by(full_name)')
 
         if (insertError) throw insertError
 
@@ -138,9 +147,16 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
           <form onSubmit={handleAddSingle} className="space-y-4">
             <Input
               type="email"
-              placeholder="student@example.com"
+              placeholder="IIMB Email (e.g. student@iimb.ac.in)"
               value={singleEmail}
               onChange={e => setSingleEmail(e.target.value)}
+              required
+            />
+            <Input
+              type="email"
+              placeholder="Personal Gmail (e.g. student@gmail.com)"
+              value={singleGmail}
+              onChange={e => setSingleGmail(e.target.value)}
               required
             />
             <Button type="submit" loading={isPending} fullWidth icon={<Plus size={16} />}>
@@ -155,8 +171,8 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
           </h2>
           <form onSubmit={handleBulkAdd} className="space-y-4">
             <textarea
-              className="w-full h-32 rounded-xl border border-white/10 bg-black/20 p-3 text-sm text-nova-text placeholder:text-nova-muted outline-none focus:border-nova-primary/50 transition-colors"
-              placeholder="Paste emails separated by commas or newlines..."
+              className="w-full h-32 rounded-xl border border-white/10 bg-black/20 p-3 text-sm text-nova-text placeholder:text-nova-muted outline-none focus:border-nova-primary/50 transition-colors font-mono"
+              placeholder={'[\n  { "email": "a@iimb.ac.in", "gmail": "a@gmail.com" }\n]'}
               value={bulkEmails}
               onChange={e => setBulkEmails(e.target.value)}
               required
@@ -196,6 +212,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
               <div key={item.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                 <div className="min-w-0 flex-1">
                   <p className="font-medium text-nova-text truncate text-sm md:text-base">{item.email}</p>
+                  <p className="text-xs text-nova-primary truncate mt-0.5">{item.gmail}</p>
                   <div className="flex items-center gap-3 mt-1">
                     <p className="text-xs text-nova-muted truncate">
                       Added by: {(item.users as any)?.full_name || 'Admin'}

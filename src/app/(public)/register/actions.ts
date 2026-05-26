@@ -2,21 +2,21 @@
 
 import { createAdminClient } from '@/lib/supabase/server'
 
-export async function checkAllowedEmail(email: string): Promise<boolean> {
+export async function checkAllowedEmail(email: string): Promise<{ allowed: boolean, gmail?: string }> {
   const supabaseAdmin = await createAdminClient()
   
   const { data, error } = await supabaseAdmin
     .from('allowed_emails')
-    .select('id')
+    .select('id, gmail')
     .eq('email', email.toLowerCase().trim())
     .maybeSingle()
 
   if (error) {
     console.error('Error checking allowed emails:', error)
-    return false
+    return { allowed: false }
   }
 
-  return !!data
+  return { allowed: !!data, gmail: data?.gmail || undefined }
 }
 
 export async function approveUserPaymentStatus(userId: string): Promise<boolean> {

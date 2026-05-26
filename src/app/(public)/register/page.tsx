@@ -112,15 +112,20 @@ export default function RegisterPage() {
           return
         }
 
-        const isAllowed = await checkAllowedEmail(form.email)
-        if (!isAllowed) {
+        const { allowed, gmail } = await checkAllowedEmail(form.email)
+        if (!allowed) {
           setError('Your payment is not yet confirmed, please wait if you have paid, and pay if you have not paid for the events.')
+          return
+        }
+
+        if (!gmail) {
+          setError('No Gmail address found in the allowed list. Please contact the admin.')
           return
         }
 
         const supabase = createClient()
         const { data, error: supaErr } = await supabase.auth.signUp({
-          email: form.email,
+          email: gmail,
           password: form.password,
           options: {
             data: {
@@ -132,6 +137,7 @@ export default function RegisterPage() {
               batch:      form.batch,
               zone:       form.zone,
               user_type:  userType,
+              iimb_email: form.email,
             },
             emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
@@ -164,9 +170,13 @@ export default function RegisterPage() {
 
     startTransition(async () => {
       try {
+        // Need to verify OTP against the Gmail that was used to sign up
+        const { allowed, gmail } = await checkAllowedEmail(form.email)
+        if (!allowed || !gmail) throw new Error('Gmail not found for verification')
+
         const supabase = createClient()
         const { data, error: supaErr } = await supabase.auth.verifyOtp({
-          email: form.email,
+          email: gmail,
           token: otp,
           type: 'signup',
         })
@@ -247,9 +257,9 @@ export default function RegisterPage() {
                   required
                 />
                 <Input
-                  label="Email Address"
+                  label="IIMB Email Address"
                   type="email"
-                  placeholder="email@example.com"
+                  placeholder="student@iimb.ac.in"
                   icon={<Mail size={16} />}
                   value={form.email}
                   onChange={set('email')}
@@ -354,8 +364,8 @@ export default function RegisterPage() {
                 Verify Your Identity
               </h2>
               <p className="text-nova-text-dim text-base text-center mb-8">
-                We&apos;ve sent a secure 6-digit code to <br/>
-                <strong className="text-nova-primary">{form.email}</strong>
+                We&apos;ve sent a secure 6-digit code to your <br/>
+                <strong className="text-nova-primary">associated Google mail id</strong>
               </p>
               {error && (
                 <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">
