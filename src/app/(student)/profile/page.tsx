@@ -5,6 +5,7 @@ import { PaymentBadge, EntryBadge } from '@/components/ui/Badge'
 import { User, Mail, Phone, MapPin, GraduationCap, Globe } from 'lucide-react'
 import type { Metadata } from 'next'
 import { PageWrapper } from '@/components/layout/PageWrapper'
+import { YourProfileHeading } from '@/components/ui/CustomHeadings'
 import { PinnedCard } from '@/components/ui/PinnedCard'
 
 export const metadata: Metadata = { title: 'Profile | Nova Unplugged 2026' }
@@ -33,8 +34,7 @@ export default async function ProfilePage() {
 
   return (
     <PageWrapper
-      title="Your"
-      titleHighlight="Profile"
+      headingComponent={<YourProfileHeading />}
       subtitle="Your registration details and gate pass QR code"
       maxWidth="md"
     >

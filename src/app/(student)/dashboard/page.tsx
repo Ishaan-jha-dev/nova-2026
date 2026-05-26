@@ -6,6 +6,7 @@ import { QRDisplay } from '@/components/ui/QRDisplay'
 import { Calendar, Users, Bell, ArrowRight, Lock, Mail, Phone, MapPin, Zap, BookOpen, User, Star, ChevronRight } from 'lucide-react'
 import { CountdownTimer } from '@/components/ui/CountdownTimer'
 import type { Metadata } from 'next'
+import { WelcomeBackHeading } from '@/components/ui/CustomHeadings'
 
 export const metadata: Metadata = { title: 'Dashboard | Nova Unplugged 2026' }
 
@@ -68,9 +69,7 @@ export default async function DashboardPage() {
         
         {/* Header Title */}
         <div className="text-center mb-16">
-          <h1 className="font-display font-black text-5xl md:text-6xl uppercase tracking-wider text-white drop-shadow-md">
-            Nova Unplugged <span className="text-[#E8A020]">Dashboard</span>
-          </h1>
+          <WelcomeBackHeading />
           <p className="text-white/50 font-medium mt-3 uppercase tracking-widest text-sm">Welcome back, {userData?.full_name?.split(' ')[0]}</p>
         </div>
 

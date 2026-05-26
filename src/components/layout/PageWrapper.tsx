@@ -7,6 +7,7 @@ interface PageWrapperProps {
   title?: string
   subtitle?: string
   titleHighlight?: string
+  headingComponent?: React.ReactNode
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl'
   className?: string
   style?: React.CSSProperties
@@ -168,6 +169,7 @@ export function PageWrapper({
   title,
   subtitle,
   titleHighlight,
+  headingComponent,
   maxWidth = 'xl',
   className = '',
   style,
@@ -256,20 +258,25 @@ export function PageWrapper({
 
       {/* ── Content ── */}
       <div className={`w-full ${widthClasses[maxWidth]} px-6 relative flex flex-col`} style={{ zIndex: 10 }}>
-        {(title || titleHighlight) && (
+        {(title || titleHighlight || headingComponent) && (
           <div className="text-center mb-6 animate-fade-in select-none">
-            <h1 className="text-5xl md:text-6xl text-white drop-shadow-md flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
-              {title && (
-                <span className="font-serif italic font-black tracking-wide uppercase">
-                  {title}
-                </span>
-              )}
-              {titleHighlight && (
-                <span className="font-handwritten normal-case text-[#E8A020] text-5xl md:text-6xl rotate-[-2deg] inline-block filter drop-shadow-[0_2px_8px_rgba(232,160,32,0.25)]">
-                  {titleHighlight}
-                </span>
-              )}
-            </h1>
+            {headingComponent ? (
+              headingComponent
+            ) : (
+              <h1 className="text-5xl md:text-6xl text-white drop-shadow-md flex flex-wrap items-center justify-center gap-x-3 gap-y-1">
+                {title && (
+                  <span className="font-serif italic font-black tracking-wide uppercase">
+                    {title}
+                  </span>
+                )}
+                {titleHighlight && (
+                  <span className="font-handwritten normal-case text-[#E8A020] text-5xl md:text-6xl rotate-[-2deg] inline-block filter drop-shadow-[0_2px_8px_rgba(232,160,32,0.25)]">
+                    {titleHighlight}
+                  </span>
+                )}
+              </h1>
+            )}
+            
             {subtitle && (
               <p className="text-white/50 font-medium mt-2 uppercase tracking-widest text-xs">
                 {subtitle}

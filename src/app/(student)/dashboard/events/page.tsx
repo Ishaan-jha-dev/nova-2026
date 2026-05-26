@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { EventsClient } from './EventsClient'
 import type { Metadata } from 'next'
 import { PageWrapper } from '@/components/layout/PageWrapper'
+import { ExploreEventsHeading } from '@/components/ui/CustomHeadings'
 
 export const metadata: Metadata = { title: 'Events | Nova Unplugged 2026' }
 
@@ -72,8 +73,7 @@ export default async function EventsPage() {
 
   return (
     <PageWrapper
-      title="Explore"
-      titleHighlight="Events"
+      headingComponent={<ExploreEventsHeading />}
       subtitle="Choose a category and browse events to register and join teams"
       maxWidth="xl"
     >

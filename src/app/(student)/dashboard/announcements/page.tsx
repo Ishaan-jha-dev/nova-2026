@@ -5,6 +5,7 @@ import { Bell, Filter } from 'lucide-react'
 import type { Metadata } from 'next'
 import { AnnouncementsClient } from './AnnouncementsClient'
 import { PageWrapper } from '@/components/layout/PageWrapper'
+import { LiveUpdatesHeading } from '@/components/ui/CustomHeadings'
 
 export const metadata: Metadata = { title: 'Announcements | Nova Unplugged 2026' }
 
@@ -45,8 +46,7 @@ export default async function AnnouncementsPage(props: { searchParams: Promise<{
 
   return (
     <PageWrapper
-      title="Live"
-      titleHighlight="Updates"
+      headingComponent={<LiveUpdatesHeading />}
       subtitle="Stay updated with the latest news and alerts"
       maxWidth="md"
     >
