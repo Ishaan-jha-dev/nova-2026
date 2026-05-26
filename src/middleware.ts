@@ -22,27 +22,21 @@ async function getRoleFromDB(request: NextRequest, userId: string) {
     }
   )
 
-  // Step 1: Get the user's role_id and payment_status
+  // Combined single query using PostgREST relation join to fetch both role and user info in a single fetch
   const { data: userData, error: userError } = await supabaseAdmin
     .from('users')
-    .select('payment_status, role_id')
+    .select('payment_status, role_id, user_roles(permissions_level, name)')
     .eq('id', userId)
-    .single()
+    .limit(1)
+    .maybeSingle() as any
 
-  if (userError || !userData?.role_id) {
-    console.log(`[DB] User query failed or no role_id: ${userError?.message}`)
-    return { roleLevel: 1, paymentStatus: userData?.payment_status ?? 'pending' }
+  if (userError || !userData) {
+    console.log(`[DB] User join query failed: ${userError?.message}`)
+    return { roleLevel: 1, paymentStatus: 'pending' }
   }
 
-  // Step 2: Get permissions_level from the role
-  const { data: roleData, error: roleError } = await supabaseAdmin
-    .from('user_roles')
-    .select('permissions_level, name')
-    .eq('id', userData.role_id)
-    .limit(1)
-    .maybeSingle()
-
-  console.log(`[DB] role_id=${userData.role_id} name=${roleData?.name} permissions_level=${roleData?.permissions_level} roleError=${roleError?.message}`)
+  const roleData = userData.user_roles
+  console.log(`[DB] role_id=${userData.role_id} name=${roleData?.name} permissions_level=${roleData?.permissions_level} roleError=none`)
 
   return {
     roleLevel: roleData?.permissions_level ?? 1,
@@ -105,16 +99,41 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // ─── PERMAFIX: Always query DB for role using Service Role key ────────────
-  const { roleLevel, paymentStatus } = await getRoleFromDB(request, user.id)
+  // Check cached role/payment in cookies to bypass DB requests on active browsing
+  const cachedRole = request.cookies.get('user-role-level')?.value
+  const cachedPayment = request.cookies.get('user-payment-status')?.value
+
+  let roleLevel = 1
+  let paymentStatus = 'pending'
+
+  if (cachedRole !== undefined && cachedPayment !== undefined) {
+    roleLevel = parseInt(cachedRole, 10)
+    paymentStatus = cachedPayment
+  } else {
+    const dbResult = await getRoleFromDB(request, user.id)
+    roleLevel = dbResult.roleLevel
+    paymentStatus = dbResult.paymentStatus
+
+    // Cache the values in cookies for 90 seconds to speed up navigations
+    response.cookies.set('user-role-level', roleLevel.toString(), { maxAge: 90, path: '/' })
+    response.cookies.set('user-payment-status', paymentStatus, { maxAge: 90, path: '/' })
+  }
 
   // DIAGNOSTIC LOG — check your terminal to see these values
-  console.log(`[MIDDLEWARE] user=${user.email} path=${pathname} roleLevel=${roleLevel} paymentStatus=${paymentStatus} serviceKey=${process.env.SUPABASE_SERVICE_ROLE_KEY?.slice(0, 20)}...`)
+  console.log(`[MIDDLEWARE] user=${user.email} path=${pathname} roleLevel=${roleLevel} paymentStatus=${paymentStatus} cached=${cachedRole !== undefined}`)
 
   const redirect = (path: string) => {
     const url = request.nextUrl.clone()
     url.pathname = path
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Copy cache cookies to redirect response if they were freshly queried
+    if (cachedRole === undefined || cachedPayment === undefined) {
+      redirectResponse.cookies.set('user-role-level', roleLevel.toString(), { maxAge: 90, path: '/' })
+      redirectResponse.cookies.set('user-payment-status', paymentStatus, { maxAge: 90, path: '/' })
+    }
+    
+    return redirectResponse
   }
 
   // Login/Register Lockout for authenticated users
