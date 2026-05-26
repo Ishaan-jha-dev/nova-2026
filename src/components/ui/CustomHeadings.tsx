@@ -143,14 +143,14 @@ function PinwheelO() {
 
 export function WelcomeBackHeading() {
   return (
-    <div className="relative flex flex-row flex-wrap items-center justify-center w-full mt-2 mb-6 gap-x-3 gap-y-1">
+    <div className="relative flex flex-row flex-wrap items-center justify-center w-full mt-2 mb-6 gap-x-4 gap-y-2">
       {/* Welcome to */}
-      <span className="font-serif italic text-white/80 text-xl md:text-2xl font-light tracking-wide mr-1">
+      <span className="font-serif italic text-white/80 text-3xl md:text-5xl font-light tracking-wide mr-2">
         Welcome to
       </span>
 
       {/* NOVA */}
-      <div className="flex items-center text-2xl md:text-3xl text-white font-serif font-black tracking-widest uppercase">
+      <div className="flex items-center text-5xl md:text-7xl text-white font-serif font-black tracking-widest uppercase">
         <span>N</span>
         <div className="relative inline-flex items-center justify-center mx-[2px] w-[0.85em] h-[0.85em] animate-[spin_60s_linear_infinite]">
           <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
@@ -171,9 +171,9 @@ export function WelcomeBackHeading() {
       </div>
 
       {/* Unplugged '26 */}
-      <div className="flex items-baseline text-2xl md:text-3xl font-serif italic text-[#E8A020] tracking-wider drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)]">
+      <div className="flex items-baseline text-4xl md:text-6xl font-serif italic text-[#E8A020] tracking-wider drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)] mt-1">
         <span className="font-semibold">Unplugged</span>
-        <span className="font-black ml-1">'26</span>
+        <span className="font-black ml-2">'26</span>
       </div>
     </div>
   )
