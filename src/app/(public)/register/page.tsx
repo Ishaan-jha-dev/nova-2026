@@ -7,7 +7,7 @@ import { Input, Select } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Mail, User, Phone, MapPin, Hash, ShieldCheck, ArrowRight, ArrowLeft, Check, Users, School } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { checkAllowedEmail, approveUserPaymentStatus, checkIfUserExists } from './actions'
+import { checkAllowedEmail, approveUserPaymentStatus, checkIfUserExists, fetchPincodeInfo } from './actions'
 
 type UserType = 'iimb_student' | 'iimb_faculty'
 
@@ -62,11 +62,9 @@ export default function RegisterPage() {
       const fetchLocation = async () => {
         setPincodeLoading(true)
         try {
-          const res = await fetch(`https://api.postalpincode.in/pincode/${form.pincode}`)
-          const data = await res.json()
-          if (data[0].Status === 'Success') {
-            const { District, State } = data[0].PostOffice[0]
-            setForm(f => ({ ...f, city: District, state: State }))
+          const data = await fetchPincodeInfo(form.pincode)
+          if (data.success && data.city && data.state) {
+            setForm(f => ({ ...f, city: data.city, state: data.state }))
             setError(null)
           } else {
             setError('Invalid Pincode')

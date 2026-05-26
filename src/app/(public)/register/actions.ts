@@ -51,3 +51,20 @@ export async function checkIfUserExists(email: string): Promise<boolean> {
 
   return !!data
 }
+
+export async function fetchPincodeInfo(pincode: string) {
+  try {
+    const res = await fetch(`http://www.postalpincode.in/pincode/${pincode}`, {
+      cache: 'force-cache'
+    })
+    const data = await res.json()
+    if (data && data[0] && data[0].Status === 'Success') {
+      const { District, State } = data[0].PostOffice[0]
+      return { success: true, city: District, state: State }
+    }
+    return { success: false }
+  } catch (err) {
+    console.error('Error fetching pincode via server:', err)
+    return { success: false }
+  }
+}
