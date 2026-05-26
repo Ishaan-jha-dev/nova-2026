@@ -54,13 +54,16 @@ export async function checkIfUserExists(email: string): Promise<boolean> {
 
 export async function fetchPincodeInfo(pincode: string) {
   try {
-    const res = await fetch(`http://www.postalpincode.in/pincode/${pincode}`, {
+    const res = await fetch(`https://api.zippopotam.us/IN/${pincode}`, {
       cache: 'force-cache'
     })
-    const data = await res.json()
-    if (data && data[0] && data[0].Status === 'Success') {
-      const { District, State } = data[0].PostOffice[0]
-      return { success: true, city: District, state: State }
+    
+    if (res.ok) {
+      const data = await res.json()
+      if (data.places && data.places.length > 0) {
+        const place = data.places[0]
+        return { success: true, city: place['place name'], state: place['state'] }
+      }
     }
     return { success: false }
   } catch (err) {
