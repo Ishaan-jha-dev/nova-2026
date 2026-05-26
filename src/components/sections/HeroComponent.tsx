@@ -88,7 +88,7 @@ export default function HeroComponent() {
           style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: 400,
-            fontSize: 'clamp(0.6rem, 1.3vw, 0.85rem)',
+            fontSize: 'clamp(0.9rem, 2vw, 1.2rem)',
             letterSpacing: '0.35em',
             textTransform: 'uppercase',
             color: 'rgba(251,191,36,0.65)',
@@ -121,7 +121,7 @@ export default function HeroComponent() {
                 fontFamily: "'Playfair Display', serif",
                 fontStyle: 'italic',
                 fontWeight: 700,
-                fontSize: 'clamp(1.5rem, 3.8vw, 3rem)',
+                fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
                 color: 'rgba(251,191,36,0.9)',
                 letterSpacing: '0.06em',
               }}
@@ -135,7 +135,7 @@ export default function HeroComponent() {
               animationDelay: `${0.55 + 9 * 0.05}s`,
               fontFamily: "'Playfair Display', serif",
               fontWeight: 900,
-              fontSize: 'clamp(1.8rem, 4.2vw, 3.5rem)',
+              fontSize: 'clamp(3rem, 7vw, 5.5rem)',
               color: '#E8A020',
               marginLeft: '0.15em',
               background: 'none',
@@ -162,7 +162,7 @@ export default function HeroComponent() {
           <p style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: 500,
-            fontSize: 'clamp(0.6rem, 1.2vw, 0.78rem)',
+            fontSize: 'clamp(0.9rem, 1.8vw, 1.2rem)',
             letterSpacing: '0.28em',
             textTransform: 'uppercase',
             color: 'rgba(232,160,32,0.8)',
@@ -172,7 +172,7 @@ export default function HeroComponent() {
           <p style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 800,
-            fontSize: 'clamp(0.9rem, 2vw, 1.25rem)',
+            fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
             letterSpacing: '0.18em',
             color: 'rgba(255,255,255,0.88)',
             textShadow: '0 0 20px rgba(232,160,32,0.5)',
@@ -182,12 +182,12 @@ export default function HeroComponent() {
         </div>
 
         {/* CTAs */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '2.2rem', minHeight: '80px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem', marginTop: '3rem', minHeight: '80px' }}>
           {!loading && (
             user ? (
               <Link href="/dashboard" className="glass-cta-btn">
                 <span className="glass-cta-shine" />
-                <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(0.7rem, 1.4vw, 0.9rem)' }}>
+                <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}>
                   ENTER TO NOVA!!
                 </span>
               </Link>
@@ -195,7 +195,7 @@ export default function HeroComponent() {
               <>
                 <Link href="/register" className="glass-cta-btn">
                   <span className="glass-cta-shine" />
-                  <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(0.7rem, 1.4vw, 0.9rem)' }}>
+                  <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}>
                     REGISTER NOW
                   </span>
                 </Link>
@@ -203,11 +203,11 @@ export default function HeroComponent() {
                   href="/login"
                   className="text-nova-text-dim hover:text-nova-primary transition-colors duration-300"
                   style={{
-                    fontSize: '0.75rem',
+                    fontSize: '0.9rem',
                     letterSpacing: '0.35em',
                     textTransform: 'uppercase',
                     fontWeight: 700,
-                    marginTop: '1rem',
+                    marginTop: '1.5rem',
                     opacity: 0,
                     animation: 'fadeSlideUp 0.7s 1.3s ease forwards',
                   }}

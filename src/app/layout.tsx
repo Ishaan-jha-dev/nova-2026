@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Big_Shoulders_Display } from "next/font/google";
+import { Space_Grotesk, Big_Shoulders_Display, Playfair_Display, Caveat } from "next/font/google";
 import "./globals.css";
 import DevPanel from "@/components/ui/DevPanel";
 import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
@@ -16,6 +16,20 @@ const bigShoulders = Big_Shoulders_Display({
   variable: "--font-display",
   display: "swap",
   weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800", "900"],
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-handwritten",
+  display: "swap",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -36,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${spaceGrotesk.variable} ${bigShoulders.variable}`}>
+    <html lang="en" className={`${spaceGrotesk.variable} ${bigShoulders.variable} ${playfair.variable} ${caveat.variable}`}>
       <body className="bg-nova-bg text-nova-text font-body antialiased">
         <GlobalNavigation />
         {children}

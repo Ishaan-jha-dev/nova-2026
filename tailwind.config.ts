@@ -29,6 +29,8 @@ const config: Config = {
       fontFamily: {
         display: ["var(--font-display)", "'Arial Black'", "sans-serif"],
         body: ["var(--font-body)", "'Helvetica Neue'", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        handwritten: ["var(--font-handwritten)", "cursive"],
       },
       backgroundImage: {
         "nova-gradient": "linear-gradient(135deg, #0A0A0A 0%, #1a1505 50%, #0A0A0A 100%)",

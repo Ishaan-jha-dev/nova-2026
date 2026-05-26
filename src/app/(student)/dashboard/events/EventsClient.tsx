@@ -44,15 +44,15 @@ function isDeadlinePassed(deadline: string | null): boolean {
 
 // Map category title → local static image (Using original human-designed design assets)
 const CATEGORY_IMAGES: Record<string, string> = {
-  sports:     '/categories/sports.png',
-  cultural:   '/categories/culturals.png',
-  culturals:  '/categories/culturals.png',
-  technical:  '/categories/technicals.png',
-  technicals: '/categories/technicals.png',
-  fun:        '/categories/fun.png',
-  business:   '/categories/business.png',   // Custom premium business card image
-  engaging:   '/categories/engaging.png',   // Custom premium engaging card image
-  other:      '/categories/other.png',      // Custom premium other card image
+  sports:     '/categories/sports.png?v=3',
+  cultural:   '/categories/culturals.png?v=3',
+  culturals:  '/categories/culturals.png?v=3',
+  technical:  '/categories/technicals.png?v=3',
+  technicals: '/categories/technicals.png?v=3',
+  fun:        '/categories/fun.png?v=3',
+  business:   '/categories/business.png?v=3',   // Custom premium business card image
+  engaging:   '/categories/engaging.png?v=3',   // Custom premium engaging card image
+  other:      '/categories/other.png?v=3',      // Custom premium other card image
 }
 
 // Map category → gradient accent for border + glow matching the design assets
@@ -99,9 +99,9 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
   }
 
   return (
-    <div className="w-full flex flex-col items-center py-6 px-4">
-      {/* Category Cards (4 columns in one line on desktop) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl justify-center">
+    <div className="w-full flex flex-col items-center py-2 px-2">
+      {/* Category Cards (4 columns in one line on desktop, maximum width 6xl for larger cards) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-6xl justify-center">
         {categories.map((cat, i) => {
           const pinColor = getPinColor(cat.title)
           const img = getCategoryImage(cat.title)
@@ -113,7 +113,7 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
               className={`w-full relative transition-all duration-500 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] ${rotationClass}`}
               style={{
                 animation: `fadeSlideUp 0.6s ${i * 0.12 + 0.1}s cubic-bezier(0.16,1,0.3,1) both`,
-                height: 390,
+                height: 440,
               }}
             >
               <PinnedCard
@@ -121,15 +121,15 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 onClick={() => onSelect(cat.id)}
                 className="h-full"
               >
-                {/* Category image poster */}
-                <div className="relative w-full h-52 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
+                {/* Category image poster - enlarged to h-64 */}
+                <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-3 border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
                   {img ? (
                     <Image
                       src={img}
                       alt={cat.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="240px"
+                      sizes="280px"
                       priority
                     />
                   ) : (
@@ -144,7 +144,7 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                     {cat.title}
                   </h3>
                   
-                  <div className="text-center pt-2">
+                  <div className="text-center pt-1">
                     <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/50 group-hover:text-nova-primary transition-all duration-300 group-hover:translate-x-1 uppercase tracking-widest">
                       Explore <ChevronRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </span>
@@ -393,6 +393,45 @@ export function EventsClient({
     }
   }, [])
 
+  // Auto-select event from URL query parameter (e.g. ?eventId=xxx or ?event=xxx)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && events.length > 0) {
+      const params = new URLSearchParams(window.location.search)
+      const urlEventId = params.get('eventId') || params.get('event')
+      if (urlEventId) {
+        const found = events.find(e => e.id === urlEventId)
+        if (found) {
+          setSelectedEvent(found)
+          if (found.category_id) {
+            setActiveCategoryId(found.category_id)
+            setView('category')
+          }
+        }
+      }
+    }
+  }, [events])
+
+  // Synchronize URL query parameters with selectedEvent state
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      if (selectedEvent) {
+        if (params.get('eventId') !== selectedEvent.id) {
+          params.set('eventId', selectedEvent.id)
+          window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`)
+        }
+      } else {
+        if (params.has('eventId') || params.has('event')) {
+          params.delete('eventId')
+          params.delete('event')
+          const newSearch = params.toString()
+          const newPath = window.location.pathname + (newSearch ? `?${newSearch}` : '')
+          window.history.replaceState({}, '', newPath)
+        }
+      }
+    }
+  }, [selectedEvent])
+
   const loadLeaderRequests = async (teamId: string) => {
     setLoadingRequests(true)
     const supabase = createClient()
@@ -554,7 +593,7 @@ export function EventsClient({
     <>
       {/* Tabs Selector */}
       {view !== 'search' && (
-        <div className="flex justify-center mt-6 mb-8 relative z-10">
+        <div className="flex justify-center mt-1 mb-4 relative z-10">
           <div className="flex bg-black/40 backdrop-blur-md p-1.5 rounded-2xl border border-white/10">
             <button
               onClick={() => {
@@ -598,7 +637,7 @@ export function EventsClient({
       {view !== 'search' && activeTab === 'all' && (
         <>
           {view === 'categories' && (
-            <div className="w-full py-12 flex flex-col items-center justify-center min-h-[300px]">
+            <div className="w-full py-2 flex flex-col items-center justify-center min-h-[300px]">
               <CategoryGrid 
                 categories={categories} 
                 onSelect={(id) => {
