@@ -5,6 +5,7 @@ import { QRDisplay } from '@/components/ui/QRDisplay'
 import { ArrowRight, Megaphone, Download, Lock } from 'lucide-react'
 import { CountdownTimer } from '@/components/ui/CountdownTimer'
 import type { Metadata } from 'next'
+import { MandalaCorner } from '@/components/layout/PageWrapper'
 
 export const metadata: Metadata = { title: 'Dashboard | Nova Unplugged 2026' }
 
@@ -14,30 +15,58 @@ function BackgroundLayer() {
     <div className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundColor: '#0B0B0B', overflow: 'hidden' }}>
       {/* Dimmed dot grid */}
       <div className="absolute inset-0" style={{
-        backgroundImage: 'radial-gradient(circle at center, rgba(232,160,32,0.15) 1px, transparent 1.5px)',
-        backgroundSize: '40px 40px'
+        backgroundImage: `
+          radial-gradient(ellipse at 50% 0%,   rgba(232,160,32,0.08) 0%, transparent 55%),
+          radial-gradient(ellipse at 0%  100%, rgba(232,160,32,0.05) 0%, transparent 50%),
+          radial-gradient(ellipse at 100% 100%, rgba(232,160,32,0.05) 0%, transparent 50%),
+          radial-gradient(circle at center, rgba(232,160,32,0.15) 1.5px, transparent 1.5px)
+        `,
+        backgroundSize: 'auto, auto, auto, 36px 36px'
       }} />
-      {/* Corner rotating mandalas (faint) */}
-      <div className="absolute -top-[40vmin] -left-[40vmin] w-[80vmin] h-[80vmin] animate-[spin_60s_linear_infinite] opacity-30">
-        <svg viewBox="0 0 100 100" fill="none" stroke="#E8A020" strokeWidth="0.2">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <path key={i} d={`M50,50 L${50+45*Math.cos(i*Math.PI/6)},${50+45*Math.sin(i*Math.PI/6)}`} />
-          ))}
-          <circle cx="50" cy="50" r="20" />
-          <circle cx="50" cy="50" r="35" strokeDasharray="2 2" />
-          <circle cx="50" cy="50" r="45" />
-        </svg>
+
+      {/* Top-left detailed mandala */}
+      <div
+        className="mandala-spin-slow"
+        style={{
+          position: 'absolute',
+          top:  '-38vmin',
+          left: '-38vmin',
+          width:  '76vmin',
+          height: '76vmin',
+        }}
+      >
+        <MandalaCorner uid="db-tl" opacity={0.5} />
       </div>
-      <div className="absolute -bottom-[40vmin] -right-[40vmin] w-[80vmin] h-[80vmin] animate-[spin_60s_linear_infinite] opacity-30">
-        <svg viewBox="0 0 100 100" fill="none" stroke="#E8A020" strokeWidth="0.2">
-          {Array.from({ length: 12 }).map((_, i) => (
-            <path key={i} d={`M50,50 L${50+45*Math.cos(i*Math.PI/6)},${50+45*Math.sin(i*Math.PI/6)}`} />
-          ))}
-          <circle cx="50" cy="50" r="20" />
-          <circle cx="50" cy="50" r="35" strokeDasharray="2 2" />
-          <circle cx="50" cy="50" r="45" />
-        </svg>
+
+      {/* Bottom-right detailed mandala */}
+      <div
+        className="mandala-spin-slow"
+        style={{
+          position: 'absolute',
+          bottom: '-38vmin',
+          right:  '-38vmin',
+          width:  '76vmin',
+          height: '76vmin',
+        }}
+      >
+        <MandalaCorner uid="db-br" opacity={0.5} />
       </div>
+
+      {/* Ambient glows */}
+      <div style={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%,-50%)',
+        width: '70vw', height: '50vh',
+        background: 'radial-gradient(ellipse, rgba(232,160,32,0.05) 0%, transparent 70%)',
+        filter: 'blur(40px)',
+      }} />
+      <div style={{
+        position: 'absolute', top: 0, left: '50%',
+        transform: 'translateX(-50%)',
+        width: '60vw', height: '25vh',
+        background: 'radial-gradient(ellipse, rgba(251,191,36,0.04) 0%, transparent 70%)',
+        filter: 'blur(60px)',
+      }} />
     </div>
   )
 }

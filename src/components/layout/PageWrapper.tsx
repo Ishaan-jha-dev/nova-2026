@@ -14,7 +14,7 @@ interface PageWrapperProps {
 }
 
 /** Intricate SVG Mandala — unique filter IDs per instance */
-function MandalaCorner({ uid, opacity = 0.45 }: { uid: string; opacity?: number }) {
+export function MandalaCorner({ uid, opacity = 0.45 }: { uid: string; opacity?: number }) {
   const gradId = `mg-${uid}`
   const filterId = `glow-${uid}`
 
