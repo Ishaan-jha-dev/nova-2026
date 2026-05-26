@@ -404,3 +404,32 @@ body {
   box-shadow: 0 0 15px rgba(232, 160, 32, 0.2);
   transform: translateY(-1px);
 }
+
+/* ── Mandala rotation animations ─────────────────────── */
+@keyframes mandalaSpinSlow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes mandalaSpinSlowRev {
+  from { transform: rotate(360deg); }
+  to   { transform: rotate(0deg); }
+}
+
+.mandala-spin-slow {
+  animation: mandalaSpinSlow 60s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+.mandala-spin-slow-rev {
+  animation: mandalaSpinSlowRev 60s linear infinite;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .mandala-spin-slow,
+  .mandala-spin-slow-rev {
+    animation: none;
+  }
+}

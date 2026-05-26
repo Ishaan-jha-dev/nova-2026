@@ -90,30 +90,29 @@ function getPinColor(title?: string | null): 'pink' | 'orange' | 'blue' | 'purpl
 function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onSelect: (id: string) => void }) {
   const getRotationClass = (i: number) => {
     const rotations = [
-      'rotate-[-2.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
-      'rotate-[1.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
-      'rotate-[-1.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
-      'rotate-[2.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
+      'rotate-[-2deg] hover:rotate-0 hover:scale-[1.04] hover:z-30',
+      'rotate-[0deg]  hover:rotate-0 hover:scale-[1.04] hover:z-30',
+      'rotate-[2deg]  hover:rotate-0 hover:scale-[1.04] hover:z-30',
     ]
     return rotations[i % rotations.length]
   }
 
   return (
     <div className="w-full flex flex-col items-center py-2 px-2">
-      {/* Category Cards (4 columns in one line on desktop, maximum width 6xl for larger cards) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 w-full max-w-6xl justify-center">
+      {/* 3-column grid — fills full width, large symmetric cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         {categories.map((cat, i) => {
           const pinColor = getPinColor(cat.title)
           const img = getCategoryImage(cat.title)
           const rotationClass = getRotationClass(i)
-          
+
           return (
             <div
               key={cat.id}
               className={`w-full relative transition-all duration-500 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] ${rotationClass}`}
               style={{
                 animation: `fadeSlideUp 0.6s ${i * 0.12 + 0.1}s cubic-bezier(0.16,1,0.3,1) both`,
-                height: 440,
+                height: 520,
               }}
             >
               <PinnedCard
@@ -121,15 +120,15 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 onClick={() => onSelect(cat.id)}
                 className="h-full"
               >
-                {/* Category image poster - enlarged to h-64 */}
-                <div className="relative w-full h-64 rounded-2xl overflow-hidden mb-3 border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
+                {/* Category image poster */}
+                <div className="relative w-full h-80 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                   {img ? (
                     <Image
                       src={img}
                       alt={cat.title}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
-                      sizes="280px"
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       priority
                     />
                   ) : (
@@ -140,13 +139,13 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 </div>
 
                 <div className="flex flex-col flex-1 justify-between">
-                  <h3 className="font-display font-black text-2xl uppercase tracking-wider text-white text-center leading-tight">
+                  <h3 className="font-display font-black text-3xl uppercase tracking-wider text-white text-center leading-tight">
                     {cat.title}
                   </h3>
-                  
-                  <div className="text-center pt-1">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/50 group-hover:text-nova-primary transition-all duration-300 group-hover:translate-x-1 uppercase tracking-widest">
-                      Explore <ChevronRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
+
+                  <div className="text-center pt-2">
+                    <span className="inline-flex items-center gap-1.5 text-sm font-bold text-white/50 group-hover:text-nova-primary transition-all duration-300 group-hover:translate-x-1 uppercase tracking-widest">
+                      Explore <ChevronRight size={14} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </span>
                   </div>
                 </div>
