@@ -73,7 +73,7 @@ export function PaymentForm({ userData, submission, userId }: PaymentFormProps) 
         .update({ payment_status: 'pending' })
         .eq('id', userId)
 
-      router.refresh()
+      window.location.reload()
     })
   }
 
@@ -129,7 +129,7 @@ export function PaymentForm({ userData, submission, userId }: PaymentFormProps) 
             <div className="flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-slate-50 border border-slate-100 text-slate-500 text-xs font-mono mb-6 mx-auto w-fit">
               UTR: {submission.utr_number}
             </div>
-            <Button variant="outline" size="sm" onClick={() => router.refresh()} className="mx-auto">
+            <Button variant="outline" size="sm" onClick={() => window.location.reload()} className="mx-auto">
               Refresh Status
             </Button>
           </PinnedCard>

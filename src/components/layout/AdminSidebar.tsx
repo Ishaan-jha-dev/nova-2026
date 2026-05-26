@@ -49,7 +49,7 @@ export function AdminSidebar({ roleLevel, userName, userEmail }: AdminSidebarPro
   const handleSignOut = async () => {
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/login')
+    window.location.href = '/login'
   }
 
   const roleLabel = ['', 'Student', 'Volunteer', 'OC Team', 'Admin', 'Super Admin'][roleLevel] || 'Admin'
