@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { QRDisplay } from '@/components/ui/QRDisplay'
-import { ArrowRight, Megaphone, Download, Lock } from 'lucide-react'
+import { ArrowRight, Megaphone, Lock } from 'lucide-react'
 import { CountdownTimer } from '@/components/ui/CountdownTimer'
 import type { Metadata } from 'next'
 import { MandalaCorner } from '@/components/layout/PageWrapper'
@@ -340,14 +340,12 @@ export default async function DashboardPage() {
 
               {isApproved && userData?.entry_code ? (
                 <div className="w-full flex flex-col items-center flex-1">
-                  <div className="bg-white p-5 rounded-3xl mb-4 w-[280px] h-[280px] flex items-center justify-center shadow-xl">
-                    <QRDisplay value={userData.entry_code} size={240} downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`} />
-                  </div>
-                  
-                  <button className="w-full flex items-center justify-center gap-2 rounded-xl py-4 mb-auto font-bold uppercase tracking-[0.1em] text-[11px] text-[#B48C0A] hover:bg-white/5 transition-all"
-                    style={{ background: '#291A05', border: '1px solid #59450C' }}>
-                    <Download size={14} /> DOWNLOAD QR
-                  </button>
+                  <QRDisplay
+                    value={userData.entry_code}
+                    size={240}
+                    downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`}
+                    isDashboard={true}
+                  />
 
                   <div className="w-full rounded-2xl p-6 mt-8 mb-2 text-left" style={{ background: '#1A1102', border: '1px solid #4D3308' }}>
                     <p className="font-black text-[15px] uppercase text-white mb-1">{userData?.full_name}</p>

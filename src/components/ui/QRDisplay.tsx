@@ -10,9 +10,10 @@ interface QRDisplayProps {
   label?: string
   downloadName?: string
   hideDownload?: boolean
+  isDashboard?: boolean
 }
 
-export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr', hideDownload = false }: QRDisplayProps) {
+export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr', hideDownload = false, isDashboard = false }: QRDisplayProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -36,6 +37,23 @@ export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr', 
     a.href = url
     a.download = `${downloadName}.png`
     a.click()
+  }
+
+  if (isDashboard) {
+    return (
+      <div className="w-full flex flex-col items-center flex-1">
+        <div className="bg-white p-5 rounded-3xl mb-4 w-[280px] h-[280px] flex items-center justify-center shadow-xl">
+          <canvas ref={canvasRef} style={{ display: 'block' }} className="rounded-xl" />
+        </div>
+        <button
+          onClick={handleDownload}
+          className="w-full flex items-center justify-center gap-2 rounded-xl py-4 mb-auto font-bold uppercase tracking-[0.1em] text-[11px] text-[#B48C0A] hover:bg-white/5 transition-all"
+          style={{ background: '#291A05', border: '1px solid #59450C' }}
+        >
+          <Download size={14} /> DOWNLOAD QR
+        </button>
+      </div>
+    )
   }
 
   return (
