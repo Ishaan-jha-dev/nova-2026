@@ -129,22 +129,10 @@ export default async function DashboardPage() {
       </div>
 
       <div className="relative z-10 flex-1 flex flex-col">
-        {/* TOP NAV */}
-        <nav className="flex items-start justify-between px-4 pt-4 w-full">
-          <Link href="/" className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:bg-white/10"
-            style={{ background: 'rgba(232,160,32,0.05)', border: '1.5px solid rgba(232,160,32,0.2)' }}>
-            <ArrowLeft size={18} style={{ color: '#E8A020' }} />
-          </Link>
-          <Link href="/dashboard/events" className="w-10 h-10 rounded-xl flex items-center justify-center transition-all hover:bg-white/10"
-            style={{ background: 'rgba(232,160,32,0.05)', border: '1.5px solid rgba(232,160,32,0.2)' }}>
-            <Menu size={18} style={{ color: '#E8A020' }} />
-          </Link>
-        </nav>
-
         {/* HEADER (Invisible in reference, but keeping minimal or removed? The reference image doesn't show "Welcome to NOVA UNPLUGGED '26". It just shows the cards. Let's keep it but minimal so cards can fit) */}
         
         {/* CARDS GRID */}
-        <main className="flex-1 w-full max-w-[1300px] mx-auto px-4 pb-12 pt-6 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+        <main className="flex-1 w-full max-w-[1300px] mx-auto px-4 pb-12 pt-20 grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch">
           
           {/* CARD 01 · MY EVENTS */}
           <div className="relative flex flex-col" style={{ paddingTop: '20px' }}>
