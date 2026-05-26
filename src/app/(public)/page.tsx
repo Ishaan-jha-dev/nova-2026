@@ -155,7 +155,7 @@ export default function HomePage() {
                   key={f.title}
                   className={`bento-item shimmer-card group ${delayClass} flex flex-col items-center p-4`}
                 >
-                  <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                  <div className="relative w-full aspect-square rounded-xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
                     <Image src={f.image} alt={f.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
                   <h3 className="font-display font-bold text-lg text-white mb-2 text-center drop-shadow-md px-2">{f.title}</h3>
