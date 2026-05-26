@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { QRDisplay } from '@/components/ui/QRDisplay'
-import { ArrowRight, Megaphone, Calendar, Download } from 'lucide-react'
+import { ArrowRight, Megaphone, Calendar, Download, Lock } from 'lucide-react'
 import { CountdownTimer } from '@/components/ui/CountdownTimer'
 import type { Metadata } from 'next'
 
