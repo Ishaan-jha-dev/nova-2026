@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Trash2, Plus, Users, Mail } from 'lucide-react'
+import { Trash2, Plus, Users, Mail, Edit2, Check, X } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { formatIST } from '@/lib/utils/dateUtils'
@@ -17,6 +17,10 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
   const [bulkEmails, setBulkEmails] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  
+  const [editingId, setEditingId] = useState<string | null>(null)
+  const [editEmail, setEditEmail] = useState('')
+  const [editGmail, setEditGmail] = useState('')
 
   const supabase = createClient()
 
@@ -136,6 +140,33 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
     })
   }
 
+  const handleEditSave = async (id: string) => {
+    if (!editEmail.trim() || !editGmail.trim()) return
+
+    setError(null)
+    setSuccess(null)
+    startTransition(async () => {
+      try {
+        const { error: updateError } = await supabase
+          .from('allowed_emails')
+          .update({ email: editEmail.trim().toLowerCase(), gmail: editGmail.trim().toLowerCase() })
+          .eq('id', id)
+
+        if (updateError) {
+          if (updateError.code === '23505') throw new Error('Email already exists in another record')
+          throw updateError
+        }
+
+        setEmails(prev => prev.map(e => e.id === id ? { ...e, email: editEmail.trim().toLowerCase(), gmail: editGmail.trim().toLowerCase() } : e))
+        setEditingId(null)
+        setSuccess('Email updated successfully!')
+        router.refresh()
+      } catch (err: any) {
+        setError(err.message)
+      }
+    })
+  }
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Forms column */}
@@ -210,27 +241,82 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
           ) : (
             emails.map(item => (
               <div key={item.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
-                <div className="min-w-0 flex-1">
-                  <p className="font-medium text-nova-text truncate text-sm md:text-base">{item.email}</p>
-                  <p className="text-xs text-nova-primary truncate mt-0.5">{item.gmail}</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <p className="text-xs text-nova-muted truncate">
-                      Added by: {(item.users as any)?.full_name || 'Admin'}
-                    </p>
-                    <span className="text-[10px] text-nova-muted/50">•</span>
-                    <p className="text-xs text-nova-muted">
-                      {formatIST(item.created_at, 'MMM d, yyyy h:mm a')}
-                    </p>
+                {editingId === item.id ? (
+                  <div className="flex-1 flex flex-col md:flex-row gap-2 mr-4">
+                    <Input 
+                      value={editEmail} 
+                      onChange={e => setEditEmail(e.target.value)} 
+                      placeholder="IIMB Email"
+                      className="h-10 text-sm bg-black/40"
+                    />
+                    <Input 
+                      value={editGmail} 
+                      onChange={e => setEditGmail(e.target.value)} 
+                      placeholder="Gmail Address"
+                      className="h-10 text-sm bg-black/40"
+                    />
                   </div>
+                ) : (
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-nova-text truncate text-sm md:text-base">{item.email}</p>
+                    <p className="text-xs text-nova-primary truncate mt-0.5">{item.gmail}</p>
+                    <div className="flex items-center gap-3 mt-1">
+                      <p className="text-xs text-nova-muted truncate">
+                        Added by: {(item.users as any)?.full_name || 'Admin'}
+                      </p>
+                      <span className="text-[10px] text-nova-muted/50">•</span>
+                      <p className="text-xs text-nova-muted">
+                        {formatIST(item.created_at, 'MMM d, yyyy h:mm a')}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="flex gap-1 shrink-0 ml-4">
+                  {editingId === item.id ? (
+                    <>
+                      <button
+                        onClick={() => handleEditSave(item.id)}
+                        disabled={isPending}
+                        className="p-2 text-green-500 hover:bg-green-500/10 rounded-lg transition-colors disabled:opacity-50"
+                        title="Save"
+                      >
+                        <Check size={18} />
+                      </button>
+                      <button
+                        onClick={() => setEditingId(null)}
+                        disabled={isPending}
+                        className="p-2 text-nova-muted hover:text-white hover:bg-white/10 rounded-lg transition-colors disabled:opacity-50"
+                        title="Cancel"
+                      >
+                        <X size={18} />
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setEditingId(item.id)
+                          setEditEmail(item.email)
+                          setEditGmail(item.gmail)
+                        }}
+                        disabled={isPending}
+                        className="p-2 text-nova-muted hover:text-nova-primary hover:bg-nova-primary/10 rounded-lg transition-colors disabled:opacity-50"
+                        title="Edit"
+                      >
+                        <Edit2 size={18} />
+                      </button>
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        disabled={isPending}
+                        className="p-2 text-nova-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50"
+                        title="Remove"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+                    </>
+                  )}
                 </div>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  disabled={isPending}
-                  className="ml-4 p-2 text-nova-muted hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors disabled:opacity-50"
-                  title="Remove"
-                >
-                  <Trash2 size={18} />
-                </button>
               </div>
             ))
           )}
