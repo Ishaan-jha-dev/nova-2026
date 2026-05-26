@@ -113,6 +113,7 @@ export function AnnouncementsClient({
             
             {selected.image_url && (
               <div className="w-full rounded-xl overflow-hidden bg-white/5 border border-white/10">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={selected.image_url} alt="Announcement image" className="w-full h-auto object-contain max-h-[60vh]" />
               </div>
             )}

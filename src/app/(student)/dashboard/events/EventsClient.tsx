@@ -341,14 +341,13 @@ function CategoryEventsView({
 
 // ── Main EventsClient ─────────────────────────────────────────────────────────
 export function EventsClient({
-  events, categories, registeredEventIds, registeredTeamIds,
+  events, categories, registeredEventIds,
   requestStatusByTeam, requestStatusByEvent, registrations, userId
 }: EventsClientProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [view, setView] = useState<'categories' | 'category' | 'search'>('categories')
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null)
-  const [search, setSearch] = useState('')
   const [selectedEvent, setSelectedEvent] = useState<(typeof events)[0] | null>(null)
   const [teamModal, setTeamModal] = useState<'create' | 'browse' | null>(null)
   const [teamName, setTeamName] = useState('')
@@ -532,10 +531,6 @@ export function EventsClient({
   }
 
   // ── Search view (all events, no category filter) ─────────
-  const searchFiltered = useMemo(() =>
-    events.filter(e => !search || e.title.toLowerCase().includes(search.toLowerCase()) || (e.description || '').toLowerCase().includes(search.toLowerCase())),
-    [events, search]
-  )
 
   // ── Render ────────────────────────────────────────────────
   return (
@@ -1038,7 +1033,7 @@ export function EventsClient({
                             onChange={e => setSubmissionLink(e.target.value)} 
                             required 
                           />
-                          <p className="text-white/40 text-xs">As the team leader, please provide the link to your team's submission.</p>
+                          <p className="text-white/40 text-xs">As the team leader, please provide the link to your team&apos;s submission.</p>
                         </div>
                       )}
                       <Button variant="accent" loading={isPending} onClick={() => handleCreateTeam(selectedEvent.id, selectedEvent.is_submission_based)}>Create & Register</Button>
