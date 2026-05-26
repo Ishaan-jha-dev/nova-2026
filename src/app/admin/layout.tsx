@@ -23,7 +23,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const { data: allowedUser, error } = await supabase
     .from('allowed_emails')
     .select('id')
-    .eq('email', user.email?.toLowerCase().trim() || '')
+    .or(`email.eq.${user.email?.toLowerCase().trim() || ''},gmail.eq.${user.email?.toLowerCase().trim() || ''}`)
     .maybeSingle()
 
   if (!allowedUser) {
