@@ -9,9 +9,10 @@ interface QRDisplayProps {
   size?: number
   label?: string
   downloadName?: string
+  hideDownload?: boolean
 }
 
-export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr' }: QRDisplayProps) {
+export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr', hideDownload = false }: QRDisplayProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -44,13 +45,15 @@ export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr' }
       </div>
       {label && <p className="text-[#E8A020] font-display font-bold text-sm uppercase tracking-wider text-center mt-2">{label}</p>}
       
-      <button
-        onClick={handleDownload}
-        className="flex items-center justify-center gap-2 bg-[#E8A020]/5 border border-[#E8A020]/20 rounded-xl px-5 py-2.5 mt-1 w-full hover:bg-[#E8A020] hover:text-white text-[#E8A020] transition-all duration-300 group"
-      >
-        <Download size={16} />
-        <span className="font-bold uppercase tracking-wider text-xs">Download QR</span>
-      </button>
+      {!hideDownload && (
+        <button
+          onClick={handleDownload}
+          className="flex items-center justify-center gap-2 bg-[#E8A020]/5 border border-[#E8A020]/20 rounded-xl px-5 py-2.5 mt-1 w-full hover:bg-[#E8A020] hover:text-white text-[#E8A020] transition-all duration-300 group"
+        >
+          <Download size={16} />
+          <span className="font-bold uppercase tracking-wider text-xs">Download QR</span>
+        </button>
+      )}
     </div>
   )
 }
