@@ -320,6 +320,55 @@ function CategoryEventsView({
   )
 }
 
+function renderDescription(desc: string, colors: any) {
+  const paragraphs = desc.split('\n\n')
+  return (
+    <div className="flex flex-col gap-5 text-sm font-sans tracking-wide">
+      {paragraphs.map((p, idx) => {
+        const trimmed = p.trim()
+        if (!trimmed) return null
+
+        // Check if it is a main title header with "|"
+        if (trimmed.includes('|')) {
+          const parts = trimmed.split('|')
+          return (
+            <div key={idx} className="border-l-4 pl-4 py-1.5 mt-3 mb-2 font-display text-lg uppercase tracking-wider text-white" style={{ borderColor: colors.border }}>
+              <span className="font-extrabold text-[#FEF3C7]">{parts[0].trim()}</span>
+              {parts[1] && <span className="opacity-50 text-xs font-normal ml-2">| {parts[1].trim()}</span>}
+            </div>
+          )
+        }
+
+        // Check if it's a tagline/subtitle
+        if (trimmed.length < 80 && !trimmed.endsWith('.') && idx === 1) {
+          return (
+            <p key={idx} className="text-amber-400 font-serif italic text-base tracking-wide leading-relaxed pl-1 my-1">
+              &ldquo;{trimmed}&rdquo;
+            </p>
+          )
+        }
+
+        // Check if it's a section heading (short, no dot)
+        if (trimmed.length < 40 && !trimmed.endsWith('.')) {
+          return (
+            <h4 key={idx} className="font-sans font-black text-xs uppercase tracking-[0.25em] text-[#FEF3C7] mt-5 mb-1 flex items-center gap-2" style={{ color: colors.text }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-[#E8A020]" />
+              {trimmed}
+            </h4>
+          )
+        }
+
+        // Regular paragraph with nice format
+        return (
+          <p key={idx} className="text-white/70 leading-relaxed text-[13.5px] font-sans pl-1 whitespace-pre-line">
+            {trimmed}
+          </p>
+        )
+      })}
+    </div>
+  )
+}
+
 // ── Main EventsClient ─────────────────────────────────────────────────────────
 export function EventsClient({
   events, categories, registeredEventIds,
@@ -964,7 +1013,10 @@ export function EventsClient({
               </div>
 
               {selectedEvent.description && (
-                <p className="text-white/50 text-sm leading-relaxed whitespace-pre-wrap">{selectedEvent.description}</p>
+                <div className="mt-2 p-6 rounded-2xl border border-white/5 bg-[#14120F]/40 backdrop-blur-md relative overflow-hidden shadow-[inset_0_1px_1px_rgba(255,255,255,0.05),0_10px_30px_rgba(0,0,0,0.5)]">
+                  <div className="absolute top-0 left-0 w-24 h-[1.5px]" style={{ background: `linear-gradient(90deg, ${colors.border}, transparent)` }} />
+                  {renderDescription(selectedEvent.description, colors)}
+                </div>
               )}
 
               {/* External links */}
