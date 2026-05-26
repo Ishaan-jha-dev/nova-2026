@@ -15,19 +15,19 @@ const FEST_DATE = process.env.NEXT_PUBLIC_FEST_DATE || '2026-06-15T09:00:00+05:3
 
 const features = [
   {
-    image: '/home/speaker_sessions.png',
+    image: '/home/speaker_sessions.jpg',
     title: 'Speaker Sessions & Panels',
   },
   {
-    image: '/home/case_competitions.png',
+    image: '/home/case_competitions.jpg',
     title: 'Case & Pitch Competitions',
   },
   {
-    image: '/home/mun.png',
+    image: '/home/mun.jpg',
     title: 'Model UN (MUN)',
   },
   {
-    image: '/home/cultural.png',
+    image: '/home/cultural.jpg',
     title: 'Cultural Extravaganza',
   },
   {
@@ -35,7 +35,7 @@ const features = [
     title: 'Treasure Hunt & Games',
   },
   {
-    image: '/home/talent_show.png',
+    image: '/home/talent_show.jpg',
     title: 'Talent Show & Quizzes',
   },
   {
