@@ -50,9 +50,9 @@ const CATEGORY_IMAGES: Record<string, string> = {
   technical:  '/categories/technicals.png',
   technicals: '/categories/technicals.png',
   fun:        '/categories/fun.png',
-  business:   '/categories/technicals.png', // Map Business to human-designed technicals.png card
-  engaging:   '/categories/sports.png',     // Map Engaging to human-designed sports.png card
-  other:      '/categories/fun.png',        // Map Other to human-designed fun.png card
+  business:   '/categories/business.png',   // Custom premium business card image
+  engaging:   '/categories/engaging.png',   // Custom premium engaging card image
+  other:      '/categories/other.png',      // Custom premium other card image
 }
 
 // Map category → gradient accent for border + glow matching the design assets
@@ -63,9 +63,9 @@ const CATEGORY_COLORS: Record<string, { border: string; glow: string; text: stri
   technical:  { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' }, // Orange computer card
   technicals: { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' },
   fun:        { border: '#2980B9', glow: 'rgba(41,128,185,0.5)',   text: '#2980B9', bg: 'rgba(41,128,185,0.1)' }, // Blue fun card
-  business:   { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' },
-  engaging:   { border: '#E8A020', glow: 'rgba(232, 160, 32,0.5)',   text: '#E8A020', bg: 'rgba(232, 160, 32,0.1)' },
-  other:      { border: '#2980B9', glow: 'rgba(41,128,185,0.5)',   text: '#2980B9', bg: 'rgba(41,128,185,0.1)' },
+  business:   { border: '#c67f43', glow: 'rgba(198,127,67,0.5)',    text: '#c67f43', bg: 'rgba(198,127,67,0.1)' }, // Ochre/orange-brown business card
+  engaging:   { border: '#e05a47', glow: 'rgba(224,90,71,0.5)',    text: '#e05a47', bg: 'rgba(224,90,71,0.1)' }, // Peach-red engaging card
+  other:      { border: '#2a9d8f', glow: 'rgba(42,157,143,0.5)',   text: '#2a9d8f', bg: 'rgba(42,157,143,0.1)' }, // Teal-blue other card
 }
 
 function getCategoryColors(title?: string | null) {
@@ -113,7 +113,7 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
               className={`w-full relative transition-all duration-500 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] ${rotationClass}`}
               style={{
                 animation: `fadeSlideUp 0.6s ${i * 0.12 + 0.1}s cubic-bezier(0.16,1,0.3,1) both`,
-                height: 360,
+                height: 390,
               }}
             >
               <PinnedCard
@@ -122,7 +122,7 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 className="h-full"
               >
                 {/* Category image poster */}
-                <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
+                <div className="relative w-full h-52 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
                   {img ? (
                     <Image
                       src={img}
@@ -140,7 +140,7 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 </div>
 
                 <div className="flex flex-col flex-1 justify-between">
-                  <h3 className="font-display font-black text-xl uppercase tracking-wider text-white text-center leading-tight">
+                  <h3 className="font-display font-black text-2xl uppercase tracking-wider text-white text-center leading-tight">
                     {cat.title}
                   </h3>
                   
@@ -183,10 +183,10 @@ function EventStampCard({
       <PinnedCard
         pinColor={pinColor}
         onClick={onClick}
-        className="!p-4 h-full flex flex-col justify-between min-h-[300px]"
+        className="!p-5 h-full flex flex-col justify-between min-h-[350px]"
       >
         {/* Main image area */}
-        <div className="relative w-full h-36 rounded-xl overflow-hidden mb-3 border border-white/10 bg-white/5 flex-shrink-0 shadow-[0_0_10px_rgba(0,0,0,0.5)]">
+        <div className="relative w-full h-44 rounded-xl overflow-hidden mb-4 border border-white/10 bg-white/5 flex-shrink-0 shadow-[0_4px_12px_rgba(0,0,0,0.5)]">
           {event.banner_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -196,7 +196,7 @@ function EventStampCard({
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-white/5">
-              <span className="text-4xl opacity-40">
+              <span className="text-5xl opacity-40">
                 {catTitle === 'Cultural' || catTitle === 'Culturals' ? '🎭' : catTitle === 'Technical' || catTitle === 'Technicals' ? '💻' : catTitle === 'Sports' ? '🏆' : '⚡'}
               </span>
             </div>
@@ -221,28 +221,28 @@ function EventStampCard({
         </div>
 
         {/* Info area */}
-        <div className="flex flex-col flex-1 justify-between gap-2">
+        <div className="flex flex-col flex-1 justify-between gap-3">
           <div>
-            <h3 className="font-display font-black uppercase leading-tight line-clamp-2 text-white text-sm tracking-wide">
+            <h3 className="font-display font-black uppercase leading-tight line-clamp-2 text-white text-base tracking-wide">
               {event.title}
             </h3>
             {event.description && (
-              <p className="text-[10px] text-white/50 leading-tight line-clamp-2 font-medium uppercase tracking-wide mt-1">
+              <p className="text-xs text-white/50 leading-tight line-clamp-2 font-medium uppercase tracking-wide mt-1.5">
                 {event.description}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col gap-1 mt-auto pt-2 border-t border-white/10">
+          <div className="flex flex-col gap-1.5 mt-auto pt-2 border-t border-white/10">
             {event.venue && (
-              <p className="text-[10px] text-white/40 uppercase tracking-wider flex items-center gap-1">
-                <MapPin size={10} className="shrink-0 text-white/30" />
+              <p className="text-[11px] text-white/40 uppercase tracking-wider flex items-center gap-1.5">
+                <MapPin size={11} className="shrink-0 text-white/30" />
                 <span className="truncate">{event.venue}</span>
               </p>
             )}
             {event.event_date && (
-              <p className="text-[10px] text-white/40 uppercase tracking-wider flex items-center gap-1">
-                <Clock size={10} className="shrink-0 text-white/30" />
+              <p className="text-[11px] text-white/40 uppercase tracking-wider flex items-center gap-1.5">
+                <Clock size={11} className="shrink-0 text-white/30" />
                 <span>{event.event_date}</span>
               </p>
             )}
@@ -340,7 +340,7 @@ function CategoryEventsView({
           <p className="text-white/30 text-lg font-medium">No events found in this category</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
           {filtered.map(event => (
             <EventStampCard
               key={event.id}
