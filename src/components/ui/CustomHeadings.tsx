@@ -103,34 +103,15 @@ export function YourProfileHeading() {
 
 export function WelcomeBackHeading() {
   return (
-    <div className="relative inline-flex flex-col items-center justify-center mb-2 mt-4 w-full">
-      <h1 className="text-6xl md:text-7xl text-white drop-shadow-md flex items-center justify-center gap-4 w-full relative z-10">
-        <span className="font-serif font-light tracking-widest uppercase relative">
-          N<span className="lowercase italic tracking-normal mx-1">o</span>va
-          
-          {/* Elegant botanical sprig looping through the 'o' */}
-          <svg width="40" height="60" viewBox="0 0 40 60" fill="none" className="absolute left-[35%] -top-6 opacity-90 pointer-events-none">
-            <path d="M 10 50 Q 5 30 20 15 T 35 0" stroke="#FBBF24" strokeWidth="1" fill="none" />
-            <path d="M 17 22 Q 25 15 30 25 Q 20 30 17 22" fill="#E8A020" opacity="0.8" />
-            <path d="M 28 10 Q 35 5 40 15 Q 35 20 28 10" fill="#FBBF24" opacity="0.9" />
-          </svg>
+    <div className="relative inline-flex items-center justify-center w-full">
+      <h1 className="text-3xl md:text-4xl text-white drop-shadow-md flex items-center justify-center gap-3 w-full">
+        <span className="font-serif font-black tracking-[0.15em] uppercase text-white">
+          Nova
         </span>
-        <span className="font-handwritten normal-case text-[#E8A020] text-[1.1em] rotate-[-3deg] inline-block filter drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)] mt-4">
-          Dashboard
+        <span className="font-serif italic font-light text-[#E8A020] uppercase tracking-wider">
+          Unplugged
         </span>
       </h1>
-
-      {/* Subtle bottom swoosh */}
-      <svg width="250" height="20" viewBox="0 0 250 20" fill="none" className="mt-2 opacity-40">
-        <path d="M 0 10 Q 125 25 250 10" stroke="url(#gold-grad-dash)" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-        <defs>
-          <linearGradient id="gold-grad-dash" x1="0" y1="0" x2="250" y2="0" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#E8A020" stopOpacity="0" />
-            <stop offset="50%" stopColor="#FBBF24" stopOpacity="1" />
-            <stop offset="100%" stopColor="#E8A020" stopOpacity="0" />
-          </linearGradient>
-        </defs>
-      </svg>
     </div>
   )
 }
