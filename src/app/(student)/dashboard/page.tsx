@@ -196,13 +196,13 @@ export default async function DashboardPage() {
         <div className="flex flex-col gap-10">
           
           {/* CARD 02 · LIVE UPDATES */}
-          <div className="relative flex flex-col pt-[20px]">
+          <div className="relative flex flex-col flex-1 pt-[20px]">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white"
               style={{ background: 'linear-gradient(135deg, #2AABB8, #0A5C6B)', boxShadow: '0 0 15px rgba(42,171,184,0.5)' }}>
               02
             </div>
             
-            <div className="flex flex-col rounded-3xl px-6 pt-10 pb-6 relative overflow-hidden z-10"
+            <div className="flex-1 flex flex-col rounded-3xl px-6 pt-10 pb-6 relative overflow-hidden z-10"
               style={{ background: 'linear-gradient(180deg, #04171A 0%, #020B0D 100%)', border: '1.5px solid #0C4A54', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
               
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[150px] pointer-events-none opacity-40 z-0"
@@ -210,7 +210,7 @@ export default async function DashboardPage() {
 
               <div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none" style={{ backgroundImage: 'url("' + tealMotif + '")', backgroundRepeat: 'repeat-x', backgroundPosition: 'bottom' }} />
 
-              <div className="relative z-10 flex flex-col items-center w-full">
+              <div className="relative z-10 flex flex-col items-center w-full h-full">
                 <h2 className="font-bold text-base uppercase tracking-[0.25em] text-[#E0F7FA] text-center mb-1 font-sans">✦ LIVE UPDATES ✦</h2>
                 <div className="flex justify-center gap-1.5 mb-6">
                   <span className="w-1 h-1 rounded-full bg-[#1A9BAA] opacity-60" />
@@ -218,21 +218,23 @@ export default async function DashboardPage() {
                   <span className="w-1 h-1 rounded-full bg-[#1A9BAA] opacity-60" />
                 </div>
                 
-                <div className="w-full rounded-xl overflow-hidden mb-6" style={{ background: 'rgba(26,107,122,0.06)', border: '1px solid rgba(26,107,122,0.3)' }}>
+                <div className="w-full flex-1 flex flex-col gap-3 mb-6">
                   {announcements && announcements.length > 0 ? (
-                    <div className="flex items-center gap-3 p-4">
-                      <Megaphone size={16} color="#1A9BAA" />
-                      <p className="text-[#E0F7FA] text-xs font-medium tracking-wide">{announcements[0].title}</p>
-                    </div>
+                    announcements.map(ann => (
+                      <div key={ann.id} className="w-full rounded-xl flex items-center gap-3 p-4" style={{ background: 'rgba(26,107,122,0.06)', border: '1px solid rgba(26,107,122,0.3)' }}>
+                        <Megaphone size={16} color="#1A9BAA" />
+                        <p className="text-[#E0F7FA] text-xs font-medium tracking-wide">{ann.title}</p>
+                      </div>
+                    ))
                   ) : (
-                    <div className="flex items-center gap-3 p-4">
+                    <div className="w-full rounded-xl flex items-center gap-3 p-4" style={{ background: 'rgba(26,107,122,0.06)', border: '1px solid rgba(26,107,122,0.3)' }}>
                       <Megaphone size={16} color="#1A9BAA" />
                       <p className="text-[#E0F7FA] text-xs font-medium tracking-wide">Welcome to Nova Unplugged 2026</p>
                     </div>
                   )}
                 </div>
 
-                <div className="border-t border-dashed border-[#1A9BAA]/30 w-[120%] -ml-[10%] mb-4" />
+                <div className="border-t border-dashed border-[#1A9BAA]/30 w-[120%] -ml-[10%] mb-4 mt-auto" />
                 
                 <Link href="/dashboard/announcements" className="text-center w-full py-1">
                   <span className="font-bold uppercase tracking-[0.1em] text-[10px] text-[#1A9BAA] hover:brightness-125 transition-colors">
@@ -244,13 +246,13 @@ export default async function DashboardPage() {
           </div>
 
           {/* CARD 03 · COUNTDOWN */}
-          <div className="relative flex flex-col flex-1 pt-[20px]">
+          <div className="relative flex flex-col pt-[20px]">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white"
               style={{ background: 'linear-gradient(135deg, #9B5BBF, #4A1580)', boxShadow: '0 0 15px rgba(155,91,191,0.5)' }}>
               03
             </div>
             
-            <div className="flex-1 flex flex-col rounded-3xl p-8 relative overflow-hidden z-10"
+            <div className="flex flex-col rounded-3xl p-8 relative overflow-hidden z-10"
               style={{ background: 'linear-gradient(180deg, #160424 0%, #0B0212 100%)', border: '1.5px solid #3A1059', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
               
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[150px] pointer-events-none opacity-40 z-0"
@@ -269,7 +271,7 @@ export default async function DashboardPage() {
                   <span className="w-1 h-1 rounded-full bg-[#9B5BBF] opacity-60" />
                 </div>
                 
-                <div className="flex-1 flex flex-col items-center justify-center w-full pb-8">
+                <div className="flex flex-col items-center justify-center w-full pb-4">
                   <div className="rounded-[28px] px-8 py-8 w-full relative flex justify-center border-t-0 border-b-0 border-l border-r border-[#3A1059] before:absolute before:top-0 before:left-4 before:right-4 before:h-px before:bg-[#3A1059] after:absolute after:bottom-0 after:left-4 after:right-4 after:h-px after:bg-[#3A1059]">
                     <div className="absolute -top-1.5 -left-1.5 w-3 h-3 bg-[#9B5BBF] transform rotate-45" />
                     <div className="absolute -top-1.5 -right-1.5 w-3 h-3 bg-[#9B5BBF] transform rotate-45" />
