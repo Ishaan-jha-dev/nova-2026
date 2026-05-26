@@ -35,6 +35,13 @@ export function PinnedCard({
     purple: 'bg-[#8e44ad]/10 text-[#8e44ad]',
   }
 
+  const hoverBorders = {
+    pink: 'hover:border-[#E8A020]/60 hover:shadow-[0_20px_40px_rgba(232,160,32,0.2)] hover:-translate-y-2',
+    orange: 'hover:border-[#f37335]/60 hover:shadow-[0_20px_40px_rgba(243,115,53,0.2)] hover:-translate-y-2',
+    blue: 'hover:border-[#2980B9]/60 hover:shadow-[0_20px_40px_rgba(41,128,185,0.2)] hover:-translate-y-2',
+    purple: 'hover:border-[#8e44ad]/60 hover:shadow-[0_20px_40px_rgba(142,68,173,0.2)] hover:-translate-y-2',
+  }
+
   const Tag = onClick ? 'button' : 'div'
 
   return (
@@ -50,7 +57,7 @@ export function PinnedCard({
       {/* Card Body */}
       <Tag
         onClick={onClick}
-        className={`bg-[#111111] text-white rounded-[24px] p-6 shadow-[0_15px_30px_rgba(0,0,0,0.4)] border border-white/10 hover:-translate-y-2 hover:border-[#E8A020]/40 transition-all duration-300 h-full flex flex-col relative overflow-hidden group w-full ${className}`}
+        className={`bg-[#111111] text-white rounded-[24px] p-6 border border-white/10 shadow-[0_15px_30px_rgba(0,0,0,0.4)] ${hoverBorders[pinColor]} transition-all duration-300 h-full flex flex-col relative overflow-hidden group w-full ${className}`}
       >
         {/* Dark paper texture overlay removed for cleaner look */}
         <div className="hidden" />

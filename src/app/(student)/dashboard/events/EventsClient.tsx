@@ -42,7 +42,7 @@ function isDeadlinePassed(deadline: string | null): boolean {
   return target < now
 }
 
-// Map category title → local static image
+// Map category title → local static image (Using original human-designed design assets)
 const CATEGORY_IMAGES: Record<string, string> = {
   sports:     '/categories/sports.png',
   cultural:   '/categories/culturals.png',
@@ -50,16 +50,22 @@ const CATEGORY_IMAGES: Record<string, string> = {
   technical:  '/categories/technicals.png',
   technicals: '/categories/technicals.png',
   fun:        '/categories/fun.png',
+  business:   '/categories/technicals.png', // Map Business to human-designed technicals.png card
+  engaging:   '/categories/sports.png',     // Map Engaging to human-designed sports.png card
+  other:      '/categories/fun.png',        // Map Other to human-designed fun.png card
 }
 
-// Map category → gradient accent for border + glow
+// Map category → gradient accent for border + glow matching the design assets
 const CATEGORY_COLORS: Record<string, { border: string; glow: string; text: string; bg: string }> = {
   sports:     { border: '#E8A020', glow: 'rgba(232, 160, 32,0.5)',   text: '#E8A020', bg: 'rgba(232, 160, 32,0.1)' },
-  cultural:   { border: '#F0A500', glow: 'rgba(255,153,51,0.5)',   text: '#F0A500', bg: 'rgba(255,153,51,0.1)' },
-  culturals:  { border: '#F0A500', glow: 'rgba(255,153,51,0.5)',   text: '#F0A500', bg: 'rgba(255,153,51,0.1)' },
-  technical:  { border: '#FBBF24', glow: 'rgba(251,191,36,0.5)',   text: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
-  technicals: { border: '#FBBF24', glow: 'rgba(251,191,36,0.5)',   text: '#FBBF24', bg: 'rgba(251,191,36,0.1)' },
-  fun:        { border: '#00FF88', glow: 'rgba(0,255,136,0.4)',    text: '#00FF88', bg: 'rgba(0,255,136,0.1)' },
+  cultural:   { border: '#8e44ad', glow: 'rgba(142,68,173,0.5)',   text: '#8e44ad', bg: 'rgba(142,68,173,0.1)' }, // Purple dancer card
+  culturals:  { border: '#8e44ad', glow: 'rgba(142,68,173,0.5)',   text: '#8e44ad', bg: 'rgba(142,68,173,0.1)' },
+  technical:  { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' }, // Orange computer card
+  technicals: { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' },
+  fun:        { border: '#2980B9', glow: 'rgba(41,128,185,0.5)',   text: '#2980B9', bg: 'rgba(41,128,185,0.1)' }, // Blue fun card
+  business:   { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' },
+  engaging:   { border: '#E8A020', glow: 'rgba(232, 160, 32,0.5)',   text: '#E8A020', bg: 'rgba(232, 160, 32,0.1)' },
+  other:      { border: '#2980B9', glow: 'rgba(41,128,185,0.5)',   text: '#2980B9', bg: 'rgba(41,128,185,0.1)' },
 }
 
 function getCategoryColors(title?: string | null) {
@@ -74,29 +80,40 @@ function getCategoryImage(title?: string | null) {
 
 function getPinColor(title?: string | null): 'pink' | 'orange' | 'blue' | 'purple' {
   const key = (title || '').toLowerCase()
-  if (key === 'sports') return 'pink'
-  if (key === 'cultural' || key === 'culturals') return 'orange'
-  if (key === 'technical' || key === 'technicals') return 'blue'
-  return 'purple'
+  if (key === 'sports' || key === 'engaging') return 'pink'
+  if (key === 'cultural' || key === 'culturals') return 'purple' // Purple pin for purple card
+  if (key === 'technical' || key === 'technicals' || key === 'business') return 'orange' // Orange pin for orange card
+  return 'blue' // Blue pin for blue card (fun/other)
 }
 
 // ── Category Overview Page ──────────────────────────────────────────────────
 function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onSelect: (id: string) => void }) {
+  const getRotationClass = (i: number) => {
+    const rotations = [
+      'rotate-[-2.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
+      'rotate-[1.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
+      'rotate-[-1.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
+      'rotate-[2.5deg] hover:rotate-0 hover:scale-[1.05] hover:z-30',
+    ]
+    return rotations[i % rotations.length]
+  }
+
   return (
-    <div className="w-full flex flex-col items-center py-6">
-      {/* Category Cards */}
-      <div className="flex flex-wrap gap-8 justify-center max-w-5xl">
+    <div className="w-full flex flex-col items-center py-6 px-4">
+      {/* Category Cards (4 columns in one line on desktop) */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-5xl justify-center">
         {categories.map((cat, i) => {
           const pinColor = getPinColor(cat.title)
           const img = getCategoryImage(cat.title)
+          const rotationClass = getRotationClass(i)
+          
           return (
             <div
               key={cat.id}
-              className="flex-shrink-0"
+              className={`w-full relative transition-all duration-500 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] ${rotationClass}`}
               style={{
                 animation: `fadeSlideUp 0.6s ${i * 0.12 + 0.1}s cubic-bezier(0.16,1,0.3,1) both`,
-                width: 240,
-                height: 340,
+                height: 360,
               }}
             >
               <PinnedCard
@@ -105,13 +122,13 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                 className="h-full"
               >
                 {/* Category image poster */}
-                <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                <div className="relative w-full h-44 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_15px_rgba(0,0,0,0.3)]">
                   {img ? (
                     <Image
                       src={img}
                       alt={cat.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
                       sizes="240px"
                       priority
                     />
@@ -128,8 +145,8 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
                   </h3>
                   
                   <div className="text-center pt-2">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/50 group-hover:text-nova-primary transition-colors uppercase tracking-widest">
-                      Explore <ChevronRight size={12} />
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold text-white/50 group-hover:text-nova-primary transition-all duration-300 group-hover:translate-x-1 uppercase tracking-widest">
+                      Explore <ChevronRight size={12} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                     </span>
                   </div>
                 </div>
