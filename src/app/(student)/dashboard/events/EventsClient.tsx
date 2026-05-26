@@ -353,6 +353,7 @@ export function EventsClient({
   const [teamModal, setTeamModal] = useState<'create' | 'browse' | null>(null)
   const [teamName, setTeamName] = useState('')
   const [joinCode, setJoinCode] = useState('')
+  const [submissionLink, setSubmissionLink] = useState('')
   const [browseTeams, setBrowseTeams] = useState<any[]>([])
   const [loadingTeams, setLoadingTeams] = useState(false)
   const [actionError, setActionError] = useState<string | null>(null)
@@ -419,20 +420,30 @@ export function EventsClient({
     })
   }
 
-  const handleRegisterIndividual = (eventId: string) => {
+  const handleRegisterIndividual = (eventId: string, isSubmissionBased: boolean) => {
+    if (isSubmissionBased && !submissionLink.trim()) {
+      setActionError('Submission link is required for this event')
+      return
+    }
     setActionError(null)
     startTransition(async () => {
       const supabase = createClient() as any
-      const { error } = await supabase.from('registrations').insert({ user_id: userId, event_id: eventId })
+      const { error } = await supabase.from('registrations').insert({ 
+        user_id: userId, 
+        event_id: eventId,
+        submission_link: isSubmissionBased ? submissionLink.trim() : null
+      })
       if (error) { setActionError(error.message); return }
       setRegisteredIds(prev => new Set(Array.from(prev).concat(eventId)))
       setSelectedEvent(null)
+      setSubmissionLink('')
       router.refresh()
     })
   }
 
-  const handleCreateTeam = (eventId: string) => {
+  const handleCreateTeam = (eventId: string, isSubmissionBased: boolean) => {
     if (!teamName.trim()) { setActionError('Team name is required'); return }
+    if (isSubmissionBased && !submissionLink.trim()) { setActionError('Submission link is required for this event'); return }
     setActionError(null)
     startTransition(async () => {
       const supabase = createClient() as any
@@ -440,10 +451,15 @@ export function EventsClient({
         .from('teams').insert({ event_id: eventId, name: teamName.trim(), leader_id: userId }).select().single()
       if (teamErr || !team) { setActionError(teamErr?.message || 'Team creation failed'); return }
       await supabase.from('team_members').insert({ team_id: team.id, user_id: userId })
-      const { error: regErr } = await supabase.from('registrations').insert({ user_id: userId, event_id: eventId, team_id: team.id })
+      const { error: regErr } = await supabase.from('registrations').insert({ 
+        user_id: userId, 
+        event_id: eventId, 
+        team_id: team.id,
+        submission_link: isSubmissionBased ? submissionLink.trim() : null
+      })
       if (regErr) { setActionError(regErr.message); return }
       setRegisteredIds(prev => new Set(Array.from(prev).concat(eventId)))
-      setTeamModal(null); setSelectedEvent(null); setTeamName('')
+      setTeamModal(null); setSelectedEvent(null); setTeamName(''); setSubmissionLink('')
       router.refresh()
     })
   }
@@ -643,6 +659,13 @@ export function EventsClient({
                               <span>{event.event_date}{event.start_time ? ` · ${event.start_time}` : ''}</span>
                             </span>
                           )}
+                          <button
+                            onClick={() => handleWithdrawClick(event.id)}
+                            disabled={isPending}
+                            className="mt-1 text-[10px] text-red-400 hover:text-red-300 hover:bg-red-400/10 transition-colors px-2.5 py-1 rounded-md border border-red-500/20 flex items-center gap-1.5 ml-auto"
+                          >
+                            <LogOut size={10} /> Withdraw
+                          </button>
                         </div>
                       </div>
 
@@ -656,6 +679,32 @@ export function EventsClient({
                         >
                           <ExternalLink size={12} /> Join WhatsApp / Telegram Group
                         </a>
+                      )}
+
+                      {/* Submission Link Display */}
+                      {event?.is_submission_based && (
+                        <div className="mt-1 bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div>
+                            <span className="text-emerald-400 text-xs font-bold uppercase tracking-wider flex items-center gap-2">
+                              Submission Link
+                            </span>
+                            <p className="text-emerald-400/60 text-[10px] mt-0.5">Required for this event</p>
+                          </div>
+                          {reg.submission_link ? (
+                            <a
+                              href={reg.submission_link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="text-white text-xs font-semibold hover:bg-emerald-500/30 transition-colors flex items-center gap-2 bg-emerald-500/20 px-4 py-2 rounded-lg"
+                            >
+                              <ExternalLink size={14} /> View Submission
+                            </a>
+                          ) : (
+                            <span className="text-emerald-400/50 text-xs italic bg-emerald-500/5 px-3 py-1.5 rounded-lg border border-emerald-500/10">
+                              Not provided
+                            </span>
+                          )}
+                        </div>
                       )}
 
                       {/* Team info inside PinnedCard */}
@@ -818,7 +867,7 @@ export function EventsClient({
       )}
 
       {/* ── Event Detail Modal ── */}
-      <Modal open={!!selectedEvent} onClose={() => { setSelectedEvent(null); setTeamModal(null) }} size="lg" title={selectedEvent?.title}>
+      <Modal open={!!selectedEvent} onClose={() => { setSelectedEvent(null); setTeamModal(null); setSubmissionLink(''); setActionError(null) }} size="lg" title={selectedEvent?.title}>
         {selectedEvent && (() => {
           const isRegistered = registeredIds.has(selectedEvent.id)
           const deadlinePassed = isDeadlinePassed(selectedEvent.deadline)
@@ -930,9 +979,24 @@ export function EventsClient({
                   </Button>
                 </div>
               ) : selectedEvent.participation_type === 'individual' ? (
-                <Button variant="primary" size="lg" fullWidth loading={isPending} onClick={() => handleRegisterIndividual(selectedEvent.id)}>
-                  Register for this Event
-                </Button>
+                <div className="flex flex-col gap-3 animate-slide-up">
+                  {selectedEvent.is_submission_based && (
+                    <div className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-xl flex flex-col gap-2">
+                      <p className="text-emerald-400 text-sm font-semibold">This is a Submission-Based Event.</p>
+                      <Input 
+                        label="Submission Link (URL)" 
+                        placeholder="https://..." 
+                        value={submissionLink} 
+                        onChange={e => setSubmissionLink(e.target.value)} 
+                        required 
+                      />
+                      <p className="text-white/40 text-xs">Please provide the link to your submission (e.g. Google Drive, YouTube).</p>
+                    </div>
+                  )}
+                  <Button variant="primary" size="lg" fullWidth loading={isPending} onClick={() => handleRegisterIndividual(selectedEvent.id, selectedEvent.is_submission_based)}>
+                    Register for this Event
+                  </Button>
+                </div>
               ) : (
                 <div className="flex flex-col gap-3">
                   {pendingRequest && pendingRequest.status === 'pending' && (
@@ -954,22 +1018,35 @@ export function EventsClient({
                     </div>
                   )}
 
-                  {!pendingRequest && (
+                  {(!pendingRequest || pendingRequest.status !== 'pending') && (
                     <p className="text-white/40 text-sm text-center">Team event — choose an option:</p>
                   )}
                   <div className="grid grid-cols-2 gap-3">
-                    <Button variant="primary" icon={<Plus size={16} />} disabled={!!pendingRequest} onClick={() => setTeamModal('create')}>Create Team</Button>
-                    <Button variant="outline" icon={<LogIn size={16} />} onClick={() => { setTeamModal('browse'); loadBrowseTeams(selectedEvent.id) }}>{pendingRequest ? 'View Teams' : 'Join a Team'}</Button>
+                    <Button variant="primary" icon={<Plus size={16} />} disabled={pendingRequest?.status === 'pending'} onClick={() => setTeamModal('create')}>Create Team</Button>
+                    <Button variant="outline" icon={<LogIn size={16} />} onClick={() => { setTeamModal('browse'); loadBrowseTeams(selectedEvent.id) }}>{pendingRequest?.status === 'pending' ? 'View Teams' : 'Join a Team'}</Button>
                   </div>
-                  {teamModal === 'create' && !pendingRequest && (
+                  {teamModal === 'create' && (!pendingRequest || pendingRequest.status !== 'pending') && (
                     <div className="glass rounded-xl p-4 border border-nova-primary/30 flex flex-col gap-3 animate-slide-up">
                       <Input label="Team Name" placeholder="Enter team name" value={teamName} onChange={e => setTeamName(e.target.value)} />
-                      <Button variant="accent" loading={isPending} onClick={() => handleCreateTeam(selectedEvent.id)}>Create & Register</Button>
+                      {selectedEvent.is_submission_based && (
+                        <div className="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-xl flex flex-col gap-2">
+                          <p className="text-emerald-400 text-sm font-semibold">This is a Submission-Based Event.</p>
+                          <Input 
+                            label="Submission Link (URL)" 
+                            placeholder="https://..." 
+                            value={submissionLink} 
+                            onChange={e => setSubmissionLink(e.target.value)} 
+                            required 
+                          />
+                          <p className="text-white/40 text-xs">As the team leader, please provide the link to your team's submission.</p>
+                        </div>
+                      )}
+                      <Button variant="accent" loading={isPending} onClick={() => handleCreateTeam(selectedEvent.id, selectedEvent.is_submission_based)}>Create & Register</Button>
                     </div>
                   )}
                   {teamModal === 'browse' && (
                     <div className="glass rounded-xl p-4 border border-nova-primary/30 flex flex-col gap-3 animate-slide-up">
-                      {!pendingRequest && (
+                      {(!pendingRequest || pendingRequest.status !== 'pending') && (
                         <>
                           <Input label="Have a join code?" placeholder="6-char code e.g. A1B2C3" value={joinCode} onChange={e => setJoinCode(e.target.value.toUpperCase())} maxLength={6} />
                           <Button variant="outline" loading={isPending} onClick={() => handleJoinByCode(selectedEvent.id)}>Join by Code</Button>
@@ -977,7 +1054,7 @@ export function EventsClient({
                         </>
                       )}
                       <div>
-                        <p className="text-white/30 text-xs mb-3">{pendingRequest ? 'Teams in this event:' : 'Or request to join an open team:'}</p>
+                        <p className="text-white/30 text-xs mb-3">{pendingRequest?.status === 'pending' ? 'Teams in this event:' : 'Or request to join an open team:'}</p>
                         {loadingTeams ? <p className="text-white/30 text-sm text-center">Loading…</p> :
                           browseTeams.length === 0 ? <p className="text-white/30 text-sm text-center">No open teams yet.</p> :
                           <div className="flex flex-col gap-2 max-h-40 overflow-y-auto pr-1 custom-scrollbar">
@@ -994,7 +1071,7 @@ export function EventsClient({
                                   {isFull ? <span className="text-xs text-white/30">Full</span> :
                                     reqStatus === 'pending' ? <span className="text-xs text-yellow-400 font-medium">Pending</span> :
                                     reqStatus === 'rejected' ? <span className="text-xs text-red-400 font-medium">Rejected</span> :
-                                    <Button variant="outline" size="sm" disabled={!!pendingRequest} loading={isPending} onClick={() => handleRequestJoin(team.id)}>Request</Button>
+                                    <Button variant="outline" size="sm" disabled={pendingRequest?.status === 'pending'} loading={isPending} onClick={() => handleRequestJoin(team.id)}>Request</Button>
                                   }
                                 </div>
                               )

@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Users, UserX, Trash2 } from 'lucide-react'
+import { Users, UserX, Trash2, ExternalLink } from 'lucide-react'
 import { formatIST } from '@/lib/utils/dateUtils'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
@@ -175,6 +175,11 @@ export function RegistrationsClient({
                   <div className="flex items-center gap-3 mt-1">
                     <span className="text-xs text-nova-muted">{categoryTitle}</span>
                     <span className="text-xs text-nova-primary font-medium">{perEventCount[eventId] || regs.length} registered</span>
+                    {ev?.is_submission_based && (
+                      <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-400 border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 rounded ml-2">
+                        Submission Event
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -189,6 +194,7 @@ export function RegistrationsClient({
                         <th className="text-left px-5 py-3 hidden sm:table-cell">Email</th>
                         <th className="text-left px-5 py-3">Type</th>
                         <th className="text-left px-5 py-3 hidden md:table-cell">Registered</th>
+                        {ev?.is_submission_based && <th className="text-left px-5 py-3">Link</th>}
                         {adminRoleLevel >= 4 && <th className="text-right px-5 py-3">Actions</th>}
                       </tr>
                     </thead>
@@ -199,6 +205,17 @@ export function RegistrationsClient({
                           <td className="px-5 py-3 text-nova-muted text-xs hidden sm:table-cell">{(reg.users as any)?.email}</td>
                           <td className="px-5 py-3"><span className="text-nova-muted text-xs">Individual</span></td>
                           <td className="px-5 py-3 text-nova-muted text-xs hidden md:table-cell">{formatIST(reg.created_at, 'MMM d, h:mm a')}</td>
+                          {ev?.is_submission_based && (
+                            <td className="px-5 py-3 text-xs">
+                              {reg.submission_link ? (
+                                <a href={reg.submission_link} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-nova-primary hover:underline">
+                                  <ExternalLink size={12} /> View
+                                </a>
+                              ) : (
+                                <span className="text-nova-muted/50">—</span>
+                              )}
+                            </td>
+                          )}
                           {adminRoleLevel >= 4 && (
                             <td className="px-5 py-3 text-right">
                               <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg)}>Kick</Button>
@@ -235,6 +252,15 @@ export function RegistrationsClient({
                       )}
                     </div>
                     <table className="w-full text-sm">
+                      <thead className="border-b border-white/5">
+                        <tr className="text-nova-muted text-xs font-display tracking-wider uppercase">
+                          <th className="text-left px-4 sm:px-5 py-3 pl-4 sm:pl-8">Name</th>
+                          <th className="text-left px-4 sm:px-5 py-3 hidden sm:table-cell">Email</th>
+                          <th className="text-left px-4 sm:px-5 py-3 hidden md:table-cell">Registered</th>
+                          {ev?.is_submission_based && <th className="text-left px-4 sm:px-5 py-3">Link</th>}
+                          {adminRoleLevel >= 4 && <th className="text-right px-5 py-3">Actions</th>}
+                        </tr>
+                      </thead>
                       <tbody className="divide-y divide-white/5">
                         {teamRegs.map(reg => (
                           <tr key={reg.id} className="hover:bg-white/3 transition-colors">
@@ -250,6 +276,17 @@ export function RegistrationsClient({
                             </td>
                             <td className="px-4 sm:px-5 py-3 text-nova-muted text-xs hidden sm:table-cell">{(reg.users as any)?.email}</td>
                             <td className="px-4 sm:px-5 py-3 text-nova-muted text-xs hidden md:table-cell">{formatIST(reg.created_at, 'MMM d, h:mm a')}</td>
+                            {ev?.is_submission_based && (
+                              <td className="px-4 sm:px-5 py-3 text-xs">
+                                {reg.submission_link ? (
+                                  <a href={reg.submission_link} target="_blank" rel="noreferrer" className="flex items-center gap-1 text-nova-primary hover:underline">
+                                    <ExternalLink size={12} /> View
+                                  </a>
+                                ) : (
+                                  <span className="text-nova-muted/50">—</span>
+                                )}
+                              </td>
+                            )}
                             {adminRoleLevel >= 4 && (
                               <td className="px-5 py-3 text-right">
                                 <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg)}>Kick</Button>
