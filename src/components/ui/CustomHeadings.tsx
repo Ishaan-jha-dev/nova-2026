@@ -143,38 +143,18 @@ function PinwheelO() {
 
 export function WelcomeBackHeading() {
   return (
-    <div className="relative flex flex-row flex-wrap items-center justify-center w-full mt-2 mb-6 gap-x-4 gap-y-2">
-      {/* Welcome to */}
-      <span className="font-serif italic text-white/80 text-3xl md:text-5xl font-light tracking-wide mr-2">
-        Welcome to
-      </span>
-
-      {/* NOVA */}
-      <div className="flex items-center text-5xl md:text-7xl text-white font-serif font-black tracking-widest uppercase">
-        <span>N</span>
-        <div className="relative inline-flex items-center justify-center mx-[2px] w-[0.85em] h-[0.85em] animate-[spin_60s_linear_infinite]">
-          <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
-            {Array.from({ length: 14 }).map((_, i) => (
-              <g key={i} transform={`rotate(${(i * 360) / 14} 50 50)`}>
-                <polygon
-                  points="50,50 44,8 56,8"
-                  fill={i % 2 === 0 ? '#FBBF24' : '#E5E7EB'}
-                  fillOpacity={i % 2 === 0 ? 0.95 : 0.8}
-                />
-              </g>
-            ))}
-            <circle cx="50" cy="50" r="7" fill="#FBBF24" />
-            <circle cx="50" cy="50" r="3.5" fill="#fff" />
-          </svg>
-        </div>
-        <span>VA</span>
-      </div>
-
-      {/* Unplugged '26 */}
-      <div className="flex items-baseline text-4xl md:text-6xl font-serif italic text-[#E8A020] tracking-wider drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)] mt-1">
-        <span className="font-semibold">Unplugged</span>
-        <span className="font-black ml-2">'26</span>
-      </div>
+    <div className="relative flex flex-row flex-wrap items-center justify-center w-full -mt-6 mb-4 gap-x-3 gap-y-1">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl text-white drop-shadow-md flex items-center justify-center gap-3 w-full">
+        <span className="font-serif italic font-light text-white/90">
+          Welcome to
+        </span>
+        <span className="font-serif font-black tracking-widest uppercase text-white">
+          Nova
+        </span>
+        <span className="font-serif italic font-semibold text-[#E8A020] uppercase tracking-wider drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)]">
+          Unplugged <span className="font-black ml-1">'26</span>
+        </span>
+      </h1>
     </div>
   )
 }
