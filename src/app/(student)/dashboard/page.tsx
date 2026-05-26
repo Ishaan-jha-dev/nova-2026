@@ -68,9 +68,9 @@ export default async function DashboardPage() {
       <div className="w-full max-w-[1300px] px-6 relative z-10">
         
         {/* Header Title */}
-        <div className="text-center mb-16">
+        <div className="text-center mb-16 relative z-10 flex flex-col items-center">
           <WelcomeBackHeading />
-          <p className="text-white/50 font-medium mt-3 uppercase tracking-widest text-sm">Welcome back, {userData?.full_name?.split(' ')[0]}</p>
+          <p className="text-white/40 font-medium mt-1 tracking-[0.2em] text-xs uppercase">Welcome back, {userData?.full_name?.split(' ')[0]}</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 xl:gap-14">
