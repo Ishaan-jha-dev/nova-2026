@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { QRDisplay } from '@/components/ui/QRDisplay'
-import { ArrowRight, Megaphone, Calendar, Download, Lock } from 'lucide-react'
+import { ArrowRight, Megaphone, Download, Lock } from 'lucide-react'
 import { CountdownTimer } from '@/components/ui/CountdownTimer'
 import type { Metadata } from 'next'
 
@@ -86,7 +86,7 @@ export default async function DashboardPage() {
             <span className="text-[#B48C0A] text-xs">✦</span>
           </div>
           <h1 className="font-serif text-3xl lg:text-[42px] font-bold tracking-[0.15em] uppercase mt-1">
-            <span className="text-white">NOVA</span> <span className="text-[#D4A820]">UNPLUGGED '26</span>
+            <span className="text-white">NOVA</span> <span className="text-[#D4A820]">UNPLUGGED &apos;26</span>
           </h1>
           <div className="mt-4 opacity-60">
             <svg width="140" height="15" viewBox="0 0 140 15" fill="none" xmlns="http://www.w3.org/2000/svg">
