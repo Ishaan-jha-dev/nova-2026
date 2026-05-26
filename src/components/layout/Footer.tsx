@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Share2, MessageCircle, Link2, Mail } from 'lucide-react'
+import { Instagram, MessageCircle, Mail } from 'lucide-react'
 import { NovaLogo } from '@/components/ui/NovaLogo'
 
 export function Footer() {
@@ -16,8 +16,12 @@ export function Footer() {
               The annual college fest of IIM Bangalore. Cultural, technical, sports — all under one electric roof.
             </p>
             <div className="flex items-center gap-3">
-              {[Share2, MessageCircle, Link2, Mail].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 glass rounded-lg flex items-center justify-center text-nova-muted hover:text-nova-primary hover:border-nova-primary/50 transition-all">
+              {[
+                { Icon: Instagram, href: 'https://www.instagram.com/bbadbeiimb?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', label: 'Instagram' },
+                { Icon: MessageCircle, href: 'https://chat.whatsapp.com/Kc5eCJjVk5gCGDbP7xDaWM?mode=gi_t', label: 'WhatsApp' },
+                { Icon: Mail, href: 'mailto:nova.unplugged26@gmail.com', label: 'Email' }
+              ].map(({ Icon, href, label }, i) => (
+                <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="w-9 h-9 glass rounded-lg flex items-center justify-center text-nova-muted hover:text-nova-primary hover:border-nova-primary/50 transition-all">
                   <Icon size={16} />
                 </a>
               ))}
