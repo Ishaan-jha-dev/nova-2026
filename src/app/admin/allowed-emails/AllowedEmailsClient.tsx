@@ -22,6 +22,12 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
   const [editEmail, setEditEmail] = useState('')
   const [editGmail, setEditGmail] = useState('')
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
+  
+  const totalPages = Math.ceil(emails.length / itemsPerPage)
+  const paginatedEmails = emails.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
   const supabase = createClient()
 
   const handleAddSingle = async (e: React.FormEvent) => {
@@ -273,7 +279,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
               <p>No emails in the allowed list yet.</p>
             </div>
           ) : (
-            emails.map(item => (
+            paginatedEmails.map(item => (
               <div key={item.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                 {editingId === item.id ? (
                   <div className="flex-1 flex flex-col md:flex-row gap-2 mr-4">
@@ -355,6 +361,30 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
             ))
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-white/10 flex items-center justify-between bg-black/20">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-nova-muted font-medium">
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
