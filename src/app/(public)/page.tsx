@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { ArrowRight, Mic2, BriefcaseBusiness, Globe, Palette, Search, Star, Headphones, Users } from 'lucide-react'
+import { ArrowRight, ArrowDown, Mic2, BriefcaseBusiness, Globe, Palette, Search, Star, Headphones, Users, CreditCard, UserPlus, CalendarCheck, ChevronRight, ChevronDown } from 'lucide-react'
 import HeroComponent from '@/components/sections/HeroComponent'
 import MaintenanceAlert from '@/components/ui/MaintenanceAlert'
 import type { Metadata } from 'next'
@@ -75,8 +75,98 @@ export default function HomePage() {
     <div className="relative">
       <HeroComponent />
 
+      {/* ─── How It Works ───────────────────────────────────────── */}
+      <section className="py-20 px-4 relative bg-nova-bg z-10">
+        {/* Subtle ambient glow / bubble */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60vw] h-[30vh] bg-nova-primary/5 blur-[80px] rounded-full" />
+        </div>
+
+        <div className="max-w-6xl mx-auto relative z-10">
+          <div className="text-center mb-16 entrance-1">
+            <h2 className="font-display font-bold text-3xl sm:text-4xl text-nova-text mb-4 relative inline-block">
+              How It Works
+              <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-16 h-[3px] bg-gradient-to-r from-transparent via-nova-accent to-transparent rounded-full opacity-80" />
+            </h2>
+            <p className="text-nova-text-dim max-w-xl mx-auto mt-6">
+              Your journey to Nova Unplugged 2026 starts here in three simple steps.
+            </p>
+          </div>
+
+          <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 relative z-10 entrance-2">
+            
+            {/* Step 1 */}
+            <a 
+              href="https://enidhi.iimb.ac.in/?p_id=68F08B3E4815358A9DD8BE3AB499FB5A" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex-1 w-full md:w-auto nova-card rounded-3xl p-8 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-nova-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="w-14 h-14 rounded-full bg-nova-primary/20 border border-nova-primary/40 flex items-center justify-center mb-6 text-nova-primary shadow-[0_0_20px_rgba(232,160,32,0.2)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(232,160,32,0.4)] transition-all">
+                <CreditCard size={28} />
+              </div>
+              <div className="absolute top-4 left-6 text-5xl font-black text-white/5 select-none pointer-events-none">1</div>
+              <h3 className="font-display font-bold text-xl text-white mb-3">Complete Payment</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Pay the entry fee securely on the official IIMB eNidhi portal.
+              </p>
+            </a>
+
+            {/* Arrow */}
+            <div className="text-nova-primary/50 shrink-0 hidden md:block">
+              <ArrowRight size={32} />
+            </div>
+            <div className="text-nova-primary/50 shrink-0 block md:hidden">
+              <ArrowDown size={32} />
+            </div>
+
+            {/* Step 2 */}
+            <Link 
+              href="/login" 
+              className="flex-1 w-full md:w-auto nova-card rounded-3xl p-8 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-rose-500/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="w-14 h-14 rounded-full bg-rose-500/20 border border-rose-500/40 flex items-center justify-center mb-6 text-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.2)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(244,63,94,0.4)] transition-all">
+                <UserPlus size={28} />
+              </div>
+              <div className="absolute top-4 left-6 text-5xl font-black text-white/5 select-none pointer-events-none">2</div>
+              <h3 className="font-display font-bold text-xl text-white mb-3">Login / Register</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Create your Nova account or sign in to access your dashboard.
+              </p>
+            </Link>
+
+            {/* Arrow */}
+            <div className="text-nova-accent/50 shrink-0 hidden md:block">
+              <ArrowRight size={32} />
+            </div>
+            <div className="text-nova-accent/50 shrink-0 block md:hidden">
+              <ArrowDown size={32} />
+            </div>
+
+            {/* Step 3 */}
+            <Link 
+              href="/dashboard/events" 
+              className="flex-1 w-full md:w-auto nova-card rounded-3xl p-8 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-[#00FF88]/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <div className="w-14 h-14 rounded-full bg-[#00FF88]/20 border border-[#00FF88]/40 flex items-center justify-center mb-6 text-[#00FF88] shadow-[0_0_20px_rgba(0,255,136,0.2)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(0,255,136,0.4)] transition-all">
+                <CalendarCheck size={28} />
+              </div>
+              <div className="absolute top-4 left-6 text-5xl font-black text-white/5 select-none pointer-events-none">3</div>
+              <h3 className="font-display font-bold text-xl text-white mb-3">Enrol & Connect</h3>
+              <p className="text-white/50 text-sm leading-relaxed">
+                Register for events, form teams, and get notified about updates.
+              </p>
+            </Link>
+
+          </div>
+        </div>
+      </section>
+
       {/* ─── Features Grid ────────────────────────────────────── */}
-      <section className="py-24 px-4 relative bg-nova-bg z-10">
+      <section className="py-24 px-4 relative bg-nova-bg z-10 border-t border-white/5">
         {/* Subtle ambient glow */}
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60vw] h-[30vh] bg-nova-primary/5 blur-[80px] rounded-full" />
@@ -114,32 +204,6 @@ export default function HomePage() {
                 </div>
               )
             })}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── CTA Banner ───────────────────────────────────────── */}
-      <section className="py-20 px-4 relative bg-nova-bg z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="nova-card rounded-3xl p-10 text-center relative overflow-hidden glow-border-pink entrance-3 group">
-            <div className="absolute inset-0 bg-nova-primary/10 blur-[80px] opacity-50 group-hover:opacity-80 transition-opacity duration-700 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-nova-accent/5 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-[1.5s] pointer-events-none" />
-            <div className="relative z-10">
-              <h2 className="font-display font-bold text-3xl sm:text-4xl gradient-text mb-4">
-                Ready to plug in?
-              </h2>
-              <p className="text-nova-text-dim mb-8 text-lg">
-                Complete your payment on the official IIMB portal first. 
-                <br className="hidden sm:block" />
-                Then login here using the same email ID to unlock your dashboard.
-              </p>
-              <Link
-                href="/dashboard"
-                className="nova-btn-primary rounded-full px-8 py-4 text-sm tracking-wider uppercase shadow-[0_0_30px_rgba(232, 160, 32,0.4)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] group-hover:-translate-y-1 relative z-20 inline-block"
-              >
-                <span className="relative z-10 font-bold flex items-center gap-2">Enter Nova <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" /></span>
-              </Link>
-            </div>
           </div>
         </div>
       </section>
