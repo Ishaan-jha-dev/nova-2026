@@ -19,7 +19,6 @@ export default async function StudentLayout({ children }: { children: React.Reac
     .maybeSingle()
 
   if (!allowedUser) {
-    // If not allowed, redirect to login page (we can pass a query param if desired, or just redirect)
     const debugInfo = error ? error.message : `not_found_${user.email}`
     redirect(`/login?error=not_allowed&details=${encodeURIComponent(debugInfo)}`)
   }
