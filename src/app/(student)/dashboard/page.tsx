@@ -74,7 +74,33 @@ export default async function DashboardPage() {
     <div className="min-h-screen w-full relative flex flex-col text-white" style={{ backgroundColor: '#0B0B0B' }}>
       <BackgroundLayer />
 
-      <main className="relative z-10 flex-1 w-full max-w-[1300px] mx-auto px-4 lg:px-8 py-10 grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+      <header className="relative z-20 flex justify-between items-start w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-8 pb-2">
+        <Link href="/" className="w-12 h-12 rounded-xl flex items-center justify-center border border-[#B48C0A]/40 bg-[#1A1505]/40 backdrop-blur-sm text-[#B48C0A] hover:bg-[#B48C0A]/20 transition-all">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        </Link>
+
+        <div className="flex flex-col items-center">
+          <div className="flex items-center gap-3 mb-1">
+            <span className="text-[#B48C0A] text-xs">✦</span>
+            <h3 className="font-serif italic text-xl lg:text-2xl text-[#D4A820] tracking-wider" style={{ fontFamily: 'Georgia, serif' }}>Welcome to</h3>
+            <span className="text-[#B48C0A] text-xs">✦</span>
+          </div>
+          <h1 className="font-serif text-3xl lg:text-[42px] font-bold tracking-[0.15em] uppercase mt-1">
+            <span className="text-white">NOVA</span> <span className="text-[#D4A820]">UNPLUGGED '26</span>
+          </h1>
+          <div className="mt-4 opacity-60">
+            <svg width="140" height="15" viewBox="0 0 140 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0,7.5 L50,7.5 M90,7.5 L140,7.5 M70,0 L75,7.5 L70,15 L65,7.5 Z" fill="#D4A820" stroke="#D4A820" strokeWidth="0.5"/>
+            </svg>
+          </div>
+        </div>
+
+        <Link href="/dashboard/events" className="w-12 h-12 rounded-xl flex items-center justify-center border border-[#B48C0A]/40 bg-[#1A1505]/40 backdrop-blur-sm text-[#B48C0A] hover:bg-[#B48C0A]/20 transition-all">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+        </Link>
+      </header>
+
+      <main className="relative z-10 flex-1 w-full max-w-[1300px] mx-auto px-4 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         
         {/* CARD 01 · MY EVENTS */}
         <div className="relative flex flex-col h-full pt-[20px]">
