@@ -21,20 +21,20 @@ export default async function ProfilePage() {
     .single()
 
   const fields = [
-    { label: 'Full Name',   value: userData?.full_name,  icon: User },
-    { label: 'Email',       value: userData?.email,       icon: Mail },
-    { label: 'Phone',       value: userData?.phone,       icon: Phone },
-    { label: 'Pincode',     value: userData?.pincode,     icon: MapPin },
-    { label: 'City',        value: userData?.city,        icon: MapPin },
-    { label: 'State',       value: userData?.state,       icon: MapPin },
-    { label: 'Batch',       value: userData?.batch,       icon: GraduationCap },
-    { label: 'Zone',        value: userData?.zone,        icon: Globe },
+    { label: 'Full Name', value: userData?.full_name, icon: User },
+    { label: 'Email', value: userData?.email, icon: Mail },
+    { label: 'Phone', value: userData?.phone, icon: Phone },
+    { label: 'Pincode', value: userData?.pincode, icon: MapPin },
+    { label: 'City', value: userData?.city, icon: MapPin },
+    { label: 'State', value: userData?.state, icon: MapPin },
+    { label: 'Batch', value: userData?.batch, icon: GraduationCap },
+    { label: 'Zone', value: userData?.zone, icon: Globe },
   ].filter(f => f.value)
 
   return (
-    <PageWrapper 
-      title="Your" 
-      titleHighlight="Profile" 
+    <PageWrapper
+      title="Your"
+      titleHighlight="Profile"
       subtitle="Your registration details and gate pass QR code"
       maxWidth="md"
     >
@@ -68,16 +68,7 @@ export default async function ProfilePage() {
             ))}
           </div>
 
-          <div className="mt-8 pt-4 border-t border-white/10">
-            <div className="flex gap-2">
-              {(userData?.user_types as any)?.name && (
-                <span className="badge-individual capitalize">{(userData?.user_types as any).name.replace('_', ' ')}</span>
-              )}
-              {(userData?.user_roles as any)?.name && (
-                <span className="badge-team capitalize">{(userData?.user_roles as any).name.replace('_', ' ')}</span>
-              )}
-            </div>
-          </div>
+
         </PinnedCard>
 
         {/* QR Code */}
@@ -109,8 +100,8 @@ export default async function ProfilePage() {
                 {userData?.payment_status === 'pending'
                   ? 'Your payment is under review. QR will be generated once approved.'
                   : userData?.payment_status === 'rejected'
-                  ? 'Your payment was rejected. Please resubmit on the payment page.'
-                  : 'Complete payment to get your gate pass QR code.'}
+                    ? 'Your payment was rejected. Please resubmit on the payment page.'
+                    : 'Complete payment to get your gate pass QR code.'}
               </p>
             </div>
           )}

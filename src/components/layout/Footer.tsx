@@ -1,6 +1,14 @@
 import Link from 'next/link'
-import { Share2, MessageCircle, Link2, Mail } from 'lucide-react'
+import { MessageCircle, Mail } from 'lucide-react'
 import { NovaLogo } from '@/components/ui/NovaLogo'
+
+const InstagramIcon = ({ size = 24, className = "" }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+  </svg>
+)
 
 export function Footer() {
   return (
@@ -16,8 +24,12 @@ export function Footer() {
               The annual college fest of IIM Bangalore. Cultural, technical, sports — all under one electric roof.
             </p>
             <div className="flex items-center gap-3">
-              {[Share2, MessageCircle, Link2, Mail].map((Icon, i) => (
-                <a key={i} href="#" className="w-9 h-9 glass rounded-lg flex items-center justify-center text-nova-muted hover:text-nova-primary hover:border-nova-primary/50 transition-all">
+              {[
+                { Icon: InstagramIcon, href: 'https://www.instagram.com/bbadbeiimb?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', label: 'Instagram' },
+                { Icon: MessageCircle, href: 'https://chat.whatsapp.com/Kc5eCJjVk5gCGDbP7xDaWM?mode=gi_t', label: 'WhatsApp' },
+                { Icon: Mail, href: 'mailto:nova.unplugged26@gmail.com', label: 'Email' }
+              ].map(({ Icon, href, label }, i) => (
+                <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="w-9 h-9 glass rounded-lg flex items-center justify-center text-nova-muted hover:text-nova-primary hover:border-nova-primary/50 transition-all">
                   <Icon size={16} />
                 </a>
               ))}

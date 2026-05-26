@@ -28,6 +28,7 @@ type EventFormData = {
   end_time: string
   deadline: string
   is_active: boolean
+  is_submission_based: boolean
 }
 
 const emptyForm: EventFormData = {
@@ -35,6 +36,7 @@ const emptyForm: EventFormData = {
   team_size_min: '2', team_size_max: '5', rulebook_url: '', organizer_name: '',
   organizer_contact: '', group_join_link: '', venue: '',
   event_date: '', start_time: '', end_time: '', deadline: '', is_active: true,
+  is_submission_based: false,
 }
 
 interface AdminEventsClientProps {
@@ -86,6 +88,7 @@ export function AdminEventsClient({ events, categories, creatorId }: AdminEvents
       end_time: event.end_time || '',
       deadline: event.deadline ? new Date(event.deadline).toISOString().slice(0, 16) : '',
       is_active: event.is_active,
+      is_submission_based: event.is_submission_based,
     })
     setBannerFile(null)
     setBannerPreview(event.banner_url ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/event-banners/${event.banner_url}` : null)
@@ -133,6 +136,7 @@ export function AdminEventsClient({ events, categories, creatorId }: AdminEvents
         end_time: form.end_time || null,
         deadline: form.deadline ? new Date(form.deadline).toISOString() : null,
         is_active: form.is_active,
+        is_submission_based: form.is_submission_based,
         created_by: creatorId,
       }
 
@@ -289,9 +293,15 @@ export function AdminEventsClient({ events, categories, creatorId }: AdminEvents
 
           <Textarea label="Description" value={form.description} onChange={set('description')} className="min-h-[120px]" />
 
-          <div className="flex items-center gap-3">
-            <input type="checkbox" id="is_active" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} className="w-4 h-4 accent-nova-primary" />
-            <label htmlFor="is_active" className="text-sm text-nova-text-dim cursor-pointer">Active (visible to students)</label>
+          <div className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="is_active" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} className="w-4 h-4 accent-nova-primary" />
+              <label htmlFor="is_active" className="text-sm text-nova-text-dim cursor-pointer">Active (visible to students)</label>
+            </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="is_submission_based" checked={form.is_submission_based} onChange={e => setForm(f => ({ ...f, is_submission_based: e.target.checked }))} className="w-4 h-4 accent-nova-primary" />
+              <label htmlFor="is_submission_based" className="text-sm text-nova-text-dim cursor-pointer">Submission Based (Ask for link on registration)</label>
+            </div>
           </div>
 
           <div className="flex gap-3 pt-2">
