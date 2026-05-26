@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import Image from 'next/image'
-import { Code2, Crown, Zap } from 'lucide-react'
+import { Zap, Target, Heart, Code2, Crown } from 'lucide-react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PinnedCard } from '@/components/ui/PinnedCard'
 
@@ -61,9 +60,9 @@ const team = [
 ]
 
 const values = [
-  { image: '/about/energy.png', title: 'Energy', desc: 'We bring unmatched enthusiasm and drive to everything we do.' },
-  { image: '/about/excellence.png', title: 'Excellence', desc: 'Raising the bar, year after year, in every event and experience.' },
-  { image: '/about/community.png', title: 'Community', desc: 'Building bonds across batches, campuses, and backgrounds.' },
+  { icon: Zap,    title: 'Energy',     desc: 'We bring unmatched enthusiasm and drive to everything we do.' },
+  { icon: Target, title: 'Excellence', desc: 'Raising the bar, year after year, in every event and experience.' },
+  { icon: Heart,  title: 'Community',  desc: 'Building bonds across batches, campuses, and backgrounds.' },
 ]
 
 const roleIcon: Record<string, any> = {
@@ -117,23 +116,26 @@ export default function AboutPage() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {values.map((v, i) => {
+            const Icon = v.icon
             const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['pink', 'orange', 'purple']
             const pinColor = pinColors[i % 3]
 
+            // Soft colors matching cream card background
+            const themeColors = {
+              pink: { text: 'text-[#E8A020]', bg: 'bg-[#E8A020]/10', border: 'border-[#E8A020]/20' },
+              orange: { text: 'text-[#f37335]', bg: 'bg-[#f37335]/10', border: 'border-[#f37335]/20' },
+              purple: { text: 'text-[#8e44ad]', bg: 'bg-[#8e44ad]/10', border: 'border-[#8e44ad]/20' },
+              blue: { text: 'text-[#2980B9]', bg: 'bg-[#2980B9]/10', border: 'border-[#2980B9]/20' },
+            }
+            const colors = themeColors[pinColor]
+
             return (
               <div key={v.title} className="w-full">
-                <PinnedCard pinColor={pinColor} className="h-full !p-5 transition-all group">
-                  <div className="relative w-full h-56 rounded-xl overflow-hidden mb-5 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
-                    <Image src={v.image} alt={v.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                <PinnedCard pinColor={pinColor} title={v.title} className="!p-8">
+                  <div className={`w-16 h-16 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center mx-auto mb-6`}>
+                    <Icon size={30} className={colors.text} />
                   </div>
-                  <div className="flex flex-col items-center justify-center flex-grow px-2">
-                    <h3 className="font-display font-bold text-2xl text-white uppercase tracking-wider mb-2 text-center drop-shadow-md">
-                      {v.title}
-                    </h3>
-                    <p className="text-white/70 text-sm font-medium text-center leading-relaxed pb-2">
-                      {v.desc}
-                    </p>
-                  </div>
+                  <p className="text-white/70 text-sm font-medium text-center leading-relaxed">{v.desc}</p>
                 </PinnedCard>
               </div>
             )
