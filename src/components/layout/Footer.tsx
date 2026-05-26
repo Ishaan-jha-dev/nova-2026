@@ -4,7 +4,7 @@ import { NovaLogo } from '@/components/ui/NovaLogo'
 
 export function Footer() {
   return (
-    <footer className="border-t border-nova-primary/20 bg-nova-navy/80 backdrop-blur-sm">
+    <footer className="border-t border-nova-primary/20 bg-nova-bg relative z-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
@@ -44,8 +44,8 @@ export function Footer() {
           <div className="flex flex-col gap-3">
             <h4 className="font-display text-sm font-semibold text-nova-text-dim tracking-wider uppercase">Contact</h4>
             <p className="text-nova-text-dim text-sm">IIM Bangalore Campus<br />Bannerghatta Road, Bengaluru<br />Karnataka – 560076</p>
-            <a href="mailto:novaunplugged@iimb.ac.in" className="text-nova-primary hover:text-nova-primary-light text-sm transition-colors break-all">
-              novaunplugged@iimb.ac.in
+            <a href="mailto:nova.unplugged26@gmail.com" className="text-nova-primary hover:text-nova-primary-light text-sm transition-colors break-all">
+              nova.unplugged26@gmail.com
             </a>
           </div>
         </div>

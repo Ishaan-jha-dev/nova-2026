@@ -63,7 +63,7 @@ export default function HeroComponent() {
   return (
     <div
       className="relative w-full min-h-screen overflow-hidden flex flex-col items-center justify-center"
-      style={{ background: 'radial-gradient(ellipse at 50% 55%, #2d0a1a 0%, #0A0A0A 45%, #0A0105 100%)' }}
+      style={{ background: 'radial-gradient(ellipse at 50% 55%, #1a1505 0%, #0A0A0A 45%, #080808 100%)' }}
     >
       {/* Particles */}
       <ParticleCrowd />
@@ -75,7 +75,7 @@ export default function HeroComponent() {
           zIndex: 4,
           transform: 'translateX(-50%)',
           width: '70vw', height: '35vh',
-          background: 'radial-gradient(ellipse at bottom, rgba(232,61,138,0.28) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at bottom, rgba(232,160,32,0.28) 0%, transparent 70%)',
           filter: 'blur(40px)',
         }}
       />
@@ -165,7 +165,7 @@ export default function HeroComponent() {
             fontSize: 'clamp(0.6rem, 1.2vw, 0.78rem)',
             letterSpacing: '0.28em',
             textTransform: 'uppercase',
-            color: '#FDA4AF',
+            color: 'rgba(232,160,32,0.8)',
           }}>
             BBA · DBE · IIM Bangalore
           </p>
@@ -175,7 +175,7 @@ export default function HeroComponent() {
             fontSize: 'clamp(0.9rem, 2vw, 1.25rem)',
             letterSpacing: '0.18em',
             color: 'rgba(255,255,255,0.88)',
-            textShadow: '0 0 20px rgba(232,61,138,0.5)',
+            textShadow: '0 0 20px rgba(232,160,32,0.5)',
           }}>
             June 15 – 18, 2026
           </p>

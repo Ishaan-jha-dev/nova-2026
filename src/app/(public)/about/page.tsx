@@ -14,7 +14,7 @@ const team = [
     role: 'Developer',
     title: 'Core Logic & Backend',
     emoji: '⚡',
-    imageUrl: '/team/madhwendra.jpg',
+    imageUrl: '/team/madhwendra.png',
     color: 'from-nova-primary to-rose-600',
     linkedin: 'https://www.linkedin.com/in/madhwendra-shukla-77a13920b/',
     brag: [
@@ -30,7 +30,7 @@ const team = [
     role: 'Developer',
     title: 'UI/UX & Frontend',
     emoji: '🎨',
-    imageUrl: '/team/ishaan.jpg',
+    imageUrl: '/team/ishaan.png',
     color: 'from-violet-600 to-fuchsia-600',
     linkedin: 'https://www.linkedin.com/in/ishaan-jha-2b6977340/',
     brag: [
@@ -46,7 +46,7 @@ const team = [
     role: 'Coordinator',
     title: 'OC Lead · ZR North Zone 2',
     emoji: '🏆',
-    imageUrl: '/team/ashutosh.jpg',
+    imageUrl: '/team/ashutosh.png',
     color: 'from-amber-500 to-orange-600',
     linkedin: 'https://www.linkedin.com/in/ashutosh-agrawal-0a4a7a379/',
     brag: [
@@ -135,7 +135,7 @@ export default function AboutPage() {
                   <div className={`w-16 h-16 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center mx-auto mb-6`}>
                     <Icon size={30} className={colors.text} />
                   </div>
-                  <p className="text-slate-600 text-sm font-medium text-center leading-relaxed">{v.desc}</p>
+                  <p className="text-white/70 text-sm font-medium text-center leading-relaxed">{v.desc}</p>
                 </PinnedCard>
               </div>
             )
@@ -172,24 +172,24 @@ export default function AboutPage() {
                   <div className="flex items-start gap-4 mb-6">
                     <div className="relative shrink-0">
                       {member.imageUrl ? (
-                        <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-inner border border-slate-200">
+                        <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-inner border border-white/20">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={member.imageUrl} alt={member.name} className="w-full h-full object-cover" />
                         </div>
                       ) : (
-                        <div className="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center text-3xl border border-slate-200">
+                        <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center text-3xl border border-white/20">
                           {member.emoji}
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-black text-slate-800 text-lg leading-tight truncate">
+                      <p className="font-black text-white text-lg leading-tight truncate">
                         {member.name}
                       </p>
-                      <p className="text-slate-500 text-xs font-bold mt-1 uppercase tracking-wider">{member.title}</p>
+                      <p className="text-white/60 text-xs font-bold mt-1 uppercase tracking-wider">{member.title}</p>
                       
                       <div className="flex items-center gap-2 mt-3">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 border border-slate-200 text-slate-600">
+                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/10 border border-white/20 text-white/80">
                           <RoleIcon size={10} />
                           {member.badge}
                         </span>
@@ -198,7 +198,7 @@ export default function AboutPage() {
                             href={member.linkedin} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center p-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-500 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all shrink-0"
+                            className="inline-flex items-center justify-center p-1.5 rounded-full bg-white/10 border border-white/20 text-white/60 hover:text-white hover:bg-[#0A66C2] hover:border-[#0A66C2] transition-all shrink-0"
                             title={`Connect with ${member.name} on LinkedIn`}
                           >
                             <LinkedinIcon size={12} />
@@ -209,12 +209,12 @@ export default function AboutPage() {
                   </div>
 
                   {/* Divider line */}
-                  <div className="h-px bg-slate-200 mb-5" />
+                  <div className="h-px bg-white/10 mb-5" />
 
                   {/* Achievements/Brags list */}
                   <ul className="flex flex-col gap-2.5 flex-1">
                     {member.brag.map((line, j) => (
-                      <li key={j} className="flex items-start gap-2 text-xs text-slate-600 leading-snug font-bold">
+                      <li key={j} className="flex items-start gap-2 text-xs text-white/70 leading-snug font-bold">
                         <span className="mt-1 w-1.5 h-1.5 rounded-full bg-[#E8A020] shrink-0 opacity-70" />
                         <span>{line}</span>
                       </li>
@@ -228,20 +228,20 @@ export default function AboutPage() {
       </section>
 
       {/* Contact Section */}
-      <section className="py-20 max-w-4xl mx-auto">
+      <section className="py-20 max-w-4xl mx-auto px-4">
         <div className="w-full">
-          <PinnedCard pinColor="purple" className="!p-10 text-center">
-            <h2 className="font-display font-black text-3xl sm:text-4xl text-slate-800 mb-4 uppercase tracking-wider">
+          <PinnedCard pinColor="purple" className="!p-6 sm:!p-10 text-center">
+            <h2 className="font-display font-black text-3xl sm:text-4xl text-white mb-4 uppercase tracking-wider">
               Get in Touch
             </h2>
-            <p className="text-slate-600 text-base mb-8 max-w-lg mx-auto leading-relaxed font-bold">
+            <p className="text-white/70 text-base mb-8 max-w-lg mx-auto leading-relaxed font-bold">
               Questions? Sponsorships? Partnerships? We&apos;d love to hear from you.
             </p>
             <a
-              href="mailto:novaunplugged@iimb.ac.in"
-              className="inline-flex items-center justify-center px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#E8A020] to-[#F0A500] shadow-[0_0_30px_rgba(232, 160, 32,0.3)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] transition-all hover:-translate-y-1 w-full sm:w-auto"
+              href="mailto:nova.unplugged26@gmail.com"
+              className="inline-flex items-center justify-center px-6 sm:px-10 py-3 sm:py-4 rounded-full font-black text-white text-sm sm:text-lg bg-gradient-to-r from-[#E8A020] to-[#F0A500] shadow-[0_0_30px_rgba(232, 160, 32,0.3)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] transition-all hover:-translate-y-1 w-full sm:w-auto break-all sm:break-normal"
             >
-              novaunplugged@iimb.ac.in
+              nova.unplugged26@gmail.com
             </a>
           </PinnedCard>
         </div>

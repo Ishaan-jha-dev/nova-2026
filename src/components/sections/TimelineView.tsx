@@ -85,18 +85,14 @@ const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['pink', 'purple', 
 
 interface TimelineViewProps {
   showRegisterButton?: boolean
+  noWrapper?: boolean
 }
 
-export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
-  return (
-    <PageWrapper
-      title="Event"
-      titleHighlight="Timeline"
-      subtitle="Four unforgettable days — every moment mapped out."
-      maxWidth="md"
-    >
+export function TimelineView({ showRegisterButton = true, noWrapper = false }: TimelineViewProps) {
+  const content = (
+    <>
       {/* Location and Date details */}
-      <div className="flex flex-wrap items-center justify-center gap-4 -mt-8 mb-12 text-xs font-bold uppercase tracking-wider relative z-10">
+      <div className={`flex flex-wrap items-center justify-center gap-4 ${noWrapper ? 'mb-12' : '-mt-8 mb-12'} text-xs font-bold uppercase tracking-wider relative z-10`}>
         <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white">
           <MapPin size={14} className="text-[#E8A020]" /> IIM Bangalore
         </span>
@@ -168,24 +164,40 @@ export function TimelineView({ showRegisterButton = true }: TimelineViewProps) {
         })}
       </div>
 
-      {/* CTA */}
       {showRegisterButton && (
         <div className="mt-24 text-center">
           <div className="bg-white/5 border border-white/10 rounded-[24px] p-10 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-[#E8A020]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            <p className="text-white text-xl mb-8 font-semibold">Ready to claim your spot in the spotlight?</p>
-            <Link
-              href="/register"
-              className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-black text-white text-lg bg-gradient-to-r from-[#E8A020] to-[#F0A500] shadow-[0_0_30px_rgba(232, 160, 32,0.3)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] transition-all hover:-translate-y-1"
-            >
-              Join the Revolution <ExternalLink size={20} />
-            </Link>
-            <p className="text-white/40 text-sm mt-6 uppercase tracking-widest font-bold">
-              Nova Unplugged 2026 · June 15–18, IIM Bangalore
-            </p>
+            <div className="absolute inset-0 bg-[#E8A020]/5 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+            <div className="relative z-10">
+              <p className="text-white text-xl mb-8 font-semibold">Ready to claim your spot in the spotlight?</p>
+              <Link
+                href="/dashboard"
+                className="inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-10 py-3.5 sm:py-4 rounded-full font-black text-white text-base sm:text-lg bg-gradient-to-r from-[#E8A020] to-[#F0A500] shadow-[0_0_30px_rgba(232, 160, 32,0.3)] hover:shadow-[0_0_50px_rgba(232, 160, 32,0.6)] transition-all hover:-translate-y-1 w-full sm:w-auto relative z-20"
+              >
+                <span>Join the Revolution</span> <ExternalLink size={20} className="shrink-0" />
+              </Link>
+              <p className="text-white/40 text-sm mt-6 uppercase tracking-widest font-bold">
+                Nova Unplugged 2026 · June 15–18, IIM Bangalore
+              </p>
+            </div>
           </div>
         </div>
       )}
+    </>
+  )
+
+  if (noWrapper) {
+    return <div className="w-full max-w-4xl mx-auto">{content}</div>
+  }
+
+  return (
+    <PageWrapper
+      title="Event"
+      titleHighlight="Timeline"
+      subtitle="Four unforgettable days — every moment mapped out."
+      maxWidth="md"
+    >
+      {content}
     </PageWrapper>
   )
 }

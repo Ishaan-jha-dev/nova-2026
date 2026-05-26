@@ -72,18 +72,20 @@ body {
 
   /* 3D Interactive Bento Box */
   .bento-item {
-    @apply relative overflow-hidden rounded-[2.5rem] transition-all duration-700 cursor-pointer flex flex-col items-center justify-center p-8 border-2 border-nova-primary/20;
-    background: linear-gradient(145deg, #111111 0%, #080808 100%);
-    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    @apply relative overflow-hidden rounded-3xl transition-all duration-700 cursor-pointer flex flex-col items-center justify-center p-8 border border-white/5;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 4px 24px -4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
     transform-style: preserve-3d;
     perspective: 1000px;
   }
 
   .bento-item:hover {
-    @apply -translate-y-4 scale-[1.04];
-    background: linear-gradient(145deg, #1a1505 0%, #111111 100%);
-    border-color: rgba(200, 144, 16, 0.5);
-    box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.9), 0 0 50px rgba(232, 160, 32, 0.3), inset 0 0 20px rgba(232, 160, 32, 0.1);
+    @apply -translate-y-2 scale-[1.02];
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(232, 160, 32, 0.3);
+    box-shadow: 0 8px 40px -8px rgba(0,0,0,0.7), 0 0 30px rgba(232, 160, 32, 0.08), inset 0 1px 0 rgba(255,255,255,0.08);
   }
 
   .bento-item:hover .bento-icon-wrapper {

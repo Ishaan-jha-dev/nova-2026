@@ -27,28 +27,8 @@ export function PageWrapper({
 
   return (
     <div
-      className={`min-h-screen w-full relative overflow-x-hidden overflow-y-auto flex justify-center pt-28 pb-20 text-white ${className}`}
-      style={{
-        backgroundColor: '#0c0d10',
-        backgroundImage: `radial-gradient(circle at center, #2a2b30 1.5px, transparent 1.5px)`,
-        backgroundSize: '36px 36px',
-        backgroundPosition: '0 0',
-      }}
+      className={`min-h-screen w-full relative overflow-x-hidden overflow-y-auto flex justify-center pt-28 pb-20 text-white bg-nova-hero ${className}`}
     >
-      {/* Decorative Dashed Path (Mind-map vibe matching Dashboard) */}
-      <svg
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-20"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M 100 200 Q 400 50, 700 300 T 1300 150"
-          fill="transparent"
-          stroke="#ffffff"
-          strokeWidth="2"
-          strokeDasharray="8 8"
-        />
-      </svg>
-
       <div className={`w-full ${widthClasses[maxWidth]} px-6 relative z-10 flex flex-col`}>
         {/* Render Title header if provided */}
         {(title || titleHighlight) && (

@@ -31,12 +31,11 @@ export default function ParticleCrowd() {
 
     // Using Nova Tailwind Config Colors
     const COLORS = [
-      '#6C3DE8', // nova-primary
-      '#8B5CF6', // nova-primary-light
-      '#E83D8A', // nova-accent
-      '#F472B6', // nova-accent-light
-      '#00FF88', // nova-success
-      '#FFB800', // nova-warning
+      '#E8A020', // nova-primary
+      '#F0A500', // nova-primary-light
+      '#C8960C', // nova-accent
+      '#D4A017', // nova-accent-light
+      '#FFFFFF', // white for contrast
     ]
     const COUNT = 600
     const particles: Particle[] = []
@@ -114,21 +113,10 @@ export default function ParticleCrowd() {
         }
         const rgb = hexToRgb(p.color)
 
-        // Subtle soft glow
-        const haloR = p.size * 4
-        const grd = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, haloR)
-        grd.addColorStop(0, `rgba(${rgb}, ${currentOpacity})`)
-        grd.addColorStop(0.5, `rgba(${rgb}, ${currentOpacity * 0.1})`)
-        grd.addColorStop(1, `rgba(${rgb}, 0)`)
+        // Solid dot instead of glowing bubble
         ctx.beginPath()
-        ctx.arc(p.x, p.y, haloR, 0, Math.PI * 2)
-        ctx.fillStyle = grd
-        ctx.fill()
-
-        // Tiny crisp center
-        ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2)
-        ctx.fillStyle = `rgba(255,255,255,${currentOpacity * 0.8})`
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${rgb}, ${currentOpacity})`
         ctx.fill()
       }
 
