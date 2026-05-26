@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Mail, ArrowRight, Lock, KeyRound, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { checkAllowedGmail } from './actions'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -40,18 +41,28 @@ export default function LoginPage() {
     }
     setError(null)
     startTransition(async () => {
-      const supabase = createClient()
-      const { error: supaErr } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      })
-      if (supaErr) {
-        setError(supaErr.message)
-      } else {
-        // Use window.location.href instead of router.push to force a hard reload
-        // This prevents Next.js client-side routing glitches (like the URL getting stuck on /login)
-        // and guarantees the middleware sees the newly set session cookie immediately.
-        window.location.href = '/dashboard'
+      try {
+        const isAllowed = await checkAllowedGmail(email)
+        if (!isAllowed) {
+          setError('This Gmail is not authorized. Please ensure you are using your registered Gmail.')
+          return
+        }
+
+        const supabase = createClient()
+        const { error: supaErr } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        })
+        if (supaErr) {
+          setError(supaErr.message)
+        } else {
+          // Use window.location.href instead of router.push to force a hard reload
+          // This prevents Next.js client-side routing glitches (like the URL getting stuck on /login)
+          // and guarantees the middleware sees the newly set session cookie immediately.
+          window.location.href = '/dashboard'
+        }
+      } catch (err: any) {
+        setError(err.message || 'An error occurred during login.')
       }
     })
   }
@@ -60,12 +71,22 @@ export default function LoginPage() {
     if (!email) { setError('Enter your email first'); return }
     setError(null)
     startTransition(async () => {
-      const supabase = createClient()
-      const { error: supaErr } = await supabase.auth.resetPasswordForEmail(email)
-      if (supaErr) setError(supaErr.message)
-      else {
-        setIsResetting(true)
-        setResetStep('otp')
+      try {
+        const isAllowed = await checkAllowedGmail(email)
+        if (!isAllowed) {
+          setError('This Gmail is not authorized. Please ensure you are using your registered Gmail.')
+          return
+        }
+
+        const supabase = createClient()
+        const { error: supaErr } = await supabase.auth.resetPasswordForEmail(email)
+        if (supaErr) setError(supaErr.message)
+        else {
+          setIsResetting(true)
+          setResetStep('otp')
+        }
+      } catch (err: any) {
+        setError(err.message || 'An error occurred.')
       }
     })
   }
