@@ -681,6 +681,7 @@ export function EventsClient({
                 const team = reg.teams
                 const isLeader = team?.leader_id === userId
                 const pinColor = getPinColor(event?.categories?.title)
+                const deadlinePassed = isDeadlinePassed(event?.deadline)
 
                 return (
                   <div key={reg.id} className="w-full">
@@ -709,13 +710,15 @@ export function EventsClient({
                               <span>{event.event_date}{event.start_time ? ` · ${event.start_time}` : ''}</span>
                             </span>
                           )}
-                          <button
-                            onClick={() => handleWithdrawClick(event.id)}
-                            disabled={isPending}
-                            className="mt-1 text-[10px] text-red-400 hover:text-red-300 hover:bg-red-400/10 transition-colors px-2.5 py-1 rounded-md border border-red-500/20 flex items-center gap-1.5 ml-auto"
-                          >
-                            <LogOut size={10} /> Withdraw
-                          </button>
+                          {!deadlinePassed && (
+                            <button
+                              onClick={() => handleWithdrawClick(event.id)}
+                              disabled={isPending}
+                              className="mt-1 text-[10px] text-red-400 hover:text-red-300 hover:bg-red-400/10 transition-colors px-2.5 py-1 rounded-md border border-red-500/20 flex items-center gap-1.5 ml-auto"
+                            >
+                              <LogOut size={10} /> Withdraw
+                            </button>
+                          )}>
                         </div>
                       </div>
 
@@ -789,7 +792,7 @@ export function EventsClient({
                                   )}
                                 </button>
                               </div>
-                              {isLeader && (
+                              {isLeader && !deadlinePassed && (
                                 <Button
                                   variant="outline"
                                   size="sm"
@@ -817,7 +820,7 @@ export function EventsClient({
                                 </div>
                                 <span className="text-white/90 text-xs font-medium">{member.users?.full_name}</span>
                                 {member.user_id === team.leader_id && <Crown size={11} className="text-amber-500 fill-amber-500" />}
-                                {isLeader && member.user_id !== userId && (
+                                {isLeader && member.user_id !== userId && !deadlinePassed && (
                                   <button
                                     onClick={() => removeMember(team.id, member.user_id, event.id)}
                                     className="text-white/40 hover:text-red-500 transition-colors ml-1"
@@ -836,7 +839,7 @@ export function EventsClient({
                             </p>
                           )}
 
-                          {isLeader && (
+                          {isLeader && !deadlinePassed && (
                             <div className="mt-4 border-t border-white/10 pt-4">
                               <Button 
                                 variant="outline" 
@@ -1024,9 +1027,21 @@ export function EventsClient({
                   <div className="flex items-center justify-center gap-2 p-4 rounded-xl font-semibold" style={{ background: 'rgba(0,255,136,0.08)', border: '1px solid rgba(0,255,136,0.25)', color: '#00FF88' }}>
                     <Check size={18} /> Already Registered
                   </div>
-                  <Button variant="ghost" size="sm" fullWidth className="text-red-400 hover:bg-red-500/10" icon={<LogOut size={14} />} loading={isPending} onClick={() => handleWithdrawClick(selectedEvent.id)}>
-                    Withdraw from Event
-                  </Button>
+                  {!deadlinePassed ? (
+                    <Button variant="ghost" size="sm" fullWidth className="text-red-400 hover:bg-red-500/10" icon={<LogOut size={14} />} loading={isPending} onClick={() => handleWithdrawClick(selectedEvent.id)}>
+                      Withdraw from Event
+                    </Button>
+                  ) : (
+                    <p className="text-[11px] text-red-400/80 text-center uppercase tracking-wider font-bold mt-1">
+                      Event deadline has passed. Withdrawals are no longer allowed.
+                    </p>
+                  )}
+                </div>
+              ) : deadlinePassed ? (
+                <div className="flex flex-col gap-3 mt-2 animate-slide-up">
+                  <div className="flex items-center justify-center gap-2 p-4 rounded-xl font-semibold bg-red-500/10 border border-red-500/30 text-red-400">
+                    <AlertCircle size={18} /> Registration has been closed
+                  </div>
                 </div>
               ) : selectedEvent.participation_type === 'individual' ? (
                 <div className="flex flex-col gap-3 animate-slide-up">
