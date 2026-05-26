@@ -103,14 +103,42 @@ export function YourProfileHeading() {
 
 export function WelcomeBackHeading() {
   return (
-    <div className="relative inline-flex items-center justify-center w-full">
-      <h1 className="text-3xl md:text-4xl text-white drop-shadow-md flex items-center justify-center gap-3 w-full">
-        <span className="font-serif font-black tracking-[0.15em] uppercase text-white">
-          Nova
+    <div className="relative inline-flex items-center justify-center w-full mt-2 mb-6">
+      <h1 className="text-4xl md:text-5xl lg:text-6xl drop-shadow-lg flex flex-wrap items-center justify-center gap-4 w-full">
+        
+        {/* NOVA Part (Silver/White with Sunburst 'O') */}
+        <span className="font-serif font-black tracking-widest uppercase flex items-center text-white/90">
+          N
+          {/* Sunburst 'O' */}
+          <div className="relative inline-flex items-center justify-center mx-1 md:mx-2 w-[0.8em] h-[0.8em] animate-[spin_60s_linear_infinite]">
+            <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
+              {/* Sunburst rays */}
+              {Array.from({ length: 16 }).map((_, i) => {
+                const angle = (i * 360) / 16;
+                const isGold = i % 2 === 0;
+                return (
+                  <path
+                    key={i}
+                    d="M 50 50 L 50 5 L 56 50 Z"
+                    fill={isGold ? '#E8A020' : '#E5E7EB'}
+                    transform={`rotate(${angle} 50 50)`}
+                    className="drop-shadow-sm"
+                  />
+                );
+              })}
+              {/* Center hole */}
+              <circle cx="50" cy="50" r="10" fill="#0c0d10" />
+              <circle cx="50" cy="50" r="4" fill="#FFFFFF" />
+            </svg>
+          </div>
+          VA
         </span>
-        <span className="font-serif italic font-light text-[#E8A020] uppercase tracking-wider">
-          Unplugged
+
+        {/* UNPLUGGED '26 Part (Gold Italic) */}
+        <span className="font-serif italic font-semibold text-[#E8A020] uppercase tracking-[0.15em] drop-shadow-[0_2px_10px_rgba(232,160,32,0.4)]">
+          Unplugged <span className="font-light ml-1">'26</span>
         </span>
+
       </h1>
     </div>
   )
