@@ -143,52 +143,37 @@ function PinwheelO() {
 
 export function WelcomeBackHeading() {
   return (
-    <div className="relative flex flex-col items-center justify-center w-full mt-2 mb-8 scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100 origin-top">
+    <div className="relative flex flex-row flex-wrap items-center justify-center w-full mt-2 mb-6 gap-x-3 gap-y-1">
+      {/* Welcome to */}
+      <span className="font-serif italic text-white/80 text-xl md:text-2xl font-light tracking-wide mr-1">
+        Welcome to
+      </span>
+
       {/* NOVA */}
-      <div className="nova-word flex items-center" style={{ gap: '0.02em', lineHeight: 1 }}>
-        <span className="nova-letter-char" style={{ animationDelay: '0.2s' }}>N</span>
-        <PinwheelO />
-        <span className="nova-letter-char" style={{ animationDelay: '0.35s' }}>V</span>
-        <span className="relative nova-letter-char" style={{ animationDelay: '0.45s' }}>
-          A<span className="nova-star-el">✦</span>
-        </span>
+      <div className="flex items-center text-2xl md:text-3xl text-white font-serif font-black tracking-widest uppercase">
+        <span>N</span>
+        <div className="relative inline-flex items-center justify-center mx-[2px] w-[0.85em] h-[0.85em] animate-[spin_60s_linear_infinite]">
+          <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
+            {Array.from({ length: 14 }).map((_, i) => (
+              <g key={i} transform={`rotate(${(i * 360) / 14} 50 50)`}>
+                <polygon
+                  points="50,50 44,8 56,8"
+                  fill={i % 2 === 0 ? '#FBBF24' : '#E5E7EB'}
+                  fillOpacity={i % 2 === 0 ? 0.95 : 0.8}
+                />
+              </g>
+            ))}
+            <circle cx="50" cy="50" r="7" fill="#FBBF24" />
+            <circle cx="50" cy="50" r="3.5" fill="#fff" />
+          </svg>
+        </div>
+        <span>VA</span>
       </div>
 
-      {/* UNPLUGGED '26 */}
-      <div className="flex items-baseline" style={{ gap: '0.04em', marginTop: '-0.05em' }}>
-        {'UNPLUGGED'.split('').map((ch, i) => (
-          <span
-            key={i}
-            className="unplugged-char"
-            style={{
-              animationDelay: `${0.55 + i * 0.05}s`,
-              fontFamily: "'Playfair Display', serif",
-              fontStyle: 'italic',
-              fontWeight: 700,
-              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-              color: 'rgba(251,191,36,0.9)',
-              letterSpacing: '0.06em',
-            }}
-          >
-            {ch}
-          </span>
-        ))}
-        <span
-          className="unplugged-char"
-          style={{
-            animationDelay: `${0.55 + 9 * 0.05}s`,
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 900,
-            fontSize: 'clamp(3rem, 7vw, 5.5rem)',
-            color: '#E8A020',
-            marginLeft: '0.15em',
-            background: 'none',
-            WebkitBackgroundClip: 'unset',
-            backgroundClip: 'unset',
-          }}
-        >
-          '26
-        </span>
+      {/* Unplugged '26 */}
+      <div className="flex items-baseline text-2xl md:text-3xl font-serif italic text-[#E8A020] tracking-wider drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)]">
+        <span className="font-semibold">Unplugged</span>
+        <span className="font-black ml-1">'26</span>
       </div>
     </div>
   )
