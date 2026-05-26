@@ -7,7 +7,7 @@ import { formatIST } from '@/lib/utils/dateUtils'
 import { toZonedTime } from 'date-fns-tz'
 import { 
   MapPin, Clock, Users, Phone, ExternalLink, BookOpen, Check, Plus, 
-  LogIn, X, Bell, AlertCircle, LogOut, ArrowLeft, ChevronRight, Crown, Copy, 
+  LogIn, X, Bell, AlertCircle, LogOut, ChevronRight, Crown, Copy, 
   UserMinus, Lock, Unlock, ChevronUp, ChevronDown 
 } from 'lucide-react'
 
@@ -259,7 +259,6 @@ function CategoryEventsView({
   events,
   registeredIds,
   requestStatusByEvent,
-  onBack,
   onSelectEvent,
 }: {
   categoryId: string
@@ -267,7 +266,6 @@ function CategoryEventsView({
   events: (EventRow & { categories?: any })[]
   registeredIds: Set<string>
   requestStatusByEvent: Record<string, { status: string; teamId: string }>
-  onBack: () => void
   onSelectEvent: (event: EventRow & { categories?: any }) => void
 }) {
   const category = categories.find(c => c.id === categoryId)
@@ -279,18 +277,7 @@ function CategoryEventsView({
   )
 
   return (
-    <div className="w-full relative z-10">
-      {/* Back + header */}
-      <div className="flex items-center gap-4 mb-8">
-        <button
-          onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all hover:-translate-x-1"
-          style={{ background: colors.bg, color: colors.text, border: `1px solid ${colors.border}40` }}
-        >
-          <ArrowLeft size={16} /> Back
-        </button>
-        <div className="h-px flex-1 opacity-20" style={{ background: `linear-gradient(90deg, ${colors.border}, transparent)` }} />
-      </div>
+    <div className="w-full relative z-10 pt-4">
 
       {/* Big category title */}
       <div className="text-center mb-6">
@@ -575,6 +562,8 @@ export function EventsClient({
             <button
               onClick={() => {
                 setActiveTab('all')
+                setView('categories')
+                setActiveCategoryId(null)
                 if (typeof window !== 'undefined') {
                   window.history.replaceState({}, '', '/dashboard/events')
                 }
@@ -632,7 +621,6 @@ export function EventsClient({
               events={events}
               registeredIds={registeredIds}
               requestStatusByEvent={requestStatusByEvent}
-              onBack={() => { setView('categories'); setActiveCategoryId(null) }}
               onSelectEvent={(e) => { setSelectedEvent(e); setActionError(null) }}
             />
           )}
