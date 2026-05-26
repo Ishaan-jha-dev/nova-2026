@@ -7,11 +7,11 @@ import { Input } from '@/components/ui/Input'
 import { Button } from '@/components/ui/Button'
 import { Mail, ArrowRight, Lock, KeyRound, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { checkAllowedGmail } from './actions'
+import { checkAllowedGmail, getGmailForIimbEmail } from './actions'
 
 export default function LoginPage() {
   const router = useRouter()
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState('') // Used for IIMB Email on Login
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
@@ -19,6 +19,7 @@ export default function LoginPage() {
   // Forgot Password State
   const [isResetting, setIsResetting] = useState(false)
   const [resetStep, setResetStep] = useState<'email' | 'otp' | 'new-password'>('email')
+  const [resetEmail, setResetEmail] = useState('')
   const [otp, setOtp] = useState('')
   const [newPassword, setNewPassword] = useState('')
 
@@ -42,15 +43,15 @@ export default function LoginPage() {
     setError(null)
     startTransition(async () => {
       try {
-        const isAllowed = await checkAllowedGmail(email)
-        if (!isAllowed) {
-          setError('This Gmail is not authorized. Please ensure you are using your registered Gmail.')
+        const gmail = await getGmailForIimbEmail(email)
+        if (!gmail) {
+          setError('This IIMB email is not authorized or has no associated Gmail.')
           return
         }
 
         const supabase = createClient()
         const { error: supaErr } = await supabase.auth.signInWithPassword({
-          email,
+          email: gmail,
           password,
         })
         if (supaErr) {
@@ -68,21 +69,20 @@ export default function LoginPage() {
   }
 
   const handleForgotPassword = async () => {
-    if (!email) { setError('Enter your email first'); return }
+    if (!resetEmail) { setError('Enter your Gmail first'); return }
     setError(null)
     startTransition(async () => {
       try {
-        const isAllowed = await checkAllowedGmail(email)
+        const isAllowed = await checkAllowedGmail(resetEmail)
         if (!isAllowed) {
           setError('This Gmail is not authorized. Please ensure you are using your registered Gmail.')
           return
         }
 
         const supabase = createClient()
-        const { error: supaErr } = await supabase.auth.resetPasswordForEmail(email)
+        const { error: supaErr } = await supabase.auth.resetPasswordForEmail(resetEmail)
         if (supaErr) setError(supaErr.message)
         else {
-          setIsResetting(true)
           setResetStep('otp')
         }
       } catch (err: any) {
@@ -95,7 +95,7 @@ export default function LoginPage() {
     startTransition(async () => {
       const supabase = createClient()
       const { error: supaErr } = await supabase.auth.verifyOtp({
-        email,
+        email: resetEmail,
         token: otp,
         type: 'recovery',
       })
@@ -153,9 +153,9 @@ export default function LoginPage() {
             <form onSubmit={handleLogin} className="flex flex-col gap-5 relative z-10">
               <div className="entrance-2">
                 <Input
-                  label="Registered Gmail Address"
+                  label="IIMB Email Address"
                   type="email"
-                  placeholder="yourname@gmail.com"
+                  placeholder="student@iimb.ac.in"
                   icon={<Mail size={16} />}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
@@ -175,7 +175,7 @@ export default function LoginPage() {
                 />
                 <button
                   type="button"
-                  onClick={handleForgotPassword}
+                  onClick={() => setIsResetting(true)}
                   className="text-xs text-nova-primary hover:text-nova-primary-light hover:underline mt-2 float-right transition-colors"
                 >
                   Forgot Password?
@@ -199,13 +199,31 @@ export default function LoginPage() {
           ) : (
             <div className="flex flex-col gap-5 animate-slide-up">
               <h2 className="text-nova-text font-semibold text-center mb-2">
-                {resetStep === 'otp' ? 'Enter Reset Code' : 'Set New Password'}
+                {resetStep === 'email' ? 'Reset Password' : resetStep === 'otp' ? 'Enter Reset Code' : 'Set New Password'}
               </h2>
               
-              {resetStep === 'otp' ? (
+              {resetStep === 'email' ? (
                 <>
                   <p className="text-nova-muted text-xs text-center -mt-2">
-                    We sent a recovery code to {email}
+                    Enter your associated Google mail id
+                  </p>
+                  <Input
+                    label="Registered Gmail Address"
+                    type="email"
+                    placeholder="yourname@gmail.com"
+                    icon={<Mail size={16} />}
+                    value={resetEmail}
+                    onChange={e => setResetEmail(e.target.value)}
+                    required
+                  />
+                  <Button variant="primary" fullWidth loading={isPending} onClick={handleForgotPassword}>
+                    Send Recovery Code
+                  </Button>
+                </>
+              ) : resetStep === 'otp' ? (
+                <>
+                  <p className="text-nova-muted text-xs text-center -mt-2">
+                    We sent a recovery code to {resetEmail}
                   </p>
                   <Input
                     label="Recovery OTP"

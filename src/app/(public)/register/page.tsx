@@ -37,6 +37,7 @@ export default function RegisterPage() {
   const [pincodeLoading, setPincodeLoading] = useState(false)
   const [step, setStep] = useState<'form' | 'otp'>('form')
   const [otp, setOtp] = useState('')
+  const [registeredGmail, setRegisteredGmail] = useState('')
 
   const [form, setForm] = useState({
     fullName: '',
@@ -123,6 +124,7 @@ export default function RegisterPage() {
           setError('No Gmail address found in the allowed list. Please contact the admin.')
           return
         }
+        setRegisteredGmail(gmail)
 
         const supabase = createClient()
         const { data, error: supaErr } = await supabase.auth.signUp({
@@ -366,7 +368,9 @@ export default function RegisterPage() {
               </h2>
               <p className="text-nova-text-dim text-base text-center mb-8">
                 We&apos;ve sent a secure 6-digit code to your <br/>
-                <strong className="text-nova-primary">associated Google mail id</strong>
+                <strong className="text-nova-primary">
+                  {registeredGmail ? `${registeredGmail[0]}****${registeredGmail.substring(registeredGmail.indexOf('@'))}` : 'associated Google mail id'}
+                </strong>
               </p>
               {error && (
                 <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm flex items-center gap-3">

@@ -18,3 +18,19 @@ export async function checkAllowedGmail(gmail: string): Promise<boolean> {
 
   return !!data
 }
+
+export async function getGmailForIimbEmail(iimbEmail: string): Promise<string | null> {
+  const supabaseAdmin = await createAdminClient()
+  
+  const { data, error } = await supabaseAdmin
+    .from('allowed_emails')
+    .select('gmail')
+    .eq('email', iimbEmail.toLowerCase().trim())
+    .maybeSingle()
+
+  if (error || !data) {
+    return null
+  }
+
+  return data.gmail
+}
