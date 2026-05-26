@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
-import { Code2, Crown } from 'lucide-react'
+import { Code2, Crown, Zap } from 'lucide-react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PinnedCard } from '@/components/ui/PinnedCard'
 
@@ -117,18 +117,8 @@ export default function AboutPage() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {values.map((v, i) => {
-            const Icon = v.icon
             const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['pink', 'orange', 'purple']
             const pinColor = pinColors[i % 3]
-
-            // Soft colors matching cream card background
-            const themeColors = {
-              pink: { text: 'text-[#E8A020]', bg: 'bg-[#E8A020]/10', border: 'border-[#E8A020]/20' },
-              orange: { text: 'text-[#f37335]', bg: 'bg-[#f37335]/10', border: 'border-[#f37335]/20' },
-              purple: { text: 'text-[#8e44ad]', bg: 'bg-[#8e44ad]/10', border: 'border-[#8e44ad]/20' },
-              blue: { text: 'text-[#2980B9]', bg: 'bg-[#2980B9]/10', border: 'border-[#2980B9]/20' },
-            }
-            const colors = themeColors[pinColor]
 
             return (
               <div key={v.title} className="w-full">
