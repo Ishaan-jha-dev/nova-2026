@@ -188,7 +188,7 @@ export default function HeroComponent() {
               <Link href="/dashboard" className="glass-cta-btn">
                 <span className="glass-cta-shine" />
                 <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}>
-                  ENTER TO NOVA!!
+                  GO TO DASHBOARD
                 </span>
               </Link>
             ) : (

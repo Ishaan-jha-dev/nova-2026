@@ -308,6 +308,7 @@ export default async function DashboardPage() {
                       value={userData.entry_code}
                       size={168}
                       downloadName={`nova-qr-${userData.full_name?.toLowerCase().replace(/\s/g, '-')}`}
+                      hideDownload={true}
                     />
                   </div>
                   
