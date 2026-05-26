@@ -101,46 +101,6 @@ export function YourProfileHeading() {
   )
 }
 
-/* ─── Spinning Pinwheel O ─────────────────────── */
-function PinwheelO() {
-  return (
-    <span 
-      className="relative inline-flex items-center justify-center" 
-      style={{ 
-        width: '1em', 
-        height: '1em',
-        transform: 'translateY(-0.02em)' // Optical correction
-      }}
-    >
-      <span style={{ opacity: 0, userSelect: 'none', fontSize: 'inherit' }}>O</span>
-      <svg
-        viewBox="0 0 100 100"
-        className="nova-pinwheel"
-        style={{
-          position: 'absolute',
-          width: '0.82em',
-          height: '0.82em',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-        }}
-      >
-        {Array.from({ length: 14 }).map((_, i) => (
-          <g key={i} transform={`rotate(${(i * 360) / 14} 50 50)`}>
-            <polygon
-              points="50,50 44,8 56,8"
-              fill={i % 2 === 0 ? '#FBBF24' : '#ffffff'}
-              fillOpacity={i % 2 === 0 ? 0.95 : 0.75}
-            />
-          </g>
-        ))}
-        <circle cx="50" cy="50" r="7" fill="#FBBF24" />
-        <circle cx="50" cy="50" r="3.5" fill="#fff" />
-      </svg>
-    </span>
-  )
-}
-
 export function WelcomeBackHeading() {
   return (
     <div className="relative flex flex-row flex-wrap items-center justify-center w-full -mt-6 mb-4 gap-x-3 gap-y-1">
@@ -152,7 +112,7 @@ export function WelcomeBackHeading() {
           Nova
         </span>
         <span className="font-serif italic font-semibold text-[#E8A020] uppercase tracking-wider drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)]">
-          Unplugged <span className="font-black ml-1">'26</span>
+          Unplugged <span className="font-black ml-1">&apos;26</span>
         </span>
       </h1>
     </div>
