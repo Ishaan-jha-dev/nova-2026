@@ -75,7 +75,16 @@ export function GlobalNavigation() {
         </button>
       )}
 
-      {/* Hamburger button removed as requested */}
+      {/* ── Floating Hamburger Button ── */}
+      <button
+        onClick={() => setOpen(true)}
+        aria-label="Open menu"
+        className="fixed top-5 right-5 z-[100] flex flex-col items-center justify-center gap-[6px] w-[72px] h-[52px] rounded-full transition-all duration-300 group hover:scale-105 active:scale-95 shadow-lg shadow-black/25 border border-[#E8A020]/30 bg-[#0c0d10]/90 backdrop-blur-xl hover:border-[#E8A020] hover:shadow-[0_0_25px_rgba(232, 160, 32,0.25)] hover:gap-[8px]"
+      >
+        <span className="block h-[2.5px] w-7 bg-[#E8A020] rounded-full transition-all" />
+        <span className="block h-[2.5px] w-5 bg-[#E8A020]/90 rounded-full transition-all" />
+        <span className="block h-[2.5px] w-7 bg-[#E8A020] rounded-full transition-all" />
+      </button>
 
       {/* ── Backdrop ── */}
       <div

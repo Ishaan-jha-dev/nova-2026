@@ -103,11 +103,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen w-full relative flex flex-col text-white" style={{ backgroundColor: '#0B0B0B' }}>
       <BackgroundLayer />
 
-      <header className="relative z-20 flex justify-between items-start w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-8 pb-2">
-        <Link href="/" className="w-12 h-12 rounded-xl flex items-center justify-center border border-[#B48C0A]/40 bg-[#1A1505]/40 backdrop-blur-sm text-[#B48C0A] hover:bg-[#B48C0A]/20 transition-all">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
-        </Link>
-
+      <header className="relative z-20 flex justify-center items-center w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-8 pb-2">
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-3 mb-1">
             <span className="text-[#B48C0A] text-xs">✦</span>
@@ -123,10 +119,6 @@ export default async function DashboardPage() {
             </svg>
           </div>
         </div>
-
-        <Link href="/dashboard/events" className="w-12 h-12 rounded-xl flex items-center justify-center border border-[#B48C0A]/40 bg-[#1A1505]/40 backdrop-blur-sm text-[#B48C0A] hover:bg-[#B48C0A]/20 transition-all">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
-        </Link>
       </header>
 
       <main className="relative z-10 flex-1 w-full max-w-[1300px] mx-auto px-4 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
@@ -143,7 +135,7 @@ export default async function DashboardPage() {
             </div>
           </div>
           
-          <div className="flex-1 flex flex-col items-center rounded-[24px] p-8 relative overflow-hidden z-10"
+          <div className="flex-1 flex flex-col items-center rounded-[24px] p-8 relative overflow-hidden z-10 transition-all duration-500 hover:-translate-y-2 hover:border-[#D97B3A]/60 hover:shadow-[0_20px_60px_rgba(217,123,58,0.25)]"
             style={{ background: 'linear-gradient(180deg, #1C0A04 0%, #0D0402 100%)', border: '1px solid #4A1B0C', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
             
             {/* Soft inner top glow */}
@@ -208,7 +200,7 @@ export default async function DashboardPage() {
               </div>
 
               <Link href="/dashboard/events" className="w-full mt-auto mb-2 block">
-                <div className="w-full flex items-center justify-center gap-2 rounded-xl py-[18px] font-bold uppercase tracking-[0.05em] text-[13.5px] text-[#F3E6D8] transition-all hover:brightness-110"
+                <div className="w-full flex items-center justify-center gap-2 rounded-xl py-[18px] font-bold uppercase tracking-[0.05em] text-[13.5px] text-[#F3E6D8] transition-all duration-300 hover:brightness-115 hover:scale-[1.03] active:scale-[0.97] hover:shadow-[0_0_25px_rgba(217,123,58,0.25)]"
                   style={{ 
                     background: 'linear-gradient(180deg, #96421E 0%, #291004 100%)', 
                     border: '1px solid #5A2512', 
@@ -231,7 +223,7 @@ export default async function DashboardPage() {
               02
             </div>
             
-            <div className="flex-1 flex flex-col rounded-3xl px-6 pt-10 pb-6 relative overflow-hidden z-10"
+            <div className="flex-1 flex flex-col rounded-3xl px-6 pt-10 pb-6 relative overflow-hidden z-10 transition-all duration-500 hover:-translate-y-2 hover:border-[#1A9BAA]/60 hover:shadow-[0_20px_60px_rgba(26,107,122,0.25)]"
               style={{ background: 'linear-gradient(180deg, #04171A 0%, #020B0D 100%)', border: '1.5px solid #0C4A54', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
               
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[150px] pointer-events-none opacity-40 z-0"
@@ -281,7 +273,7 @@ export default async function DashboardPage() {
               03
             </div>
             
-            <div className="flex flex-col rounded-3xl p-8 relative overflow-hidden z-10"
+            <div className="flex flex-col rounded-3xl p-8 relative overflow-hidden z-10 transition-all duration-500 hover:-translate-y-2 hover:border-[#9B5BBF]/60 hover:shadow-[0_20px_60px_rgba(155,91,191,0.25)]"
               style={{ background: 'linear-gradient(180deg, #160424 0%, #0B0212 100%)', border: '1.5px solid #3A1059', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
               
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[150px] pointer-events-none opacity-40 z-0"
@@ -322,7 +314,7 @@ export default async function DashboardPage() {
             04
           </div>
           
-          <div className="flex-1 flex flex-col items-center rounded-3xl p-8 relative overflow-hidden z-10"
+          <div className="flex-1 flex flex-col items-center rounded-3xl p-8 relative overflow-hidden z-10 transition-all duration-500 hover:-translate-y-2 hover:border-[#D4A820]/60 hover:shadow-[0_20px_60px_rgba(212,168,32,0.25)]"
             style={{ background: 'linear-gradient(180deg, #1F1704 0%, #0E0A02 100%)', border: '1.5px solid #59450C', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
             
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[150px] pointer-events-none opacity-40 z-0"
@@ -366,8 +358,8 @@ export default async function DashboardPage() {
                     <Lock size={36} color="#B48C0A" />
                   </div>
                   <p className="font-bold text-[12px] uppercase tracking-[0.2em] text-[#B48C0A] mb-8">PASS LOCKED</p>
-                  <Link href="/payment" className="w-full mt-auto">
-                    <div className="w-full flex items-center justify-center gap-2 rounded-xl py-4 font-bold uppercase tracking-[0.1em] text-[11px] text-[#B48C0A] hover:bg-white/5 transition-all"
+                  <Link href="/payment" className="w-full mt-auto block">
+                    <div className="w-full flex items-center justify-center gap-2 rounded-xl py-4 font-bold uppercase tracking-[0.1em] text-[11px] text-[#B48C0A] transition-all duration-300 hover:bg-[#B48C0A]/10 hover:scale-[1.03] active:scale-[0.97] hover:border-[#B48C0A]/60"
                       style={{ background: '#291A05', border: '1px solid #59450C' }}>
                       GO TO PAYMENT <ArrowRight size={14} />
                     </div>

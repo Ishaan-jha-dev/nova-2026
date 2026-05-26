@@ -47,7 +47,7 @@ export function QRDisplay({ value, size = 200, label, downloadName = 'nova-qr', 
         </div>
         <button
           onClick={handleDownload}
-          className="w-full flex items-center justify-center gap-2 rounded-xl py-4 mb-auto font-bold uppercase tracking-[0.1em] text-[11px] text-[#B48C0A] hover:bg-white/5 transition-all"
+          className="w-full flex items-center justify-center gap-2 rounded-xl py-4 mb-auto font-bold uppercase tracking-[0.1em] text-[11px] text-[#B48C0A] transition-all duration-300 hover:bg-[#B48C0A]/10 hover:scale-[1.03] active:scale-[0.97] hover:border-[#B48C0A]/60"
           style={{ background: '#291A05', border: '1px solid #59450C' }}
         >
           <Download size={14} /> DOWNLOAD QR
