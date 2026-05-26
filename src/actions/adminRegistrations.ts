@@ -110,3 +110,88 @@ export async function adminDissolveTeam(teamId: string): Promise<void> {
   await dissolveTeamInternal(teamId, admin)
   revalidatePath('/admin/registrations')
 }
+
+/**
+ * Export registrations for a specific event to CSV format.
+ */
+export async function exportEventRegistrations(eventId: string): Promise<string> {
+  await getAdminUser()
+  const admin = await getAdminClient()
+
+  // 1. Fetch registrations with user and team data
+  const { data: registrations } = await admin
+    .from('registrations')
+    .select(`
+      id, created_at, submission_link, team_id, user_id,
+      users (full_name, email, batch),
+      teams (name, leader_id)
+    `)
+    .eq('event_id', eventId)
+    .order('created_at', { ascending: false })
+
+  if (!registrations) return ''
+
+  // 2. If team event, fetch all members of relevant teams to get names
+  const teamIds = Array.from(new Set(registrations.filter(r => r.team_id).map(r => r.team_id as string)))
+  const teamMembersMap: Record<string, string[]> = {}
+  
+  if (teamIds.length > 0) {
+    const { data: allMembers } = await admin
+      .from('team_members')
+      .select('team_id, users(full_name)')
+      .in('team_id', teamIds)
+    
+    if (allMembers) {
+      allMembers.forEach(m => {
+        const tId = m.team_id
+        const mName = (m.users as any)?.full_name || 'Unknown'
+        if (!teamMembersMap[tId]) teamMembersMap[tId] = []
+        teamMembersMap[tId].push(mName)
+      })
+    }
+  }
+
+  // 3. Build CSV
+  const header = ['Name', 'Email', 'Batch', 'Registration Type', 'Team Name', 'Role', 'Other Team Members', 'Submission Link', 'Registered At']
+  const rows = [header]
+
+  for (const reg of registrations) {
+    const user = reg.users as any
+    const team = reg.teams as any
+
+    const name = user?.full_name || ''
+    const email = user?.email || ''
+    const batch = user?.batch || ''
+    const regType = reg.team_id ? 'Team' : 'Individual'
+    const teamName = team?.name || ''
+    let role = ''
+    if (reg.team_id) {
+      role = team?.leader_id === reg.user_id ? 'Leader' : 'Member'
+    }
+
+    let teamMembersStr = ''
+    if (reg.team_id && teamMembersMap[reg.team_id]) {
+      const others = teamMembersMap[reg.team_id].filter(m => m !== name)
+      teamMembersStr = others.join('; ')
+    }
+
+    const subLink = reg.submission_link || ''
+    const registeredAt = new Date(reg.created_at).toLocaleString()
+
+    rows.push([name, email, batch, regType, teamName, role, teamMembersStr, subLink, registeredAt])
+  }
+
+  // Convert to CSV string (escape quotes and commas)
+  const csvString = rows.map(row => 
+    row.map(cell => {
+      if (cell === null || cell === undefined) return '""'
+      const strCell = String(cell)
+      if (strCell.includes(',') || strCell.includes('"') || strCell.includes('\n')) {
+        return `"${strCell.replace(/"/g, '""')}"`
+      }
+      return strCell
+    }).join(',')
+  ).join('\n')
+
+  return csvString
+}

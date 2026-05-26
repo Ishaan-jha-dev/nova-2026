@@ -3,12 +3,12 @@
 import { useState, useTransition } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { Users, UserX, Trash2, ExternalLink } from 'lucide-react'
+import { Users, UserX, Trash2, ExternalLink, Download } from 'lucide-react'
 import { formatIST } from '@/lib/utils/dateUtils'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
 import type { CategoryRow } from '@/lib/supabase/types'
-import { kickUserFromEvent, adminDissolveTeam } from '@/actions/adminRegistrations'
+import { kickUserFromEvent, adminDissolveTeam, exportEventRegistrations } from '@/actions/adminRegistrations'
 
 interface RegistrationsClientProps {
   registrations: any[]
@@ -87,6 +87,35 @@ export function RegistrationsClient({
         alert(`Failed: ${err.message}`)
       }
     })
+  }
+
+  const [exportingEventId, setExportingEventId] = useState<string | null>(null)
+
+  const handleExportCSV = async (eventId: string, eventTitle: string) => {
+    setExportingEventId(eventId)
+    try {
+      const csvData = await exportEventRegistrations(eventId)
+      if (!csvData) {
+        alert("No registrations found for this event to export.")
+        setExportingEventId(null)
+        return
+      }
+
+      // Trigger download
+      const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' })
+      const link = document.createElement("a")
+      const url = URL.createObjectURL(blob)
+      link.setAttribute("href", url)
+      link.setAttribute("download", `${eventTitle.replace(/[^a-z0-9]/gi, '_').toLowerCase()}_registrations.csv`)
+      link.style.visibility = 'hidden'
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+    } catch (err: any) {
+      alert(`Export Failed: ${err.message}`)
+    } finally {
+      setExportingEventId(null)
+    }
   }
 
   const catParam = selectedCategory !== 'all' ? `&category=${selectedCategory}` : ''
@@ -182,6 +211,16 @@ export function RegistrationsClient({
                     )}
                   </div>
                 </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  icon={<Download size={14} />} 
+                  loading={exportingEventId === eventId}
+                  onClick={() => handleExportCSV(eventId, eventTitle)}
+                  className="shrink-0"
+                >
+                  Export CSV
+                </Button>
               </div>
 
               {/* Individual registrations */}

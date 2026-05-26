@@ -1,7 +1,8 @@
 import Link from 'next/link'
-import { ArrowRight, ArrowDown, Mic2, BriefcaseBusiness, Globe, Palette, Search, Star, Headphones, Users, CreditCard, UserPlus, CalendarCheck, ChevronRight, ChevronDown } from 'lucide-react'
+import { ArrowRight, ArrowDown, Mic2, BriefcaseBusiness, Globe, Palette, Search, Star, Headphones, Users, UserPlus, CalendarCheck, ChevronRight, ChevronDown } from 'lucide-react'
 import HeroComponent from '@/components/sections/HeroComponent'
 import MaintenanceAlert from '@/components/ui/MaintenanceAlert'
+import PaymentStepCard from '@/components/ui/PaymentStepCard'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -96,22 +97,7 @@ export default function HomePage() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-2 md:gap-4 relative z-10 entrance-2">
             
             {/* Step 1 */}
-            <a 
-              href="https://enidhi.iimb.ac.in/?p_id=68F08B3E4815358A9DD8BE3AB499FB5A" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="flex-1 w-full md:w-auto nova-card rounded-3xl p-8 flex flex-col items-center text-center group hover:-translate-y-2 transition-all duration-300 relative overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-nova-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-              <div className="w-14 h-14 rounded-full bg-nova-primary/20 border border-nova-primary/40 flex items-center justify-center mb-6 text-nova-primary shadow-[0_0_20px_rgba(232,160,32,0.2)] group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(232,160,32,0.4)] transition-all">
-                <CreditCard size={28} />
-              </div>
-              <div className="absolute top-4 left-6 text-5xl font-black text-white/5 select-none pointer-events-none">1</div>
-              <h3 className="font-display font-bold text-xl text-white mb-3">Complete Payment</h3>
-              <p className="text-white/50 text-sm leading-relaxed">
-                Pay the entry fee securely on the official IIMB eNidhi portal.
-              </p>
-            </a>
+            <PaymentStepCard paymentLink="https://enidhi.iimb.ac.in/?p_id=68F08B3E4815358A9DD8BE3AB499FB5A" />
 
             {/* Arrow */}
             <div className="text-nova-primary/50 shrink-0 hidden md:block">
