@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { ArrowRight, ArrowDown, Mic2, BriefcaseBusiness, Globe, Palette, Search, Star, Headphones, Users, UserPlus, CalendarCheck, ChevronRight, ChevronDown } from 'lucide-react'
+import Image from 'next/image'
+import { ArrowRight, ArrowDown, UserPlus, CalendarCheck, ChevronRight, ChevronDown } from 'lucide-react'
 import HeroComponent from '@/components/sections/HeroComponent'
 import MaintenanceAlert from '@/components/ui/MaintenanceAlert'
 import PaymentStepCard from '@/components/ui/PaymentStepCard'
@@ -14,60 +15,36 @@ const FEST_DATE = process.env.NEXT_PUBLIC_FEST_DATE || '2026-06-15T09:00:00+05:3
 
 const features = [
   {
-    icon: Mic2,
+    image: '/home/speaker_sessions.png',
     title: 'Speaker Sessions & Panels',
-    desc: 'Engaging talks by professors, startup founders, and industry experts.',
-    color: 'from-amber-500 to-orange-600',
-    tag: 'Days 1, 2 & 3',
   },
   {
-    icon: BriefcaseBusiness,
+    image: '/home/case_competitions.png',
     title: 'Case & Pitch Competitions',
-    desc: 'High-stakes business case solving and pitch competitions to test your mettle.',
-    color: 'from-orange-500 to-red-500',
-    tag: 'For Participants',
   },
   {
-    icon: Globe,
+    image: '/home/mun.png',
     title: 'Model UN (MUN)',
-    desc: 'Represent nations, debate global issues, and craft resolutions in an immersive experience.',
-    color: 'from-yellow-500 to-amber-500',
-    tag: 'Days 2 & 3',
   },
   {
-    icon: Users,
+    image: '/home/cultural.png',
     title: 'Cultural Extravaganza',
-    desc: 'Showcase your moves in Dance & Drama, or claim the title in Mr. and Miss Nova.',
-    color: 'from-rose-500 to-orange-600',
-    tag: 'For Participants',
   },
   {
-    icon: Search,
+    image: '/home/treasure_hunt.png',
     title: 'Treasure Hunt & Games',
-    desc: 'Campus-wide adventure to test your wits and test your strength in Tug of War.',
-    color: 'from-[#E8A020] to-[#F0A500]',
-    tag: 'Open to All',
   },
   {
-    icon: Star,
+    image: '/home/talent_show.png',
     title: 'Talent Show & Quizzes',
-    desc: 'From singers to quick thinkers — own the stage and claim your prize in the Finals.',
-    color: 'from-orange-400 to-amber-600',
-    tag: 'Day 3 & 4',
   },
   {
-    icon: Palette,
+    image: '/home/dbe_spotlight.png',
     title: 'DBE Spotlight',
-    desc: 'TEDtalks by DBE students and outreach showcases celebrating student journeys.',
-    color: 'from-yellow-600 to-orange-500',
-    tag: 'Days 1 & 2',
   },
   {
-    icon: Headphones,
+    image: '/home/jamming.png',
     title: 'Jamming & DJ Nights',
-    desc: 'Unwind with musical jamming sessions on Day 1 and an electrifying DJ night on Day 3.',
-    color: 'from-nova-primary to-nova-accent',
-    tag: 'Evenings',
   },
 ]
 
@@ -172,21 +149,16 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {features.map((f, i) => {
-              const Icon = f.icon
               const delayClass = `entrance-${(i % 5) + 1}`
               return (
                 <div
                   key={f.title}
-                  className={`bento-item shimmer-card group ${delayClass} flex flex-col items-center text-center`}
+                  className={`bento-item shimmer-card group ${delayClass} flex flex-col items-center p-4`}
                 >
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(232, 160, 32,0.2)] transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(232, 160, 32,0.4)]`}>
-                    <Icon size={22} className="text-white" />
+                  <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                    <Image src={f.image} alt={f.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
-                  <h3 className="font-body font-bold text-lg text-white mb-2">{f.title}</h3>
-                  <p className="text-white/60 text-sm leading-relaxed mb-4 flex-1">{f.desc}</p>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/5 border border-white/10 text-white/70">
-                    {f.tag}
-                  </span>
+                  <h3 className="font-display font-bold text-lg text-white mb-2 text-center drop-shadow-md px-2">{f.title}</h3>
                 </div>
               )
             })}
