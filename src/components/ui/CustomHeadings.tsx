@@ -55,12 +55,12 @@ export function LiveUpdatesHeading() {
       <h1 className="text-5xl md:text-6xl text-white drop-shadow-md flex items-center gap-3 relative z-10">
         <span className="font-serif italic font-black tracking-wide uppercase relative">
           L
-          {/* Custom "i" with spark dot */}
-          <span className="inline-flex flex-col items-center mx-[2px] relative -top-1">
-            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" className="mb-1 text-[#FBBF24] animate-pulse">
+          {/* Custom "I" with spark dot */}
+          <span className="relative inline-block mx-[2px]">
+            <svg width="12" height="12" viewBox="0 0 20 20" fill="none" className="absolute -top-4 left-1/2 -translate-x-1/2 text-[#FBBF24] animate-pulse">
               <path d="M 10 0 Q 10 10 20 10 Q 10 10 10 20 Q 10 10 0 10 Q 10 10 10 0" fill="currentColor" />
             </svg>
-            <span>i</span>
+            i
           </span>
           ve
         </span>

@@ -95,7 +95,7 @@ export function TimelineView({ showRegisterButton = true, noWrapper = false }: T
   const content = (
     <>
       {/* Location and Date details */}
-      <div className={`flex flex-wrap items-center justify-center gap-4 ${noWrapper ? 'mb-12' : '-mt-8 mb-12'} text-xs font-bold uppercase tracking-wider relative z-10`}>
+      <div className={`flex flex-wrap items-center justify-center gap-4 ${noWrapper ? 'mb-12' : 'mt-2 mb-12'} text-xs font-bold uppercase tracking-wider relative z-10`}>
         <span className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white">
           <MapPin size={14} className="text-[#E8A020]" /> IIM Bangalore
         </span>
