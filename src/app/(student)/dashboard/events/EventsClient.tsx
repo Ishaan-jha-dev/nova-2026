@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { formatIST } from '@/lib/utils/dateUtils'
 import { toZonedTime } from 'date-fns-tz'
 import { 
-  Search, MapPin, Clock, Users, Phone, ExternalLink, BookOpen, Check, Plus, 
+  MapPin, Clock, Users, Phone, ExternalLink, BookOpen, Check, Plus, 
   LogIn, X, Bell, AlertCircle, LogOut, ArrowLeft, ChevronRight, Crown, Copy, 
   UserMinus, Lock, Unlock, ChevronUp, ChevronDown 
 } from 'lucide-react'
@@ -270,17 +270,12 @@ function CategoryEventsView({
   onBack: () => void
   onSelectEvent: (event: EventRow & { categories?: any }) => void
 }) {
-  const [search, setSearch] = useState('')
   const category = categories.find(c => c.id === categoryId)
   const colors = getCategoryColors(category?.title)
 
   const filtered = useMemo(() =>
-    events.filter(e => {
-      const inCat = e.category_id === categoryId
-      const matchSearch = !search || e.title.toLowerCase().includes(search.toLowerCase())
-      return inCat && matchSearch
-    }),
-    [events, categoryId, search]
+    events.filter(e => e.category_id === categoryId),
+    [events, categoryId]
   )
 
   return (
@@ -298,7 +293,7 @@ function CategoryEventsView({
       </div>
 
       {/* Big category title */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-6">
         <h1
           className="font-display font-black uppercase"
           style={{
@@ -314,23 +309,6 @@ function CategoryEventsView({
           {category?.title || 'Events'}
         </h1>
         <div className="w-32 h-0.5 mx-auto mt-4 rounded-full" style={{ background: `linear-gradient(90deg, transparent, ${colors.border}, transparent)` }} />
-      </div>
-
-      {/* Search */}
-      <div className="relative max-w-sm mx-auto mb-10">
-        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 opacity-60" style={{ color: colors.text }} />
-        <input
-          type="text"
-          placeholder={`Search ${category?.title || 'events'}...`}
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full pl-9 pr-4 py-2.5 text-sm rounded-xl outline-none transition-all"
-          style={{
-            background: 'rgba(255,255,255,0.05)',
-            border: `1px solid ${colors.border}40`,
-            color: '#FFE4E6',
-          }}
-        />
       </div>
 
       {/* Event stamp grid */}
