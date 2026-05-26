@@ -101,45 +101,95 @@ export function YourProfileHeading() {
   )
 }
 
+/* ─── Spinning Pinwheel O ─────────────────────── */
+function PinwheelO() {
+  return (
+    <span 
+      className="relative inline-flex items-center justify-center" 
+      style={{ 
+        width: '1em', 
+        height: '1em',
+        transform: 'translateY(-0.02em)' // Optical correction
+      }}
+    >
+      <span style={{ opacity: 0, userSelect: 'none', fontSize: 'inherit' }}>O</span>
+      <svg
+        viewBox="0 0 100 100"
+        className="nova-pinwheel"
+        style={{
+          position: 'absolute',
+          width: '0.82em',
+          height: '0.82em',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+        }}
+      >
+        {Array.from({ length: 14 }).map((_, i) => (
+          <g key={i} transform={`rotate(${(i * 360) / 14} 50 50)`}>
+            <polygon
+              points="50,50 44,8 56,8"
+              fill={i % 2 === 0 ? '#FBBF24' : '#ffffff'}
+              fillOpacity={i % 2 === 0 ? 0.95 : 0.75}
+            />
+          </g>
+        ))}
+        <circle cx="50" cy="50" r="7" fill="#FBBF24" />
+        <circle cx="50" cy="50" r="3.5" fill="#fff" />
+      </svg>
+    </span>
+  )
+}
+
 export function WelcomeBackHeading() {
   return (
-    <div className="relative inline-flex items-center justify-center w-full mt-2 mb-6">
-      <h1 className="text-4xl md:text-5xl lg:text-6xl drop-shadow-lg flex flex-wrap items-center justify-center gap-4 w-full">
-        
-        {/* NOVA Part (Silver/White with Sunburst 'O') */}
-        <span className="font-serif font-black tracking-widest uppercase flex items-center text-white/90">
-          N
-          {/* Sunburst 'O' */}
-          <div className="relative inline-flex items-center justify-center mx-1 md:mx-2 w-[0.8em] h-[0.8em] animate-[spin_60s_linear_infinite]">
-            <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible">
-              {/* Sunburst rays */}
-              {Array.from({ length: 16 }).map((_, i) => {
-                const angle = (i * 360) / 16;
-                const isGold = i % 2 === 0;
-                return (
-                  <path
-                    key={i}
-                    d="M 50 50 L 50 5 L 56 50 Z"
-                    fill={isGold ? '#E8A020' : '#E5E7EB'}
-                    transform={`rotate(${angle} 50 50)`}
-                    className="drop-shadow-sm"
-                  />
-                );
-              })}
-              {/* Center hole */}
-              <circle cx="50" cy="50" r="10" fill="#0c0d10" />
-              <circle cx="50" cy="50" r="4" fill="#FFFFFF" />
-            </svg>
-          </div>
-          VA
+    <div className="relative flex flex-col items-center justify-center w-full mt-2 mb-8 scale-[0.6] sm:scale-75 md:scale-90 lg:scale-100 origin-top">
+      {/* NOVA */}
+      <div className="nova-word flex items-center" style={{ gap: '0.02em', lineHeight: 1 }}>
+        <span className="nova-letter-char" style={{ animationDelay: '0.2s' }}>N</span>
+        <PinwheelO />
+        <span className="nova-letter-char" style={{ animationDelay: '0.35s' }}>V</span>
+        <span className="relative nova-letter-char" style={{ animationDelay: '0.45s' }}>
+          A<span className="nova-star-el">✦</span>
         </span>
+      </div>
 
-        {/* UNPLUGGED '26 Part (Gold Italic) */}
-        <span className="font-serif italic font-semibold text-[#E8A020] uppercase tracking-[0.15em] drop-shadow-[0_2px_10px_rgba(232,160,32,0.4)]">
-          Unplugged <span className="font-light ml-1">'26</span>
+      {/* UNPLUGGED '26 */}
+      <div className="flex items-baseline" style={{ gap: '0.04em', marginTop: '-0.05em' }}>
+        {'UNPLUGGED'.split('').map((ch, i) => (
+          <span
+            key={i}
+            className="unplugged-char"
+            style={{
+              animationDelay: `${0.55 + i * 0.05}s`,
+              fontFamily: "'Playfair Display', serif",
+              fontStyle: 'italic',
+              fontWeight: 700,
+              fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
+              color: 'rgba(251,191,36,0.9)',
+              letterSpacing: '0.06em',
+            }}
+          >
+            {ch}
+          </span>
+        ))}
+        <span
+          className="unplugged-char"
+          style={{
+            animationDelay: `${0.55 + 9 * 0.05}s`,
+            fontFamily: "'Playfair Display', serif",
+            fontWeight: 900,
+            fontSize: 'clamp(3rem, 7vw, 5.5rem)',
+            color: '#E8A020',
+            marginLeft: '0.15em',
+            background: 'none',
+            WebkitBackgroundClip: 'unset',
+            backgroundClip: 'unset',
+          }}
+        >
+          '26
         </span>
-
-      </h1>
+      </div>
     </div>
   )
 }
