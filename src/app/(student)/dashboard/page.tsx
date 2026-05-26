@@ -103,28 +103,38 @@ export default async function DashboardPage() {
       <main className="relative z-10 flex-1 w-full max-w-[1300px] mx-auto px-4 lg:px-8 py-6 grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
         
         {/* CARD 01 · MY EVENTS */}
-        <div className="relative flex flex-col h-full pt-[20px]">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 z-30 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white"
-            style={{ background: 'linear-gradient(135deg, #D97B3A, #8B3A0A)', boxShadow: '0 0 15px rgba(217,123,58,0.5)' }}>
-            01
+        <div className="relative flex flex-col h-full pt-[26px]">
+          {/* Top glowing dot and 01 Badge */}
+          <div className="absolute top-[26px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
+            {/* Bright glowing dot on the border */}
+            <div className="absolute top-0 w-[6px] h-[6px] bg-[#FFF3E0] rounded-full shadow-[0_0_20px_8px_rgba(259,165,80,0.9)] z-40" />
+            <div className="w-[56px] h-[56px] rounded-full flex items-center justify-center font-bold text-xl text-white mt-3"
+              style={{ background: '#3D1A08', border: '1px solid rgba(217,123,58,0.5)', boxShadow: 'inset 0 0 15px rgba(217,123,58,0.2), 0 10px 20px rgba(0,0,0,0.5)' }}>
+              01
+            </div>
           </div>
           
-          <div className="flex-1 flex flex-col items-center rounded-3xl p-8 relative overflow-hidden z-10"
-            style={{ background: 'linear-gradient(180deg, #1C0A04 0%, #0D0402 100%)', border: '1.5px solid #4A1B0C', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
+          <div className="flex-1 flex flex-col items-center rounded-[24px] p-8 relative overflow-hidden z-10"
+            style={{ background: 'linear-gradient(180deg, #1C0A04 0%, #0D0402 100%)', border: '1px solid #4A1B0C', boxShadow: '0 15px 50px rgba(0,0,0,0.6)' }}>
             
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[60%] h-[150px] pointer-events-none opacity-40 z-0"
-              style={{ background: 'radial-gradient(ellipse at top, #D97B3A 0%, transparent 70%)', filter: 'blur(20px)' }} />
+            {/* Soft inner top glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-[150px] pointer-events-none opacity-50 z-0"
+              style={{ background: 'radial-gradient(ellipse at top, rgba(217,123,58,0.2) 0%, transparent 70%)', filter: 'blur(20px)' }} />
 
-            <div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none" style={{ backgroundImage: 'url("' + orangeMotif + '")', backgroundRepeat: 'repeat-x', backgroundPosition: 'bottom' }} />
+            <div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none opacity-60" style={{ backgroundImage: 'url("' + orangeMotif + '")', backgroundRepeat: 'repeat-x', backgroundPosition: 'bottom' }} />
 
-            <div className="relative z-10 flex flex-col items-center w-full h-full">
-              <h2 className="font-black text-[22px] uppercase tracking-[0.25em] text-[#FDE6D5] text-center mt-6 mb-3 font-sans">MY EVENTS</h2>
-              <div className="rounded-full px-6 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#FDE6D5] mb-8"
-                style={{ background: '#9A3A12' }}>
+            <div className="relative z-10 flex flex-col items-center w-full h-full pt-10">
+              <div className="text-[#D97B3A] mb-2">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#D97B3A" strokeWidth="2"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z" fill="#D97B3A" /></svg>
+              </div>
+              <h2 className="font-bold text-[24px] uppercase tracking-[0.05em] text-[#F3E6D8] text-center mb-5 font-sans" style={{ textShadow: '0 2px 10px rgba(243,230,216,0.1)' }}>MY EVENTS</h2>
+              
+              <div className="rounded-[20px] px-6 py-2 text-[12px] font-bold uppercase tracking-wide text-[#F3E6D8] mb-8"
+                style={{ background: '#A64B1F', border: '1px solid #C55D2B', boxShadow: '0 4px 10px rgba(0,0,0,0.3)' }}>
                 REGISTERED: {registrations ? registrations.length : 0} EVENTS
               </div>
 
-              <div className="w-full flex-1 flex flex-col items-center justify-center py-10 min-h-[250px]">
+              <div className="w-full flex-1 flex flex-col items-center justify-center py-6 min-h-[260px]">
                 {registrations && registrations.length > 0 ? (
                   <ul className="w-full space-y-4">
                     {registrations.map(reg => {
@@ -137,24 +147,45 @@ export default async function DashboardPage() {
                     })}
                   </ul>
                 ) : (
-                  <div className="flex flex-col items-center justify-center opacity-80">
-                    <div className="flex items-center justify-center gap-6 mb-6">
-                      <span className="text-[#9A3A12] text-[10px]">✦</span>
-                      <div className="w-[72px] h-[72px] rounded-full flex items-center justify-center relative">
-                        <div className="absolute inset-0 rounded-full border border-dashed border-[#9A3A12] opacity-70"></div>
-                        <Calendar size={26} color="#9A3A12" strokeWidth={1.5} />
+                  <div className="flex flex-col items-center justify-center w-full">
+                    <div className="flex items-center justify-center gap-8 mb-8 w-full">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97B3A" strokeWidth="1.5"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z" /></svg>
+                      
+                      <div className="relative w-[110px] h-[110px] flex items-center justify-center">
+                        <div className="absolute inset-0 rounded-full" style={{ border: '1px dashed rgba(217,123,58,0.5)' }} />
+                        <div className="absolute inset-[8px] rounded-full" style={{ border: '1px solid rgba(217,123,58,0.9)' }} />
+                        
+                        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#D97B3A" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                          <line x1="16" y1="2" x2="16" y2="6" />
+                          <line x1="8" y1="2" x2="8" y2="6" />
+                          <line x1="3" y1="10" x2="21" y2="10" />
+                          <circle cx="7" cy="14" r="0.8" fill="#D97B3A" />
+                          <circle cx="12" cy="14" r="0.8" fill="#D97B3A" />
+                          <circle cx="17" cy="14" r="0.8" fill="#D97B3A" />
+                          <circle cx="7" cy="18" r="0.8" fill="#D97B3A" />
+                          <circle cx="12" cy="18" r="0.8" fill="#D97B3A" />
+                          <circle cx="17" cy="18" r="0.8" fill="#D97B3A" />
+                          <path d="M16 16 L21 16 L21 22 L16 22 Z" fill="#1C0A04" stroke="none" />
+                          <path d="M16 22 L16 16 L21 16" stroke="#D97B3A" fill="none" />
+                        </svg>
                       </div>
-                      <span className="text-[#9A3A12] text-[10px]">✦</span>
+                      
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97B3A" strokeWidth="1.5"><path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5Z" /></svg>
                     </div>
-                    <p className="font-bold uppercase tracking-[0.15em] text-[11px] text-[#8B3A0A]">NO EVENTS REGISTERED</p>
+                    <p className="font-medium uppercase tracking-[0.05em] text-[13.5px] text-[#A08E80]">NO EVENTS REGISTERED</p>
                   </div>
                 )}
               </div>
 
               <Link href="/dashboard/events" className="w-full mt-auto mb-2 block">
-                <div className="w-full flex items-center justify-center gap-2 rounded-xl py-4 font-bold uppercase tracking-[0.15em] text-xs text-[#FDE6D5] transition-all hover:brightness-110"
-                  style={{ background: 'linear-gradient(90deg, #381308, #2A0E06)', border: '1px solid #5A2512', boxShadow: '0 4px 15px rgba(0,0,0,0.3)' }}>
-                  EXPLORE ALL EVENTS <ArrowRight size={14} />
+                <div className="w-full flex items-center justify-center gap-2 rounded-xl py-[18px] font-bold uppercase tracking-[0.05em] text-[13.5px] text-[#F3E6D8] transition-all hover:brightness-110"
+                  style={{ 
+                    background: 'linear-gradient(180deg, #96421E 0%, #291004 100%)', 
+                    border: '1px solid #5A2512', 
+                    boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.2), 0 4px 15px rgba(0,0,0,0.5)' 
+                  }}>
+                  EXPLORE ALL EVENTS <ArrowRight size={18} strokeWidth={2} />
                 </div>
               </Link>
             </div>
