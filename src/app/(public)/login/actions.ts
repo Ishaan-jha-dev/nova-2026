@@ -9,14 +9,14 @@ export async function checkAllowedGmail(gmail: string): Promise<boolean> {
     .from('allowed_emails')
     .select('id')
     .eq('gmail', gmail.toLowerCase().trim())
-    .maybeSingle()
+    .limit(1)
 
-  if (error) {
-    console.error('Error checking allowed gmail:', error)
+  if (error || !data || data.length === 0) {
+    if (error) console.error('Error checking allowed gmail:', error)
     return false
   }
 
-  return !!data
+  return true
 }
 
 export async function getGmailForIimbEmail(iimbEmail: string): Promise<string | null> {
@@ -26,11 +26,11 @@ export async function getGmailForIimbEmail(iimbEmail: string): Promise<string | 
     .from('allowed_emails')
     .select('gmail')
     .eq('email', iimbEmail.toLowerCase().trim())
-    .maybeSingle()
+    .limit(1)
 
-  if (error || !data) {
+  if (error || !data || data.length === 0) {
     return null
   }
 
-  return data.gmail
+  return data[0].gmail
 }

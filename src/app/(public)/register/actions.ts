@@ -10,14 +10,14 @@ export async function checkAllowedEmail(email: string): Promise<{ allowed: boole
     .from('allowed_emails')
     .select('id, gmail')
     .eq('email', email.toLowerCase().trim())
-    .maybeSingle()
+    .limit(1)
 
   if (error) {
     console.error('Error checking allowed emails:', error)
     return { allowed: false }
   }
 
-  return { allowed: !!data, gmail: data?.gmail || undefined }
+  return { allowed: !!(data && data.length > 0), gmail: (data && data.length > 0) ? data[0].gmail : undefined }
 }
 
 export async function approveUserPaymentStatus(userId: string): Promise<boolean> {

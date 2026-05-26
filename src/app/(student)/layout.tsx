@@ -12,13 +12,13 @@ export default async function StudentLayout({ children }: { children: React.Reac
   // Kick out users whose email is no longer in the allowed_emails list
   // We MUST use admin client because RLS blocks students from reading this table
   const supabaseAdmin = await createAdminClient()
-  const { data: allowedUser, error } = await supabaseAdmin
+  const { data: allowedUsers, error } = await supabaseAdmin
     .from('allowed_emails')
     .select('id')
     .or(`email.eq.${user.email?.toLowerCase().trim() || ''},gmail.eq.${user.email?.toLowerCase().trim() || ''}`)
-    .maybeSingle()
+    .limit(1)
 
-  if (!allowedUser) {
+  if (!allowedUsers || allowedUsers.length === 0) {
     const debugInfo = error ? error.message : `not_found_${user.email}`
     redirect(`/login?error=not_allowed&details=${encodeURIComponent(debugInfo)}`)
   }
