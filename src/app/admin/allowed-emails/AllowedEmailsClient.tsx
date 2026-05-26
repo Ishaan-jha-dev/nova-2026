@@ -35,14 +35,27 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         const { data: userData } = await supabase.auth.getUser()
         if (!userData.user) throw new Error('Not authenticated')
 
+        const targetEmail = singleEmail.trim().toLowerCase()
+        const targetGmail = singleGmail.trim().toLowerCase()
+
+        const { data: existing } = await supabase
+          .from('allowed_emails')
+          .select('email')
+          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail}`)
+          .limit(1)
+
+        if (existing && existing.length > 0) {
+          throw new Error('This IIMB email or Gmail address already exists in the allowed list.')
+        }
+
         const { data, error: insertError } = await supabase
           .from('allowed_emails')
-          .insert({ email: singleEmail.trim().toLowerCase(), gmail: singleGmail.trim().toLowerCase(), added_by: userData.user.id })
+          .insert({ email: targetEmail, gmail: targetGmail, added_by: userData.user.id })
           .select('id, email, gmail, created_at, users!added_by(full_name)')
           .single()
 
         if (insertError) {
-          if (insertError.code === '23505') throw new Error('Email is already in the allowed list')
+          if (insertError.code === '23505') throw new Error('Email or Gmail is already in the allowed list')
           throw insertError
         }
 
@@ -91,14 +104,21 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         }))
 
         const emailsToExtract = emailList.map(e => e.email)
-        const { data: existing } = await supabase.from('allowed_emails').select('email').in('email', emailsToExtract)
-        const existingSet = new Set((existing || []).map(e => e.email))
-        const newInserts = inserts.filter(item => !existingSet.has(item.email))
+        const gmailsToExtract = emailList.map(e => e.gmail)
+        
+        const { data: existingEmails } = await supabase.from('allowed_emails').select('email, gmail').in('email', emailsToExtract)
+        const { data: existingGmails } = await supabase.from('allowed_emails').select('email, gmail').in('gmail', gmailsToExtract)
+        
+        const existingEmailSet = new Set((existingEmails || []).map(e => e.email))
+        const existingGmailSet = new Set((existingGmails || []).map(e => e.gmail))
 
-        if (newInserts.length === 0) {
-          setError('All provided emails are already in the allowed list.')
-          return
+        const conflicts = emailList.filter(item => existingEmailSet.has(item.email) || existingGmailSet.has(item.gmail))
+
+        if (conflicts.length > 0) {
+          throw new Error(`Cannot process: The email '${conflicts[0].email}' or gmail '${conflicts[0].gmail}' already exists in the database. Please remove existing entries and try again.`)
         }
+
+        const newInserts = inserts
 
         const { data, error: insertError } = await supabase
           .from('allowed_emails')
@@ -147,9 +167,23 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
     setSuccess(null)
     startTransition(async () => {
       try {
+        const targetEmail = editEmail.trim().toLowerCase()
+        const targetGmail = editGmail.trim().toLowerCase()
+
+        const { data: existing } = await supabase
+          .from('allowed_emails')
+          .select('id')
+          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail}`)
+          .neq('id', id)
+          .limit(1)
+
+        if (existing && existing.length > 0) {
+          throw new Error('This IIMB email or Gmail address already exists in another record.')
+        }
+
         const { error: updateError } = await supabase
           .from('allowed_emails')
-          .update({ email: editEmail.trim().toLowerCase(), gmail: editGmail.trim().toLowerCase() })
+          .update({ email: targetEmail, gmail: targetGmail })
           .eq('id', id)
 
         if (updateError) {
