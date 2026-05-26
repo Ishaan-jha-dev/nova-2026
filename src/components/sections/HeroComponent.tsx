@@ -85,11 +85,12 @@ export default function HeroComponent() {
 
         {/* Top label */}
         <p
+          className="text-center px-4 w-full max-w-[95vw]"
           style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: 400,
-            fontSize: 'clamp(0.9rem, 2vw, 1.2rem)',
-            letterSpacing: '0.35em',
+            fontSize: 'clamp(0.75rem, 2vw, 1.2rem)',
+            letterSpacing: '0.25em',
             textTransform: 'uppercase',
             color: 'rgba(251,191,36,0.65)',
             marginBottom: '0.8rem',
@@ -111,31 +112,33 @@ export default function HeroComponent() {
         </div>
 
         {/* UNPLUGGED '26 */}
-        <div className="flex items-baseline" style={{ gap: '0.04em', marginTop: '-0.05em' }}>
-          {'UNPLUGGED'.split('').map((ch, i) => (
-            <span
-              key={i}
-              className="unplugged-char"
-              style={{
-                animationDelay: `${0.55 + i * 0.05}s`,
-                fontFamily: "'Playfair Display', serif",
-                fontStyle: 'italic',
-                fontWeight: 700,
-                fontSize: 'clamp(2.5rem, 6vw, 4.5rem)',
-                color: 'rgba(251,191,36,0.9)',
-                letterSpacing: '0.06em',
-              }}
-            >
-              {ch}
-            </span>
-          ))}
+        <div className="flex items-baseline justify-center w-full max-w-[98vw] flex-wrap" style={{ marginTop: '-0.05em' }}>
+          <div className="flex items-baseline" style={{ gap: '0.04em' }}>
+            {'UNPLUGGED'.split('').map((ch, i) => (
+              <span
+                key={i}
+                className="unplugged-char"
+                style={{
+                  animationDelay: `${0.55 + i * 0.05}s`,
+                  fontFamily: "'Playfair Display', serif",
+                  fontStyle: 'italic',
+                  fontWeight: 700,
+                  fontSize: 'clamp(1.5rem, 7vw, 4.5rem)',
+                  color: 'rgba(251,191,36,0.9)',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                {ch}
+              </span>
+            ))}
+          </div>
           <span
             className="unplugged-char"
             style={{
               animationDelay: `${0.55 + 9 * 0.05}s`,
               fontFamily: "'Playfair Display', serif",
               fontWeight: 900,
-              fontSize: 'clamp(3rem, 7vw, 5.5rem)',
+              fontSize: 'clamp(1.8rem, 8.5vw, 5.5rem)',
               color: '#E8A020',
               marginLeft: '0.15em',
               background: 'none',
@@ -149,6 +152,7 @@ export default function HeroComponent() {
 
         {/* Details */}
         <div
+          className="text-center w-full px-2"
           style={{
             opacity: 0,
             animation: 'fadeSlideUp 0.7s 1.1s ease forwards',
@@ -162,8 +166,8 @@ export default function HeroComponent() {
           <p style={{
             fontFamily: "'Inter', sans-serif",
             fontWeight: 500,
-            fontSize: 'clamp(0.9rem, 1.8vw, 1.2rem)',
-            letterSpacing: '0.28em',
+            fontSize: 'clamp(0.75rem, 2.5vw, 1.2rem)',
+            letterSpacing: '0.2em',
             textTransform: 'uppercase',
             color: 'rgba(232,160,32,0.8)',
           }}>
@@ -172,8 +176,8 @@ export default function HeroComponent() {
           <p style={{
             fontFamily: "'Playfair Display', serif",
             fontWeight: 800,
-            fontSize: 'clamp(1.3rem, 3vw, 1.8rem)',
-            letterSpacing: '0.18em',
+            fontSize: 'clamp(1.1rem, 3.5vw, 1.8rem)',
+            letterSpacing: '0.15em',
             color: 'rgba(255,255,255,0.88)',
             textShadow: '0 0 20px rgba(232,160,32,0.5)',
           }}>
