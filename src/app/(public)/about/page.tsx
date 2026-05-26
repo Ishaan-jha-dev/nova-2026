@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
-import { Zap, Target, Heart, Code2, Crown } from 'lucide-react'
+import Image from 'next/image'
+import { Code2, Crown } from 'lucide-react'
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { PinnedCard } from '@/components/ui/PinnedCard'
 
@@ -60,9 +61,9 @@ const team = [
 ]
 
 const values = [
-  { icon: Zap,    title: 'Energy',     desc: 'We bring unmatched enthusiasm and drive to everything we do.' },
-  { icon: Target, title: 'Excellence', desc: 'Raising the bar, year after year, in every event and experience.' },
-  { icon: Heart,  title: 'Community',  desc: 'Building bonds across batches, campuses, and backgrounds.' },
+  { image: '/about/energy.png', title: 'Energy', desc: 'We bring unmatched enthusiasm and drive to everything we do.' },
+  { image: '/about/excellence.png', title: 'Excellence', desc: 'Raising the bar, year after year, in every event and experience.' },
+  { image: '/about/community.png', title: 'Community', desc: 'Building bonds across batches, campuses, and backgrounds.' },
 ]
 
 const roleIcon: Record<string, any> = {
@@ -131,11 +132,18 @@ export default function AboutPage() {
 
             return (
               <div key={v.title} className="w-full">
-                <PinnedCard pinColor={pinColor} title={v.title} className="!p-8">
-                  <div className={`w-16 h-16 rounded-2xl ${colors.bg} border ${colors.border} flex items-center justify-center mx-auto mb-6`}>
-                    <Icon size={30} className={colors.text} />
+                <PinnedCard pinColor={pinColor} className="h-full !p-5 transition-all group">
+                  <div className="relative w-full h-56 rounded-xl overflow-hidden mb-5 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                    <Image src={v.image} alt={v.title} fill className="object-cover transition-transform duration-700 group-hover:scale-105" />
                   </div>
-                  <p className="text-white/70 text-sm font-medium text-center leading-relaxed">{v.desc}</p>
+                  <div className="flex flex-col items-center justify-center flex-grow px-2">
+                    <h3 className="font-display font-bold text-2xl text-white uppercase tracking-wider mb-2 text-center drop-shadow-md">
+                      {v.title}
+                    </h3>
+                    <p className="text-white/70 text-sm font-medium text-center leading-relaxed pb-2">
+                      {v.desc}
+                    </p>
+                  </div>
                 </PinnedCard>
               </div>
             )
