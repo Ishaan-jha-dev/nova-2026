@@ -54,7 +54,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         const { data: existing } = await supabase
           .from('allowed_emails')
           .select('email')
-          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail}`)
+          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail},email.eq.${targetGmail},gmail.eq.${targetEmail}`)
           .limit(1)
 
         if (existing && existing.length > 0) {
@@ -118,14 +118,18 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
 
         const emailsToExtract = emailList.map(e => e.email)
         const gmailsToExtract = emailList.map(e => e.gmail)
+        const allEmailsToCheck = [...emailsToExtract, ...gmailsToExtract]
         
-        const { data: existingEmails } = await supabase.from('allowed_emails').select('email, gmail').in('email', emailsToExtract)
-        const { data: existingGmails } = await supabase.from('allowed_emails').select('email, gmail').in('gmail', gmailsToExtract)
+        const { data: existingEmails } = await supabase.from('allowed_emails').select('email, gmail').in('email', allEmailsToCheck)
+        const { data: existingGmails } = await supabase.from('allowed_emails').select('email, gmail').in('gmail', allEmailsToCheck)
         
         const existingEmailSet = new Set((existingEmails || []).map(e => e.email))
         const existingGmailSet = new Set((existingGmails || []).map(e => e.gmail))
 
-        const conflicts = emailList.filter(item => existingEmailSet.has(item.email) || existingGmailSet.has(item.gmail))
+        const conflicts = emailList.filter(item => 
+          existingEmailSet.has(item.email) || existingGmailSet.has(item.gmail) ||
+          existingEmailSet.has(item.gmail) || existingGmailSet.has(item.email)
+        )
 
         if (conflicts.length > 0) {
           throw new Error(`Cannot process: The email '${conflicts[0].email}' or gmail '${conflicts[0].gmail}' already exists in the database. Please remove existing entries and try again.`)
@@ -186,7 +190,7 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         const { data: existing } = await supabase
           .from('allowed_emails')
           .select('id')
-          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail}`)
+          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail},email.eq.${targetGmail},gmail.eq.${targetEmail}`)
           .neq('id', id)
           .limit(1)
 
