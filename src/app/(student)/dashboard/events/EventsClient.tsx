@@ -718,7 +718,7 @@ export function EventsClient({
                             >
                               <LogOut size={10} /> Withdraw
                             </button>
-                          )}>
+                          )}
                         </div>
                       </div>
 
