@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Trash2, Plus, Users, Mail, Edit2, Check, X } from 'lucide-react'
+import { Trash2, Plus, Users, Mail, Edit2, Check, X, Search } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { formatIST } from '@/lib/utils/dateUtils'
@@ -22,6 +22,19 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
   const [editEmail, setEditEmail] = useState('')
   const [editGmail, setEditGmail] = useState('')
 
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
+  
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredEmails = emails.filter(item => 
+    (item.email || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+    (item.gmail || '').toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const totalPages = Math.ceil(filteredEmails.length / itemsPerPage)
+  const paginatedEmails = filteredEmails.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+
   const supabase = createClient()
 
   const handleAddSingle = async (e: React.FormEvent) => {
@@ -35,14 +48,27 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         const { data: userData } = await supabase.auth.getUser()
         if (!userData.user) throw new Error('Not authenticated')
 
+        const targetEmail = singleEmail.trim().toLowerCase()
+        const targetGmail = singleGmail.trim().toLowerCase()
+
+        const { data: existing } = await supabase
+          .from('allowed_emails')
+          .select('email')
+          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail},email.eq.${targetGmail},gmail.eq.${targetEmail}`)
+          .limit(1)
+
+        if (existing && existing.length > 0) {
+          throw new Error('This IIMB email or Gmail address already exists in the allowed list.')
+        }
+
         const { data, error: insertError } = await supabase
           .from('allowed_emails')
-          .insert({ email: singleEmail.trim().toLowerCase(), gmail: singleGmail.trim().toLowerCase(), added_by: userData.user.id })
+          .insert({ email: targetEmail, gmail: targetGmail, added_by: userData.user.id })
           .select('id, email, gmail, created_at, users!added_by(full_name)')
           .single()
 
         if (insertError) {
-          if (insertError.code === '23505') throw new Error('Email is already in the allowed list')
+          if (insertError.code === '23505') throw new Error('Email or Gmail is already in the allowed list')
           throw insertError
         }
 
@@ -91,14 +117,25 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
         }))
 
         const emailsToExtract = emailList.map(e => e.email)
-        const { data: existing } = await supabase.from('allowed_emails').select('email').in('email', emailsToExtract)
-        const existingSet = new Set((existing || []).map(e => e.email))
-        const newInserts = inserts.filter(item => !existingSet.has(item.email))
+        const gmailsToExtract = emailList.map(e => e.gmail)
+        const allEmailsToCheck = [...emailsToExtract, ...gmailsToExtract]
+        
+        const { data: existingEmails } = await supabase.from('allowed_emails').select('email, gmail').in('email', allEmailsToCheck)
+        const { data: existingGmails } = await supabase.from('allowed_emails').select('email, gmail').in('gmail', allEmailsToCheck)
+        
+        const existingEmailSet = new Set((existingEmails || []).map(e => e.email))
+        const existingGmailSet = new Set((existingGmails || []).map(e => e.gmail))
 
-        if (newInserts.length === 0) {
-          setError('All provided emails are already in the allowed list.')
-          return
+        const conflicts = emailList.filter(item => 
+          existingEmailSet.has(item.email) || existingGmailSet.has(item.gmail) ||
+          existingEmailSet.has(item.gmail) || existingGmailSet.has(item.email)
+        )
+
+        if (conflicts.length > 0) {
+          throw new Error(`Cannot process: The email '${conflicts[0].email}' or gmail '${conflicts[0].gmail}' already exists in the database. Please remove existing entries and try again.`)
         }
+
+        const newInserts = inserts
 
         const { data, error: insertError } = await supabase
           .from('allowed_emails')
@@ -147,9 +184,23 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
     setSuccess(null)
     startTransition(async () => {
       try {
+        const targetEmail = editEmail.trim().toLowerCase()
+        const targetGmail = editGmail.trim().toLowerCase()
+
+        const { data: existing } = await supabase
+          .from('allowed_emails')
+          .select('id')
+          .or(`email.eq.${targetEmail},gmail.eq.${targetGmail},email.eq.${targetGmail},gmail.eq.${targetEmail}`)
+          .neq('id', id)
+          .limit(1)
+
+        if (existing && existing.length > 0) {
+          throw new Error('This IIMB email or Gmail address already exists in another record.')
+        }
+
         const { error: updateError } = await supabase
           .from('allowed_emails')
-          .update({ email: editEmail.trim().toLowerCase(), gmail: editGmail.trim().toLowerCase() })
+          .update({ email: targetEmail, gmail: targetGmail })
           .eq('id', id)
 
         if (updateError) {
@@ -228,18 +279,30 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
 
       {/* List column */}
       <div className="lg:col-span-2 glass rounded-2xl border border-white/10 overflow-hidden flex flex-col min-h-[500px]">
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-nova-text">Allowed Emails ({emails.length})</h2>
+        <div className="p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h2 className="text-xl font-bold text-nova-text shrink-0">Allowed Emails ({filteredEmails.length})</h2>
+          <div className="w-full sm:w-64">
+            <Input
+              type="text"
+              placeholder="Search emails..."
+              value={searchTerm}
+              onChange={e => {
+                setSearchTerm(e.target.value)
+                setCurrentPage(1)
+              }}
+              icon={<Search size={16} />}
+            />
+          </div>
         </div>
         
         <div className="flex-1 overflow-auto p-4 space-y-2">
-          {emails.length === 0 ? (
+          {filteredEmails.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-nova-muted space-y-2">
               <Mail size={32} className="opacity-20" />
-              <p>No emails in the allowed list yet.</p>
+              <p>{searchTerm ? 'No matching emails found.' : 'No emails in the allowed list yet.'}</p>
             </div>
           ) : (
-            emails.map(item => (
+            paginatedEmails.map(item => (
               <div key={item.id} className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                 {editingId === item.id ? (
                   <div className="flex-1 flex flex-col md:flex-row gap-2 mr-4">
@@ -321,6 +384,30 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
             ))
           )}
         </div>
+
+        {totalPages > 1 && (
+          <div className="p-4 border-t border-white/10 flex items-center justify-between bg-black/20">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </Button>
+            <span className="text-sm text-nova-muted font-medium">
+              Page {currentPage} of {totalPages}
+            </span>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   )
