@@ -13,7 +13,7 @@ export default async function AllowedEmailsPage() {
   // Fetch initial allowed emails
   const { data: allowedEmails } = await supabase
     .from('allowed_emails')
-    .select('id, email, created_at, users!added_by(full_name)')
+    .select('id, email, gmail, created_at, users!added_by(full_name)')
     .order('created_at', { ascending: false })
 
   return (

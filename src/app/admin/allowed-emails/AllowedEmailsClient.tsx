@@ -297,8 +297,8 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
                       <button
                         onClick={() => {
                           setEditingId(item.id)
-                          setEditEmail(item.email)
-                          setEditGmail(item.gmail)
+                          setEditEmail(item.email || '')
+                          setEditGmail(item.gmail || '')
                         }}
                         disabled={isPending}
                         className="p-2 text-nova-muted hover:text-nova-primary hover:bg-nova-primary/10 rounded-lg transition-colors disabled:opacity-50"
