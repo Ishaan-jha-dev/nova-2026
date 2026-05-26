@@ -3,7 +3,7 @@
 import { useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Trash2, Plus, Users, Mail, Edit2, Check, X } from 'lucide-react'
+import { Trash2, Plus, Users, Mail, Edit2, Check, X, Search } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { formatIST } from '@/lib/utils/dateUtils'
@@ -25,8 +25,15 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
   
-  const totalPages = Math.ceil(emails.length / itemsPerPage)
-  const paginatedEmails = emails.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredEmails = emails.filter(item => 
+    (item.email || '').toLowerCase().includes(searchTerm.toLowerCase()) || 
+    (item.gmail || '').toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const totalPages = Math.ceil(filteredEmails.length / itemsPerPage)
+  const paginatedEmails = filteredEmails.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
 
   const supabase = createClient()
 
@@ -268,15 +275,27 @@ export default function AllowedEmailsClient({ initialEmails }: { initialEmails: 
 
       {/* List column */}
       <div className="lg:col-span-2 glass rounded-2xl border border-white/10 overflow-hidden flex flex-col min-h-[500px]">
-        <div className="p-6 border-b border-white/10 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-nova-text">Allowed Emails ({emails.length})</h2>
+        <div className="p-6 border-b border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <h2 className="text-xl font-bold text-nova-text shrink-0">Allowed Emails ({filteredEmails.length})</h2>
+          <div className="w-full sm:w-64">
+            <Input
+              type="text"
+              placeholder="Search emails..."
+              value={searchTerm}
+              onChange={e => {
+                setSearchTerm(e.target.value)
+                setCurrentPage(1)
+              }}
+              icon={<Search size={16} />}
+            />
+          </div>
         </div>
         
         <div className="flex-1 overflow-auto p-4 space-y-2">
-          {emails.length === 0 ? (
+          {filteredEmails.length === 0 ? (
             <div className="h-full flex flex-col items-center justify-center text-nova-muted space-y-2">
               <Mail size={32} className="opacity-20" />
-              <p>No emails in the allowed list yet.</p>
+              <p>{searchTerm ? 'No matching emails found.' : 'No emails in the allowed list yet.'}</p>
             </div>
           ) : (
             paginatedEmails.map(item => (
