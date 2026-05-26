@@ -31,7 +31,7 @@ const features = [
     title: 'Cultural Extravaganza',
   },
   {
-    image: '/home/treasure_hunt.png',
+    image: '/home/treasure_hunt.jpg',
     title: 'Treasure Hunt & Games',
   },
   {
@@ -39,11 +39,11 @@ const features = [
     title: 'Talent Show & Quizzes',
   },
   {
-    image: '/home/dbe_spotlight.png',
+    image: '/home/dbe_spotlight.jpg',
     title: 'DBE Spotlight',
   },
   {
-    image: '/home/jamming.png',
+    image: '/home/jamming.jpg',
     title: 'Jamming & DJ Nights',
   },
 ]
