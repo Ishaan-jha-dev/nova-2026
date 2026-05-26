@@ -83,6 +83,7 @@ export default function RegisterPage() {
   const validate = () => {
     if (!form.fullName.trim()) return 'Full name is required'
     if (!form.email.includes('@')) return 'Enter a valid email address'
+    if (!form.email.toLowerCase().endsWith('@iimb.ac.in')) return 'Email must end with @iimb.ac.in'
     if (form.password.length < 6) return 'Password must be at least 6 characters'
     if (form.password !== form.confirmPassword) return 'Passwords do not match'
     
