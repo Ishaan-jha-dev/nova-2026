@@ -10,14 +10,14 @@ import React from 'react'
 
 export function ExploreEventsHeading() {
   return (
-    <div className="relative inline-flex flex-col items-center justify-center mb-4 mt-2">
-      <div className="relative z-10 flex items-center gap-4">
+    <div className="relative inline-flex flex-col items-center justify-center w-full max-w-full overflow-hidden px-2 mb-4 mt-2">
+      <div className="relative z-10 flex items-center gap-2 sm:gap-4">
         {/* Left flourish */}
-        <svg width="40" height="20" viewBox="0 0 40 20" fill="none" className="opacity-70">
+        <svg width="30" height="15" viewBox="0 0 40 20" fill="none" className="opacity-70 hidden sm:block">
           <path d="M 40 10 Q 20 10 10 0 Q 15 15 0 20 Q 20 15 40 10" fill="#E8A020" />
         </svg>
 
-        <h1 className="text-5xl md:text-6xl text-white drop-shadow-md flex items-center gap-3">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl text-white drop-shadow-md flex items-center gap-2 sm:gap-3">
           <span className="font-serif italic font-black tracking-wide uppercase">Explore</span>
           <span className="font-handwritten normal-case text-[#E8A020] text-[1.1em] rotate-[-2deg] inline-block filter drop-shadow-[0_2px_8px_rgba(232,160,32,0.3)] relative">
             Events
@@ -29,7 +29,7 @@ export function ExploreEventsHeading() {
         </h1>
 
         {/* Right flourish */}
-        <svg width="40" height="20" viewBox="0 0 40 20" fill="none" className="opacity-70 scale-x-[-1]">
+        <svg width="30" height="15" viewBox="0 0 40 20" fill="none" className="opacity-70 hidden sm:block scale-x-[-1]">
           <path d="M 40 10 Q 20 10 10 0 Q 15 15 0 20 Q 20 15 40 10" fill="#E8A020" />
         </svg>
       </div>

@@ -128,8 +128,8 @@ export default async function DashboardPage() {
           {/* Top glowing dot and 01 Badge */}
           <div className="absolute top-[26px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
             {/* Bright glowing dot on the border */}
-            <div className="absolute top-0 w-[6px] h-[6px] bg-[#FFF3E0] rounded-full shadow-[0_0_20px_8px_rgba(259,165,80,0.9)] z-40" />
-            <div className="w-[56px] h-[56px] rounded-full flex items-center justify-center font-bold text-xl text-white mt-3"
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[6px] h-[6px] bg-[#FFF3E0] rounded-full shadow-[0_0_20px_8px_rgba(259,165,80,0.9)] z-40" />
+            <div className="w-[56px] h-[56px] rounded-full flex items-center justify-center pt-[2px] font-bold text-xl text-white mt-3"
               style={{ background: '#3D1A08', border: '1px solid rgba(217,123,58,0.5)', boxShadow: 'inset 0 0 15px rgba(217,123,58,0.2), 0 10px 20px rgba(0,0,0,0.5)' }}>
               01
             </div>
