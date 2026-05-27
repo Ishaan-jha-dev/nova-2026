@@ -349,7 +349,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 3rem;
+  padding: 0.8rem 2rem;
   border-radius: 9999px;
   background: rgba(232, 160, 32, 0.18);
   backdrop-filter: blur(20px);
@@ -357,18 +357,30 @@ body {
   color: #fff;
   overflow: hidden;
   letter-spacing: 0.15em;
-  font-size: 1.1rem;
   font-weight: 800;
   transition: all 0.4s cubic-bezier(0.22,1,0.36,1);
   box-shadow: 0 0 40px rgba(232, 160, 32, 0.5), inset 0 0 20px rgba(232, 160, 32, 0.3), inset 0 -2px 0 rgba(0,0,0,0.3);
-  transform: scale(1.1);
+  transform: scale(1);
+}
+
+@media (min-width: 768px) {
+  .glass-cta-btn {
+    padding: 1rem 3rem;
+    transform: scale(1.1);
+  }
 }
 
 .glass-cta-btn:hover {
   background: rgba(232, 160, 32, 0.35);
   border-color: rgba(232, 160, 32, 1);
   box-shadow: 0 0 80px rgba(232, 160, 32, 0.9), 0 0 40px rgba(232, 160, 32, 0.6), inset 0 2px 0 rgba(255,255,255,0.5);
-  transform: scale(1.15) translateY(-2px);
+  transform: scale(1.05) translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .glass-cta-btn:hover {
+    transform: scale(1.15) translateY(-2px);
+  }
 }
 
 .glass-cta-shine {
