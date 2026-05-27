@@ -64,7 +64,13 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
           <p className="text-nova-muted text-xs">© 2026 Nova Unplugged · IIM Bangalore. All rights reserved.</p>
-          <p className="text-nova-muted text-xs">Built with ⚡ by the OC Tech Team</p>
+          <p className="text-nova-muted text-xs">
+            Built with ⚡ by the OC Tech Team (
+            <a href="https://www.linkedin.com/in/ishaan-jha-2b6977340/" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBBF24] text-[#E8A020] transition-all font-semibold">Ishaan Jha</a>
+            {' & '}
+            <a href="https://www.linkedin.com/in/madhwendra-shukla-77a13920b/" target="_blank" rel="noopener noreferrer" className="hover:text-[#FBBF24] text-[#E8A020] transition-all font-semibold">Madhwendra Shukla</a>
+            )
+          </p>
         </div>
       </div>
     </footer>
