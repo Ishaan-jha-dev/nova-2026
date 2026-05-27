@@ -8,7 +8,7 @@ import { toZonedTime } from 'date-fns-tz'
 import { 
   MapPin, Clock, Users, Phone, ExternalLink, BookOpen, Check, Plus, 
   LogIn, X, Bell, AlertCircle, LogOut, ChevronRight, Crown, Copy, 
-  UserMinus, Lock, Unlock, ChevronUp, ChevronDown 
+  UserMinus, Lock, Unlock, ChevronUp, ChevronDown, User, Mail
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
@@ -999,8 +999,18 @@ export function EventsClient({
                 )}
                 {selectedEvent.organizer_name && (
                   <div className="flex items-center gap-2 text-white/60">
-                    <Phone size={13} style={{ color: colors.text }} />
+                    <User size={13} style={{ color: colors.text }} />
                     <span className="text-xs">{selectedEvent.organizer_name}</span>
+                  </div>
+                )}
+                {selectedEvent.organizer_contact && (
+                  <div className="flex items-center gap-2 text-white/60">
+                    {selectedEvent.organizer_contact.includes('@') ? (
+                      <Mail size={13} style={{ color: colors.text }} />
+                    ) : (
+                      <Phone size={13} style={{ color: colors.text }} />
+                    )}
+                    <span className="text-xs">{selectedEvent.organizer_contact}</span>
                   </div>
                 )}
                 {selectedEvent.deadline && (
