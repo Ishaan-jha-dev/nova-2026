@@ -41,22 +41,6 @@ const team = [
     ],
     badge: 'Design Engineer',
   },
-  {
-    name: 'Ashutosh Agarwaal',
-    role: 'Coordinator',
-    title: 'OC Lead · ZR North Zone 2',
-    emoji: '🏆',
-    imageUrl: '/team/ashutosh.png',
-    color: 'from-amber-500 to-orange-600',
-    linkedin: 'https://www.linkedin.com/in/ashutosh-agrawal-0a4a7a379/',
-    brag: [
-      'Heads the Organising Committee for North Zone 2',
-      'Coordinates logistics, events & participant experience',
-      'Bridges on-ground execution with the tech platform',
-      'Drives student outreach and zone-level registrations',
-    ],
-    badge: 'OC Lead',
-  },
 ]
 
 const values = [
@@ -156,11 +140,11 @@ export default function AboutPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           {team.map((member, i) => {
             const RoleIcon = roleIcon[member.role] || Zap
-            const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['blue', 'pink', 'orange']
-            const pinColor = pinColors[i % 3]
+            const pinColors: ('pink' | 'orange' | 'blue' | 'purple')[] = ['blue', 'pink']
+            const pinColor = pinColors[i % 2]
 
             return (
               <div key={member.name} className="w-full">
