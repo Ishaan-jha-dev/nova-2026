@@ -109,25 +109,24 @@ function CategoryGrid({ categories, onSelect }: { categories: CategoryRow[]; onS
           return (
             <div
               key={cat.id}
-              className={`w-full relative transition-all duration-500 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] ${rotationClass}`}
+              className={`w-full h-full relative transition-all duration-500 [transition-timing-function:cubic-bezier(0.175,0.885,0.32,1.275)] ${rotationClass}`}
               style={{
                 animation: `fadeSlideUp 0.6s ${i * 0.12 + 0.1}s cubic-bezier(0.16,1,0.3,1) both`,
-                height: 520,
               }}
             >
               <PinnedCard
                 pinColor={pinColor}
                 onClick={() => onSelect(cat.id)}
-                className="h-full"
+                className="h-full min-h-[420px] flex flex-col"
               >
                 {/* Category image poster */}
-                <div className="relative w-full h-80 rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+                <div className="relative w-full aspect-[4/5] rounded-2xl overflow-hidden mb-4 border border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)] bg-black/20">
                   {img ? (
                     <Image
                       src={img}
                       alt={cat.title}
                       fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="object-contain transition-transform duration-700 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 33vw"
                       priority
                     />

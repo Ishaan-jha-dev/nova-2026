@@ -367,7 +367,7 @@ export default function RegisterPage() {
               <p className="text-nova-text-dim text-base text-center mb-8">
                 We&apos;ve sent a secure 6-digit code to your <br/>
                 <strong className="text-nova-primary">
-                  {registeredGmail ? `${registeredGmail[0]}****${registeredGmail.substring(registeredGmail.indexOf('@'))}` : 'associated Google mail id'}
+                  {registeredGmail ? registeredGmail : 'associated Google mail id'}
                 </strong>
               </p>
               {error && (

@@ -186,7 +186,7 @@ export function PageWrapper({
 
   return (
     <div
-      className={`min-h-screen w-full relative flex justify-center pt-24 md:pt-20 pb-14 text-white ${className}`}
+      className={`min-h-screen w-full relative flex justify-center pt-32 md:pt-24 pb-14 text-white ${className}`}
       style={{
         backgroundColor: '#0A0A0A',
         backgroundImage: `

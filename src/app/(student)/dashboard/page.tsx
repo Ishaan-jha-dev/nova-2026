@@ -103,7 +103,7 @@ export default async function DashboardPage() {
     <div className="min-h-screen w-full relative flex flex-col text-white" style={{ backgroundColor: '#0B0B0B' }}>
       <BackgroundLayer />
 
-      <header className="relative z-20 flex justify-center items-center w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-8 pb-2">
+      <header className="relative z-20 flex justify-center items-center w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-32 lg:pt-12 pb-2">
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-3 mb-1">
             <span className="text-[#B48C0A] text-xs">✦</span>
