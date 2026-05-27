@@ -370,6 +370,15 @@ export default async function DashboardPage() {
           </div>
         </div>
       </main>
+
+      <footer className="w-full text-center py-6 mt-8 relative z-20 border-t border-white/5 bg-[#0B0B0B]/40 backdrop-blur-sm">
+        <p className="text-[11px] text-white/30 tracking-[0.2em] uppercase font-semibold">
+          Crafted with ⚡ by{' '}
+          <a href="https://www.linkedin.com/in/ishaan-jha-2b6977340/" target="_blank" rel="noopener noreferrer" className="text-[#E8A020] hover:text-[#FBBF24] transition-colors font-bold">Ishaan Jha</a>
+          {' & '}
+          <a href="https://www.linkedin.com/in/madhwendra-shukla-77a13920b/" target="_blank" rel="noopener noreferrer" className="text-[#E8A020] hover:text-[#FBBF24] transition-colors font-bold">Madhwendra Shukla</a>
+        </p>
+      </footer>
     </div>
   )
 }
