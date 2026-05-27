@@ -18,6 +18,7 @@ export function AdminUsersClient({ users, roles, types, myLevel, myEmail }: { us
     'ishaan.jha25@iimb.ac.in',
     'ishaanjha.in@gmail.com',
     'madhwendra.shukla25@iimb.ac.in',
+    'madhwendrashukla37@gmail.com',
   ]
   const isAllowed = allowedEmails.includes(myEmail.toLowerCase())
 
