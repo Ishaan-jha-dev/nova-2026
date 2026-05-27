@@ -8,7 +8,7 @@ import { toZonedTime } from 'date-fns-tz'
 import { 
   MapPin, Clock, Users, Phone, ExternalLink, BookOpen, Check, Plus, 
   LogIn, X, Bell, AlertCircle, LogOut, ChevronRight, Crown, Copy, 
-  UserMinus, Lock, Unlock, ChevronUp, ChevronDown, User, Mail
+  UserMinus, Lock, Unlock, ChevronUp, ChevronDown, User, Mail, ArrowLeft
 } from 'lucide-react'
 
 import { Button } from '@/components/ui/Button'
@@ -259,6 +259,7 @@ function CategoryEventsView({
   registeredIds,
   requestStatusByEvent,
   onSelectEvent,
+  onBack,
 }: {
   categoryId: string
   categories: CategoryRow[]
@@ -266,6 +267,7 @@ function CategoryEventsView({
   registeredIds: Set<string>
   requestStatusByEvent: Record<string, { status: string; teamId: string }>
   onSelectEvent: (event: EventRow & { categories?: any }) => void
+  onBack: () => void
 }) {
   const category = categories.find(c => c.id === categoryId)
   const colors = getCategoryColors(category?.title)
@@ -279,7 +281,16 @@ function CategoryEventsView({
     <div className="w-full relative z-10 pt-4">
 
       {/* Big category title */}
-      <div className="text-center mb-6">
+      <div className="text-center mb-6 relative max-w-5xl mx-auto flex flex-col md:block">
+        <div className="w-full flex justify-start px-6 md:px-0 md:absolute md:left-4 md:top-1/2 md:-translate-y-1/2 z-50 mb-4 md:mb-0">
+          <button
+            onClick={onBack}
+            className="text-white/50 hover:text-[#E8A020] transition-colors flex items-center gap-2 text-sm font-bold uppercase tracking-widest cursor-pointer"
+          >
+            <ArrowLeft size={16} /> Back
+          </button>
+        </div>
+        
         <h1
           className="font-display font-black uppercase"
           style={{
@@ -670,6 +681,10 @@ export function EventsClient({
               registeredIds={registeredIds}
               requestStatusByEvent={requestStatusByEvent}
               onSelectEvent={(e) => { setSelectedEvent(e); setActionError(null) }}
+              onBack={() => {
+                setView('categories')
+                setActiveCategoryId(null)
+              }}
             />
           )}
         </>
