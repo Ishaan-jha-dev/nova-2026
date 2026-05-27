@@ -166,7 +166,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <MaintenanceAlert />
+      {/* <MaintenanceAlert /> */}
     </div>
   )
 }
