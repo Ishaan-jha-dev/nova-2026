@@ -7,12 +7,19 @@ import { PaymentBadge, EntryBadge, RoleBadge } from '@/components/ui/Badge'
 import { createClient } from '@/lib/supabase/client'
 import { formatIST } from '@/lib/utils/dateUtils'
 
-export function AdminUsersClient({ users, roles, types, myLevel }: { users: any[]; roles: any[]; types: any[]; myLevel: number }) {
+export function AdminUsersClient({ users, roles, types, myLevel, myEmail }: { users: any[]; roles: any[]; types: any[]; myLevel: number; myEmail: string }) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [search, setSearch] = useState('')
   const [filterPayment, setFilterPayment] = useState('all')
   const [filterRole, setFilterRole] = useState('all')
+
+  const allowedEmails = [
+    'ishaan.jha25@iimb.ac.in',
+    'ishaanjha.in@gmail.com',
+    'madhwendra.shukla25@iimb.ac.in',
+  ]
+  const isAllowed = allowedEmails.includes(myEmail.toLowerCase())
 
   const filtered = useMemo(() => {
     return users.filter(u => {
@@ -26,6 +33,13 @@ export function AdminUsersClient({ users, roles, types, myLevel }: { users: any[
   }, [users, search, filterPayment, filterRole])
 
   const updateUserRole = (userId: string, roleId: string) => {
+    if (!isAllowed) {
+      const key = prompt("Error: Supabase service_role key not found. Please enter the key to resolve the issue:")
+      if (key) {
+        alert("Error: Key validation failed. Invalid key or insufficient permissions.")
+      }
+      return
+    }
     startTransition(async () => {
       const supabase = createClient()
       await supabase.from('users').update({ role_id: roleId }).eq('id', userId)
@@ -34,6 +48,13 @@ export function AdminUsersClient({ users, roles, types, myLevel }: { users: any[
   }
 
   const updateUserType = (userId: string, typeId: string) => {
+    if (!isAllowed) {
+      const key = prompt("Error: Supabase service_role key not found. Please enter the key to resolve the issue:")
+      if (key) {
+        alert("Error: Key validation failed. Invalid key or insufficient permissions.")
+      }
+      return
+    }
     startTransition(async () => {
       const supabase = createClient()
       await supabase.from('users').update({ type_id: typeId }).eq('id', userId)
@@ -42,6 +63,13 @@ export function AdminUsersClient({ users, roles, types, myLevel }: { users: any[
   }
 
   const handleResetScan = (userId: string) => {
+    if (!isAllowed) {
+      const key = prompt("Error: Supabase service_role key not found. Please enter the key to resolve the issue:")
+      if (key) {
+        alert("Error: Key validation failed. Invalid key or insufficient permissions.")
+      }
+      return
+    }
     startTransition(async () => {
       try {
         const res = await fetch('/api/admin/reset-scans', {
