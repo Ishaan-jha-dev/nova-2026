@@ -110,7 +110,7 @@ export default async function DashboardPage() {
             <h3 className="font-serif italic text-xl lg:text-2xl text-[#D4A820] tracking-wider" style={{ fontFamily: 'Georgia, serif' }}>Welcome to</h3>
             <span className="text-[#B48C0A] text-xs">✦</span>
           </div>
-          <h1 className="font-serif text-3xl lg:text-[42px] font-bold tracking-[0.15em] uppercase mt-1">
+          <h1 className="font-serif text-3xl lg:text-[42px] font-bold tracking-[0.15em] uppercase mt-1 text-center">
             <span className="text-white">NOVA</span> <span className="text-[#D4A820]">UNPLUGGED &apos;26</span>
           </h1>
           <div className="mt-4 opacity-60">
