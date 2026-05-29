@@ -5,7 +5,7 @@ import { RegistrationsClient } from './RegistrationsClient'
 
 export const metadata: Metadata = { title: 'Registrations | Admin' }
 
-const PAGE_SIZE = 15
+const EVENT_PAGE_SIZE = 5
 
 export default async function RegistrationsPage(props: { searchParams: Promise<{ category?: string; page?: string }> }) {
   const searchParams = await props.searchParams
@@ -21,8 +21,8 @@ export default async function RegistrationsPage(props: { searchParams: Promise<{
 
   const selectedCategory = searchParams.category || 'all'
   const page = parseInt(searchParams.page || '1', 10)
-  const from = (page - 1) * PAGE_SIZE
-  const to = from + PAGE_SIZE - 1
+  const from = (page - 1) * EVENT_PAGE_SIZE
+  const to = from + EVENT_PAGE_SIZE - 1
 
   // 1. Fetch all active categories for the filter tabs
   const { data: categories } = await admin.from('categories').select('*').order('title')
@@ -45,26 +45,48 @@ export default async function RegistrationsPage(props: { searchParams: Promise<{
     perEventCount[r.event_id] = (perEventCount[r.event_id] || 0) + 1
   }
 
-  // 4. Paginated registrations, filtered by category
-  let regQuery = admin
+  // 4. Get total registrations count for stats
+  let totalCountQuery = admin
     .from('registrations')
-    .select(`
-      *,
-      users(full_name, email),
-      events!inner(id, title, category_id, participation_type, is_submission_based, categories(id, title)),
-      teams(name, join_code, leader_id)
-    `, { count: 'exact' })
+    .select('id, events!inner(category_id)', { count: 'exact', head: true })
+  
+  if (selectedCategory !== 'all') {
+    totalCountQuery = totalCountQuery.eq('events.category_id', selectedCategory)
+  }
+  const { count: totalCount } = await totalCountQuery
+
+  // 5. Paginated events, filtered by category
+  let eventQuery = admin
+    .from('events')
+    .select('id', { count: 'exact' })
     .order('created_at', { ascending: false })
     .range(from, to)
 
   if (selectedCategory !== 'all') {
-    // Filter via the joined events → category_id
-    regQuery = regQuery.eq('events.category_id', selectedCategory)
+    eventQuery = eventQuery.eq('category_id', selectedCategory)
   }
 
-  const { data: registrations, count: totalCount } = await regQuery
+  const { data: eventsPage, count: totalEventsCount } = await eventQuery
+  const eventIds = (eventsPage || []).map(e => e.id)
 
-  const totalPages = Math.ceil((totalCount || 0) / PAGE_SIZE)
+  // 6. Fetch ALL registrations for these events so teams are never split
+  let registrations: any[] = []
+  if (eventIds.length > 0) {
+    const { data: regs } = await admin
+      .from('registrations')
+      .select(`
+        *,
+        users(full_name, email),
+        events!inner(id, title, category_id, participation_type, is_submission_based, categories(id, title)),
+        teams(name, join_code, leader_id)
+      `)
+      .in('event_id', eventIds)
+      .order('created_at', { ascending: false })
+    
+    registrations = regs || []
+  }
+
+  const totalPages = Math.ceil((totalEventsCount || 0) / EVENT_PAGE_SIZE)
 
   return (
     <RegistrationsClient

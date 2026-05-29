@@ -44,10 +44,8 @@ export function RegistrationsClient({
     byEvent[key].push(reg)
   }
 
-  const handleKickClick = (reg: any) => {
+  const handleKickClick = (reg: any, teamSize?: number) => {
     const teamId = reg.team_id || null
-    // Check if kicking would dissolve (simple check: team_id exists and members might drop)
-    // Full dissolve check happens server-side, but we surface the warning if team event
     setKickTarget({
       userId: reg.user_id,
       eventId: reg.event_id,
@@ -55,7 +53,8 @@ export function RegistrationsClient({
       eventTitle: (reg.events as any)?.title || 'Unknown',
       userName: (reg.users as any)?.full_name || 'Unknown',
     })
-    setKickWouldDissolve(false)
+    // Now that we load complete events, teamSize accurately reflects total team members
+    setKickWouldDissolve(teamSize === 1)
   }
 
   const confirmKick = (forceDissolve = false) => {
@@ -328,7 +327,7 @@ export function RegistrationsClient({
                             )}
                             {adminRoleLevel >= 4 && (
                               <td className="px-5 py-3 text-right">
-                                <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg)}>Kick</Button>
+                                <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg, teamRegs.length)}>Kick</Button>
                               </td>
                             )}
                           </tr>
