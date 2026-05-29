@@ -14,8 +14,6 @@ interface RegistrationsClientProps {
   registrations: any[]
   categories: CategoryRow[]
   selectedCategory: string
-  page: number
-  totalPages: number
   totalCount: number
   uniqueStudentCount: number
   perEventCount: Record<string, number>
@@ -23,7 +21,7 @@ interface RegistrationsClientProps {
 }
 
 export function RegistrationsClient({
-  registrations, categories, selectedCategory, page, totalPages,
+  registrations, categories, selectedCategory,
   totalCount, uniqueStudentCount, perEventCount, adminRoleLevel
 }: RegistrationsClientProps) {
   const router = useRouter()
@@ -346,27 +344,6 @@ export function RegistrationsClient({
           </div>
         )}
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6 glass rounded-xl p-4 border border-white/10">
-          <p className="text-xs text-nova-muted">Page {page} of {totalPages}</p>
-          <div className="flex items-center gap-2">
-            <Link
-              href={page > 1 ? `/admin/registrations?page=${page - 1}${catParam}` : '#'}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium glass transition-all ${page === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-white/10'}`}
-            >
-              Previous
-            </Link>
-            <Link
-              href={page < totalPages ? `/admin/registrations?page=${page + 1}${catParam}` : '#'}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium glass transition-all ${page === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-white/10'}`}
-            >
-              Next
-            </Link>
-          </div>
-        </div>
-      )}
 
       {/* Kick User Modal */}
       <Modal open={!!kickTarget} onClose={() => { setKickTarget(null); setKickWouldDissolve(false) }} size="sm" title="Remove User from Event">

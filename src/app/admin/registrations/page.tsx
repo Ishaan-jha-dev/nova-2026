@@ -5,9 +5,7 @@ import { RegistrationsClient } from './RegistrationsClient'
 
 export const metadata: Metadata = { title: 'Registrations | Admin' }
 
-const EVENT_PAGE_SIZE = 5
-
-export default async function RegistrationsPage(props: { searchParams: Promise<{ category?: string; page?: string }> }) {
+export default async function RegistrationsPage(props: { searchParams: Promise<{ category?: string }> }) {
   const searchParams = await props.searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -20,19 +18,11 @@ export default async function RegistrationsPage(props: { searchParams: Promise<{
   const admin = await createAdminClient()
 
   const selectedCategory = searchParams.category || 'all'
-  const page = parseInt(searchParams.page || '1', 10)
-  const from = (page - 1) * EVENT_PAGE_SIZE
-  const to = from + EVENT_PAGE_SIZE - 1
 
   // 1. Fetch all active categories for the filter tabs
   const { data: categories } = await admin.from('categories').select('*').order('title')
 
   // 2. Stats — total unique students (deduped, avoids double count)
-  const { count: totalUnique } = await admin
-    .from('registrations')
-    .select('user_id', { count: 'exact', head: true })
-  // Note: Supabase doesn't natively support COUNT(DISTINCT) in the client SDK's select().
-  // We fetch unique user_ids via a workaround query below.
   const { data: uniqueUserRows } = await admin
     .from('registrations')
     .select('user_id')
@@ -45,57 +35,31 @@ export default async function RegistrationsPage(props: { searchParams: Promise<{
     perEventCount[r.event_id] = (perEventCount[r.event_id] || 0) + 1
   }
 
-  // 4. Get total registrations count for stats
-  let totalCountQuery = admin
+  // 4. Fetch all registrations, filtered by category
+  let regQuery = admin
     .from('registrations')
-    .select('id, events!inner(category_id)', { count: 'exact', head: true })
-  
-  if (selectedCategory !== 'all') {
-    totalCountQuery = totalCountQuery.eq('events.category_id', selectedCategory)
-  }
-  const { count: totalCount } = await totalCountQuery
-
-  // 5. Paginated events, filtered by category
-  let eventQuery = admin
-    .from('events')
-    .select('id', { count: 'exact' })
+    .select(`
+      *,
+      users(full_name, email),
+      events!inner(id, title, category_id, participation_type, is_submission_based, categories(id, title)),
+      teams(name, join_code, leader_id)
+    `)
     .order('created_at', { ascending: false })
-    .range(from, to)
+    .limit(5000)
 
   if (selectedCategory !== 'all') {
-    eventQuery = eventQuery.eq('category_id', selectedCategory)
+    regQuery = regQuery.eq('events.category_id', selectedCategory)
   }
 
-  const { data: eventsPage, count: totalEventsCount } = await eventQuery
-  const eventIds = (eventsPage || []).map(e => e.id)
-
-  // 6. Fetch ALL registrations for these events so teams are never split
-  let registrations: any[] = []
-  if (eventIds.length > 0) {
-    const { data: regs } = await admin
-      .from('registrations')
-      .select(`
-        *,
-        users(full_name, email),
-        events!inner(id, title, category_id, participation_type, is_submission_based, categories(id, title)),
-        teams(name, join_code, leader_id)
-      `)
-      .in('event_id', eventIds)
-      .order('created_at', { ascending: false })
-    
-    registrations = regs || []
-  }
-
-  const totalPages = Math.ceil((totalEventsCount || 0) / EVENT_PAGE_SIZE)
+  const { data: registrations } = await regQuery
+  const totalCount = registrations?.length || 0
 
   return (
     <RegistrationsClient
       registrations={registrations || []}
       categories={categories || []}
       selectedCategory={selectedCategory}
-      page={page}
-      totalPages={totalPages}
-      totalCount={totalCount || 0}
+      totalCount={totalCount}
       uniqueStudentCount={uniqueStudentCount}
       perEventCount={perEventCount}
       adminRoleLevel={roleLevel}
