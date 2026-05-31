@@ -77,7 +77,7 @@ export async function GET(request: NextRequest) {
       const teamMap: Record<string, any> = {}
 
       if (userIds.size > 0) {
-        const { data } = await supabaseAdmin.from('users').select('id, full_name, email').in('id', Array.from(userIds))
+        const { data } = await supabaseAdmin.from('users').select('id, full_name, email, phone, batch, city, state, zone, pincode').in('id', Array.from(userIds))
         data?.forEach(u => userMap[u.id] = u)
       }
       if (eventIds.size > 0) {
@@ -92,6 +92,12 @@ export async function GET(request: NextRequest) {
       exportData = (regs || []).map((r: any) => ({
         user_name: userMap[r.user_id]?.full_name || '',
         user_email: userMap[r.user_id]?.email || '',
+        phone: userMap[r.user_id]?.phone || '',
+        batch: userMap[r.user_id]?.batch || '',
+        city: userMap[r.user_id]?.city || '',
+        state: userMap[r.user_id]?.state || '',
+        zone: userMap[r.user_id]?.zone || '',
+        pincode: userMap[r.user_id]?.pincode || '',
         event_title: eventMap[r.event_id]?.title || '',
         participation_type: eventMap[r.event_id]?.participation_type || '',
         team_name: teamMap[r.team_id]?.name || '',

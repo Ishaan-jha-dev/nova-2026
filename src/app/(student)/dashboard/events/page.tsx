@@ -13,11 +13,18 @@ export default async function EventsPage() {
   if (!user) redirect('/login')
 
   const [
+    { data: dbUser },
     { data: categories },
     { data: events },
     { data: registrations },
     { data: joinRequests },
   ] = await Promise.all([
+    // User payment status and role
+    supabase
+      .from('users')
+      .select('payment_status, user_types(name), user_roles(name)')
+      .eq('id', user.id)
+      .single(),
     // Only active categories
     supabase.from('categories').select('*').eq('status', 'active').order('title'),
     // Events where the category is active (or has no category)
@@ -71,6 +78,8 @@ export default async function EventsPage() {
     return acc
   }, {})
 
+  const userType = (dbUser?.user_types as any)?.name || (dbUser?.user_roles as any)?.name || ''
+
   return (
     <PageWrapper
       headingComponent={<ExploreEventsHeading />}
@@ -86,6 +95,8 @@ export default async function EventsPage() {
         requestStatusByEvent={requestStatusByEvent}
         registrations={registrations || []}
         userId={user.id}
+        userPaymentStatus={dbUser?.payment_status || 'pending'}
+        userType={userType}
       />
     </PageWrapper>
   )

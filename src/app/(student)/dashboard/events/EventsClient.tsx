@@ -31,6 +31,8 @@ interface EventsClientProps {
   requestStatusByEvent: Record<string, { status: string; teamId: string }>
   registrations: any[]
   userId: string
+  userPaymentStatus?: string
+  userType?: string
 }
 
 const TZ = 'Asia/Kolkata'
@@ -58,8 +60,8 @@ const CATEGORY_IMAGES: Record<string, string> = {
 // Map category → gradient accent for border + glow matching the design assets
 const CATEGORY_COLORS: Record<string, { border: string; glow: string; text: string; bg: string }> = {
   sports:     { border: '#E8A020', glow: 'rgba(232, 160, 32,0.5)',   text: '#E8A020', bg: 'rgba(232, 160, 32,0.1)' },
-  cultural:   { border: '#8e44ad', glow: 'rgba(142,68,173,0.5)',   text: '#8e44ad', bg: 'rgba(142,68,173,0.1)' }, // Purple dancer card
-  culturals:  { border: '#8e44ad', glow: 'rgba(142,68,173,0.5)',   text: '#8e44ad', bg: 'rgba(142,68,173,0.1)' },
+  cultural:   { border: '#ffffff', glow: 'rgba(255,255,255,0.5)',   text: '#ffffff', bg: 'rgba(255,255,255,0.1)' }, // White cultural card
+  culturals:  { border: '#ffffff', glow: 'rgba(255,255,255,0.5)',   text: '#ffffff', bg: 'rgba(255,255,255,0.1)' },
   technical:  { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' }, // Orange computer card
   technicals: { border: '#f37335', glow: 'rgba(243,115,53,0.5)',    text: '#f37335', bg: 'rgba(243,115,53,0.1)' },
   fun:        { border: '#2980B9', glow: 'rgba(41,128,185,0.5)',   text: '#2980B9', bg: 'rgba(41,128,185,0.1)' }, // Blue fun card
@@ -78,10 +80,10 @@ function getCategoryImage(title?: string | null) {
   return CATEGORY_IMAGES[key] || null
 }
 
-function getPinColor(title?: string | null): 'pink' | 'orange' | 'blue' | 'purple' {
+function getPinColor(title?: string | null): 'pink' | 'orange' | 'blue' | 'purple' | 'white' {
   const key = (title || '').toLowerCase()
   if (key === 'sports' || key === 'engaging') return 'pink'
-  if (key === 'cultural' || key === 'culturals') return 'purple' // Purple pin for purple card
+  if (key === 'cultural' || key === 'culturals') return 'white' // White pin for white card
   if (key === 'technical' || key === 'technicals' || key === 'business') return 'orange' // Orange pin for orange card
   return 'blue' // Blue pin for blue card (fun/other)
 }
@@ -321,7 +323,7 @@ function CategoryEventsView({
 }
 
 function renderDescription(desc: string, colors: any) {
-  const paragraphs = desc.split('\n\n')
+  const paragraphs = desc.split(/\r?\n\r?\n/)
   return (
     <div className="flex flex-col gap-5 text-sm font-sans tracking-wide">
       {paragraphs.map((p, idx) => {
@@ -348,8 +350,8 @@ function renderDescription(desc: string, colors: any) {
           )
         }
 
-        // Check if it's a section heading (short, no dot)
-        if (trimmed.length < 40 && !trimmed.endsWith('.')) {
+        // Check if it's a section heading (short, no dot, no newline)
+        if (trimmed.length < 60 && !trimmed.endsWith('.') && !trimmed.includes('\n')) {
           return (
             <h4 key={idx} className="font-sans font-black text-xs uppercase tracking-[0.25em] text-[#FEF3C7] mt-5 mb-1 flex items-center gap-2" style={{ color: colors.text }}>
               <span className="w-1.5 h-1.5 rounded-full bg-[#E8A020]" />
@@ -372,7 +374,8 @@ function renderDescription(desc: string, colors: any) {
 // ── Main EventsClient ─────────────────────────────────────────────────────────
 export function EventsClient({
   events, categories, registeredEventIds,
-  requestStatusByTeam, requestStatusByEvent, registrations, userId
+  requestStatusByTeam, requestStatusByEvent, registrations, userId,
+  userPaymentStatus, userType
 }: EventsClientProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
@@ -388,6 +391,7 @@ export function EventsClient({
   const [actionError, setActionError] = useState<string | null>(null)
   const [registeredIds, setRegisteredIds] = useState(new Set(registeredEventIds))
   const [withdrawConfirm, setWithdrawConfirm] = useState<{ eventId: string; wouldDissolve: boolean } | null>(null)
+  const [consentChecked, setConsentChecked] = useState(false)
 
   // Merged My Events state and transition functions
   const [activeTab, setActiveTab] = useState<'all' | 'my'>('all')
@@ -935,13 +939,15 @@ export function EventsClient({
       )}
 
       {/* ── Event Detail Modal ── */}
-      <Modal open={!!selectedEvent} onClose={() => { setSelectedEvent(null); setTeamModal(null); setSubmissionLink(''); setActionError(null) }} size="lg" title={selectedEvent?.title}>
+      <Modal open={!!selectedEvent} onClose={() => { setSelectedEvent(null); setTeamModal(null); setSubmissionLink(''); setActionError(null); setConsentChecked(false) }} size="lg" title={selectedEvent?.title}>
         {selectedEvent && (() => {
           const isRegistered = registeredIds.has(selectedEvent.id)
           const deadlinePassed = isDeadlinePassed(selectedEvent.deadline)
           const pendingRequest = requestStatusByEvent[selectedEvent.id]
           const catTitle = (Array.isArray(selectedEvent.categories) ? selectedEvent.categories[0] : selectedEvent.categories)?.title
           const colors = getCategoryColors(catTitle)
+          
+          const isOCBlock = (userType?.toLowerCase().includes('oc') || userType?.toLowerCase().includes('organizing')) && userPaymentStatus !== 'approved'
 
           return (
             <div className="flex flex-col gap-5">
@@ -1023,7 +1029,7 @@ export function EventsClient({
               <div className="flex gap-3 flex-wrap">
                 {selectedEvent.rulebook_url && (
                   <a href={selectedEvent.rulebook_url} target="_blank" rel="noreferrer"
-                    className="nova-btn-outline text-sm px-4 py-2 rounded-lg flex items-center gap-2">
+                    className="nova-btn-accent text-sm px-4 py-2 rounded-lg flex items-center gap-2 text-white shadow-[0_0_15px_rgba(232,160,32,0.4)] border border-[#E8A020]">
                     <BookOpen size={14} /> Rulebook
                   </a>
                 )}
@@ -1076,9 +1082,24 @@ export function EventsClient({
                       <p className="text-white/40 text-xs">Please provide the link to your submission (e.g. Google Drive, YouTube).</p>
                     </div>
                   )}
-                  <Button variant="primary" size="lg" fullWidth loading={isPending} onClick={() => handleRegisterIndividual(selectedEvent.id, selectedEvent.is_submission_based)}>
-                    Register for this Event
-                  </Button>
+                  {isOCBlock ? (
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center">
+                      <AlertCircle size={18} className="mx-auto mb-2" />
+                      As an OC member, your payment must be approved to register for events.
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex items-start gap-3 p-3 bg-white/5 rounded-xl border border-white/10 mt-1">
+                        <input type="checkbox" id="consent-individual" checked={consentChecked} onChange={e => setConsentChecked(e.target.checked)} className="mt-0.5 w-4 h-4 accent-nova-primary" />
+                        <label htmlFor="consent-individual" className="text-xs text-white/70 leading-relaxed cursor-pointer">
+                          I have read and understood all the rules and guidelines of this event.
+                        </label>
+                      </div>
+                      <Button variant="primary" size="lg" fullWidth loading={isPending} disabled={!consentChecked} onClick={() => handleRegisterIndividual(selectedEvent.id, selectedEvent.is_submission_based)}>
+                        Register for this Event
+                      </Button>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
@@ -1104,11 +1125,18 @@ export function EventsClient({
                   {(!pendingRequest || pendingRequest.status !== 'pending') && (
                     <p className="text-white/40 text-sm text-center">Team event — choose an option:</p>
                   )}
-                  <div className="grid grid-cols-2 gap-3">
-                    <Button variant="primary" icon={<Plus size={16} />} disabled={pendingRequest?.status === 'pending'} onClick={() => setTeamModal('create')}>Create Team</Button>
-                    <Button variant="outline" icon={<LogIn size={16} />} onClick={() => { setTeamModal('browse'); loadBrowseTeams(selectedEvent.id) }}>{pendingRequest?.status === 'pending' ? 'View Teams' : 'Join a Team'}</Button>
-                  </div>
-                  {teamModal === 'create' && (!pendingRequest || pendingRequest.status !== 'pending') && (
+                  {isOCBlock ? (
+                    <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-sm text-center">
+                      <AlertCircle size={18} className="mx-auto mb-2" />
+                      As an OC member, your payment must be approved to register for events.
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-3">
+                      <Button variant="primary" icon={<Plus size={16} />} disabled={pendingRequest?.status === 'pending'} onClick={() => setTeamModal('create')}>Create Team</Button>
+                      <Button variant="outline" icon={<LogIn size={16} />} onClick={() => { setTeamModal('browse'); loadBrowseTeams(selectedEvent.id) }}>{pendingRequest?.status === 'pending' ? 'View Teams' : 'Join a Team'}</Button>
+                    </div>
+                  )}
+                  {teamModal === 'create' && (!pendingRequest || pendingRequest.status !== 'pending') && !isOCBlock && (
                     <div className="glass rounded-xl p-4 border border-nova-primary/30 flex flex-col gap-3 animate-slide-up">
                       <Input label="Team Name" placeholder="Enter team name" value={teamName} onChange={e => setTeamName(e.target.value)} />
                       {selectedEvent.is_submission_based && (
@@ -1124,15 +1152,27 @@ export function EventsClient({
                           <p className="text-white/40 text-xs">As the team leader, please provide the link to your team&apos;s submission.</p>
                         </div>
                       )}
-                      <Button variant="accent" loading={isPending} onClick={() => handleCreateTeam(selectedEvent.id, selectedEvent.is_submission_based)}>Create & Register</Button>
+                      <div className="flex items-start gap-3 p-3 bg-white/5 rounded-xl border border-white/10 mt-1">
+                        <input type="checkbox" id="consent-create" checked={consentChecked} onChange={e => setConsentChecked(e.target.checked)} className="mt-0.5 w-4 h-4 accent-nova-primary" />
+                        <label htmlFor="consent-create" className="text-xs text-white/70 leading-relaxed cursor-pointer">
+                          I have read and understood all the rules and guidelines of this event.
+                        </label>
+                      </div>
+                      <Button variant="accent" loading={isPending} disabled={!consentChecked} onClick={() => handleCreateTeam(selectedEvent.id, selectedEvent.is_submission_based)}>Create & Register</Button>
                     </div>
                   )}
-                  {teamModal === 'browse' && (
+                  {teamModal === 'browse' && !isOCBlock && (
                     <div className="glass rounded-xl p-4 border border-nova-primary/30 flex flex-col gap-3 animate-slide-up">
                       {(!pendingRequest || pendingRequest.status !== 'pending') && (
                         <>
                           <Input label="Have a join code?" placeholder="6-char code e.g. A1B2C3" value={joinCode} onChange={e => setJoinCode(e.target.value.toUpperCase())} maxLength={6} />
-                          <Button variant="outline" loading={isPending} onClick={() => handleJoinByCode(selectedEvent.id)}>Join by Code</Button>
+                          <div className="flex items-start gap-3 p-3 bg-white/5 rounded-xl border border-white/10 mt-1 mb-1">
+                            <input type="checkbox" id="consent-join" checked={consentChecked} onChange={e => setConsentChecked(e.target.checked)} className="mt-0.5 w-4 h-4 accent-nova-primary" />
+                            <label htmlFor="consent-join" className="text-xs text-white/70 leading-relaxed cursor-pointer">
+                              I have read and understood all the rules and guidelines of this event.
+                            </label>
+                          </div>
+                          <Button variant="outline" loading={isPending} disabled={!consentChecked} onClick={() => handleJoinByCode(selectedEvent.id)}>Join by Code</Button>
                           <div className="border-t border-white/10 pt-3 mt-1"></div>
                         </>
                       )}
@@ -1154,7 +1194,7 @@ export function EventsClient({
                                   {isFull ? <span className="text-xs text-white/30">Full</span> :
                                     reqStatus === 'pending' ? <span className="text-xs text-yellow-400 font-medium">Pending</span> :
                                     reqStatus === 'rejected' ? <span className="text-xs text-red-400 font-medium">Rejected</span> :
-                                    <Button variant="outline" size="sm" disabled={pendingRequest?.status === 'pending'} loading={isPending} onClick={() => handleRequestJoin(team.id)}>Request</Button>
+                                    <Button variant="outline" size="sm" disabled={pendingRequest?.status === 'pending' || !consentChecked} loading={isPending} onClick={() => handleRequestJoin(team.id)}>Request</Button>
                                   }
                                 </div>
                               )

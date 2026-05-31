@@ -41,7 +41,7 @@ const exportTypes = [
     color: 'text-nova-accent',
     bg: 'bg-nova-accent/10',
     border: 'border-nova-accent/30',
-    headers: ['user_name', 'user_email', 'event_title', 'participation_type', 'team_name', 'team_code', 'registered_at'],
+    headers: ['user_name', 'user_email', 'phone', 'batch', 'city', 'state', 'zone', 'pincode', 'event_title', 'participation_type', 'team_name', 'team_code', 'registered_at'],
   },
   {
     id: 'allowed_users',

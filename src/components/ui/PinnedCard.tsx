@@ -2,7 +2,7 @@ import React from 'react'
 
 interface PinnedCardProps {
   children: React.ReactNode
-  pinColor?: 'pink' | 'orange' | 'blue' | 'purple'
+  pinColor?: 'pink' | 'orange' | 'blue' | 'purple' | 'white'
   title?: string
   subtitle?: string
   number?: string
@@ -26,6 +26,7 @@ export function PinnedCard({
     orange: 'bg-[radial-gradient(circle_at_30%_30%,#ffb366,#f37335)] shadow-[0_5px_15px_rgba(243,115,53,0.6)]',
     blue: 'bg-[radial-gradient(circle_at_30%_30%,#6DD5FA,#2980B9)] shadow-[0_5px_15px_rgba(41,128,185,0.6)]',
     purple: 'bg-[radial-gradient(circle_at_30%_30%,#d896ff,#8e44ad)] shadow-[0_5px_15px_rgba(142,68,173,0.6)]',
+    white: 'bg-[radial-gradient(circle_at_30%_30%,#ffffff,#cccccc)] shadow-[0_5px_15px_rgba(255,255,255,0.6)]',
   }
 
   const numberColors = {
@@ -33,6 +34,7 @@ export function PinnedCard({
     orange: 'bg-[#f37335]/10 text-[#f37335]',
     blue: 'bg-[#2980B9]/10 text-[#2980B9]',
     purple: 'bg-[#8e44ad]/10 text-[#8e44ad]',
+    white: 'bg-white/10 text-white',
   }
 
   const hoverBorders = {
@@ -40,6 +42,7 @@ export function PinnedCard({
     orange: 'hover:border-[#f37335]/60 hover:shadow-[0_20px_40px_rgba(243,115,53,0.2)] hover:-translate-y-2',
     blue: 'hover:border-[#2980B9]/60 hover:shadow-[0_20px_40px_rgba(41,128,185,0.2)] hover:-translate-y-2',
     purple: 'hover:border-[#8e44ad]/60 hover:shadow-[0_20px_40px_rgba(142,68,173,0.2)] hover:-translate-y-2',
+    white: 'hover:border-white/60 hover:shadow-[0_20px_40px_rgba(255,255,255,0.2)] hover:-translate-y-2',
   }
 
   const Tag = onClick ? 'button' : 'div'

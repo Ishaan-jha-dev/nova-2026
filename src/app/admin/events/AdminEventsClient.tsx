@@ -9,6 +9,7 @@ import { Modal } from '@/components/ui/Modal'
 import { ParticipationBadge } from '@/components/ui/Badge'
 import { createClient } from '@/lib/supabase/client'
 import { formatIST } from '@/lib/utils/dateUtils'
+import { toZonedTime, format } from 'date-fns-tz'
 import type { EventRow, CategoryRow } from '@/lib/supabase/types'
 
 type EventFormData = {
@@ -30,6 +31,8 @@ type EventFormData = {
   is_active: boolean
   is_submission_based: boolean
 }
+
+const TZ = 'Asia/Kolkata'
 
 const emptyForm: EventFormData = {
   title: '', description: '', category_id: '', participation_type: 'individual',
@@ -86,7 +89,7 @@ export function AdminEventsClient({ events, categories, creatorId }: AdminEvents
       event_date: event.event_date || '',
       start_time: event.start_time || '',
       end_time: event.end_time || '',
-      deadline: event.deadline ? new Date(event.deadline).toISOString().slice(0, 16) : '',
+      deadline: event.deadline ? format(toZonedTime(new Date(event.deadline), TZ), "yyyy-MM-dd'T'HH:mm", { timeZone: TZ }) : '',
       is_active: event.is_active,
       is_submission_based: event.is_submission_based,
     })
@@ -134,7 +137,7 @@ export function AdminEventsClient({ events, categories, creatorId }: AdminEvents
         event_date: form.event_date || null,
         start_time: form.start_time || null,
         end_time: form.end_time || null,
-        deadline: form.deadline ? new Date(form.deadline).toISOString() : null,
+        deadline: form.deadline ? new Date(form.deadline + '+05:30').toISOString() : null,
         is_active: form.is_active,
         is_submission_based: form.is_submission_based,
         created_by: creatorId,
