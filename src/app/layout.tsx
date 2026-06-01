@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Big_Shoulders_Display, Playfair_Display, Caveat } from "next/font/google";
 import "./globals.css";
-import DevPanel from "@/components/ui/DevPanel";
-import { GlobalNavigation } from "@/components/layout/GlobalNavigation";
+
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -51,10 +50,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${bigShoulders.variable} ${playfair.variable} ${caveat.variable}`}>
-      <body className="bg-nova-bg text-nova-text font-body antialiased">
-        <GlobalNavigation />
-        {children}
-        <DevPanel />
+      <body className="bg-nova-bg text-nova-text font-body antialiased h-screen w-screen flex flex-col items-center justify-center">
+        <main className="text-center p-8 space-y-4">
+          <h1 className="font-display text-5xl md:text-7xl font-bold text-white tracking-wider">
+            UNDER MAINTENANCE
+          </h1>
+          <p className="text-xl md:text-2xl text-white/80 font-medium">
+            lets see when it back
+          </p>
+        </main>
       </body>
     </html>
   );
