@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import ParticleCrowd from '@/components/ui/ParticleCrowd'
 import { createClient } from '@/lib/supabase/client'
+import WhatsAppButton from '@/components/ui/WhatsAppButton'
 
 /* ─── Spinning Pinwheel O ─────────────────────── */
 function PinwheelO() {
@@ -191,7 +192,7 @@ export default function HeroComponent() {
             user ? (
               <Link href="/dashboard" className="glass-cta-btn">
                 <span className="glass-cta-shine" />
-                <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}>
+                <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(0.85rem, 2.5vw, 1.5rem)' }}>
                   GO TO DASHBOARD
                 </span>
               </Link>
@@ -199,7 +200,7 @@ export default function HeroComponent() {
               <>
                 <Link href="/register" className="glass-cta-btn">
                   <span className="glass-cta-shine" />
-                  <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}>
+                  <span style={{ position: 'relative', zIndex: 1, fontWeight: 900, letterSpacing: '0.25em', fontSize: 'clamp(0.85rem, 2.5vw, 1.5rem)' }}>
                     REGISTER NOW
                   </span>
                 </Link>
@@ -223,6 +224,9 @@ export default function HeroComponent() {
           )}
         </div>
       </div>
+      
+      {/* Floating WhatsApp Button for queries */}
+      <WhatsAppButton />
     </div>
   )
 }

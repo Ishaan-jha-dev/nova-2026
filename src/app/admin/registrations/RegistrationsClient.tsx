@@ -14,8 +14,6 @@ interface RegistrationsClientProps {
   registrations: any[]
   categories: CategoryRow[]
   selectedCategory: string
-  page: number
-  totalPages: number
   totalCount: number
   uniqueStudentCount: number
   perEventCount: Record<string, number>
@@ -23,7 +21,7 @@ interface RegistrationsClientProps {
 }
 
 export function RegistrationsClient({
-  registrations, categories, selectedCategory, page, totalPages,
+  registrations, categories, selectedCategory,
   totalCount, uniqueStudentCount, perEventCount, adminRoleLevel
 }: RegistrationsClientProps) {
   const router = useRouter()
@@ -44,10 +42,8 @@ export function RegistrationsClient({
     byEvent[key].push(reg)
   }
 
-  const handleKickClick = (reg: any) => {
+  const handleKickClick = (reg: any, teamSize?: number) => {
     const teamId = reg.team_id || null
-    // Check if kicking would dissolve (simple check: team_id exists and members might drop)
-    // Full dissolve check happens server-side, but we surface the warning if team event
     setKickTarget({
       userId: reg.user_id,
       eventId: reg.event_id,
@@ -55,7 +51,8 @@ export function RegistrationsClient({
       eventTitle: (reg.events as any)?.title || 'Unknown',
       userName: (reg.users as any)?.full_name || 'Unknown',
     })
-    setKickWouldDissolve(false)
+    // Now that we load complete events, teamSize accurately reflects total team members
+    setKickWouldDissolve(teamSize === 1)
   }
 
   const confirmKick = (forceDissolve = false) => {
@@ -328,7 +325,7 @@ export function RegistrationsClient({
                             )}
                             {adminRoleLevel >= 4 && (
                               <td className="px-5 py-3 text-right">
-                                <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg)}>Kick</Button>
+                                <Button variant="danger" size="sm" icon={<UserX size={13} />} onClick={() => handleKickClick(reg, teamRegs.length)}>Kick</Button>
                               </td>
                             )}
                           </tr>
@@ -347,27 +344,6 @@ export function RegistrationsClient({
           </div>
         )}
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-between mt-6 glass rounded-xl p-4 border border-white/10">
-          <p className="text-xs text-nova-muted">Page {page} of {totalPages}</p>
-          <div className="flex items-center gap-2">
-            <Link
-              href={page > 1 ? `/admin/registrations?page=${page - 1}${catParam}` : '#'}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium glass transition-all ${page === 1 ? 'opacity-50 pointer-events-none' : 'hover:bg-white/10'}`}
-            >
-              Previous
-            </Link>
-            <Link
-              href={page < totalPages ? `/admin/registrations?page=${page + 1}${catParam}` : '#'}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium glass transition-all ${page === totalPages ? 'opacity-50 pointer-events-none' : 'hover:bg-white/10'}`}
-            >
-              Next
-            </Link>
-          </div>
-        </div>
-      )}
 
       {/* Kick User Modal */}
       <Modal open={!!kickTarget} onClose={() => { setKickTarget(null); setKickWouldDissolve(false) }} size="sm" title="Remove User from Event">

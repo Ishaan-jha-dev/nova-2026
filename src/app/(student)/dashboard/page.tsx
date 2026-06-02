@@ -103,14 +103,14 @@ export default async function DashboardPage() {
     <div className="min-h-screen w-full relative flex flex-col text-white" style={{ backgroundColor: '#0B0B0B' }}>
       <BackgroundLayer />
 
-      <header className="relative z-20 flex justify-center items-center w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-8 pb-2">
+      <header className="relative z-20 flex justify-center items-center w-full max-w-[1300px] mx-auto px-4 lg:px-8 pt-24 lg:pt-12 pb-2">
         <div className="flex flex-col items-center">
           <div className="flex items-center gap-3 mb-1">
             <span className="text-[#B48C0A] text-xs">✦</span>
             <h3 className="font-serif italic text-xl lg:text-2xl text-[#D4A820] tracking-wider" style={{ fontFamily: 'Georgia, serif' }}>Welcome to</h3>
             <span className="text-[#B48C0A] text-xs">✦</span>
           </div>
-          <h1 className="font-serif text-3xl lg:text-[42px] font-bold tracking-[0.15em] uppercase mt-1">
+          <h1 className="font-serif text-3xl lg:text-[42px] font-bold tracking-[0.15em] uppercase mt-1 text-center">
             <span className="text-white">NOVA</span> <span className="text-[#D4A820]">UNPLUGGED &apos;26</span>
           </h1>
           <div className="mt-4 opacity-60">
@@ -128,8 +128,8 @@ export default async function DashboardPage() {
           {/* Top glowing dot and 01 Badge */}
           <div className="absolute top-[26px] left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
             {/* Bright glowing dot on the border */}
-            <div className="absolute top-0 w-[6px] h-[6px] bg-[#FFF3E0] rounded-full shadow-[0_0_20px_8px_rgba(259,165,80,0.9)] z-40" />
-            <div className="w-[56px] h-[56px] rounded-full flex items-center justify-center font-bold text-xl text-white mt-3"
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[6px] h-[6px] bg-[#FFF3E0] rounded-full shadow-[0_0_20px_8px_rgba(259,165,80,0.9)] z-40" />
+            <div className="w-[56px] h-[56px] rounded-full flex items-center justify-center pt-[2px] font-bold text-xl text-white mt-3"
               style={{ background: '#3D1A08', border: '1px solid rgba(217,123,58,0.5)', boxShadow: 'inset 0 0 15px rgba(217,123,58,0.2), 0 10px 20px rgba(0,0,0,0.5)' }}>
               01
             </div>
