@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     let scanResult: 'valid' | 'already_scanned' | 'invalid'
     let message: string
-    let roleText = (targetUser?.user_types as any)?.name || (targetUser?.user_roles as any)?.name
+    const roleText = (targetUser?.user_types as any)?.name || (targetUser?.user_roles as any)?.name
     let name: string | undefined = targetUser?.full_name ? `${targetUser.full_name}${roleText ? ` (${roleText})` : ''}` : undefined
 
     // 4. Determine result
