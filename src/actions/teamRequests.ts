@@ -110,15 +110,21 @@ export async function cancelTeamJoinRequest(eventId: string) {
   const { userId } = await getAuthUser()
   const admin = await getAdminClient()
 
+  // Find the team IDs for this event
+  const { data: teams } = await admin.from('teams').select('id').eq('event_id', eventId)
+  const teamIds = teams?.map(t => t.id) || []
+
+  if (teamIds.length === 0) {
+    throw new Error('No teams found for this event')
+  }
+
   // Find the pending request for this event
   const { data: request } = await admin
     .from('team_join_requests')
     .select('id')
     .eq('user_id', userId)
     .eq('status', 'pending')
-    .in('team_id', (
-      await admin.from('teams').select('id').eq('event_id', eventId)
-    ).data?.map(t => t.id) || [])
+    .in('team_id', teamIds)
     .maybeSingle()
 
   if (!request) {
@@ -126,7 +132,10 @@ export async function cancelTeamJoinRequest(eventId: string) {
   }
 
   // Delete it
-  await admin.from('team_join_requests').delete().eq('id', request.id)
+  const { error } = await admin.from('team_join_requests').delete().eq('id', request.id)
+  if (error) {
+    throw new Error(error.message)
+  }
 
   revalidatePath('/dashboard/events')
 }
